@@ -258,8 +258,37 @@ export default function VCardQrGenerator() {
                 <Input id="linkedin" value={form.linkedin} onChange={(e) => update("linkedin", e.target.value)} placeholder="linkedin.com/in/janedoe" />
               </div>
             </div>
+          </CardContent>
+        </Card>
 
-            <div className="grid gap-3 pt-2">
+        <Card className="rounded-2xl shadow-sm">
+          <CardContent className="p-5 space-y-4">
+            <div>
+              <div className="text-xl font-semibold">Preview</div>
+              <div className="text-sm text-muted-foreground">
+                Scanning should open “Add contact” on most phones.
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center rounded-2xl border p-4 min-h-[380px]">
+              {!hasAnything ? (
+                <div className="text-sm text-muted-foreground">Fill at least one field to generate a QR.</div>
+              ) : loading && !svg ? (
+                <div className="text-sm text-muted-foreground">Generating…</div>
+              ) : (
+                <div
+                  className="w-full max-w-[420px]"
+                  // qrcode svg is safe markup here (no user HTML), but it includes user content in <desc> sometimes.
+                  // Still: treat as trusted library output.
+                  dangerouslySetInnerHTML={{ __html: svg }}
+                />
+              )}
+            </div>
+
+            {/* Canvas used for PNG export (kept hidden) */}
+            <canvas ref={canvasRef} className="hidden" />
+
+            <div className="grid gap-3 ">
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-1">
                   <Label htmlFor="size">QR size (px)</Label>
@@ -308,54 +337,37 @@ export default function VCardQrGenerator() {
                 </Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
 
-        <Card className="rounded-2xl shadow-sm">
-          <CardContent className="p-5 space-y-4">
-            <div>
-              <div className="text-xl font-semibold">Preview</div>
-              <div className="text-sm text-muted-foreground">
-                Scanning should open “Add contact” on most phones.
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center rounded-2xl border p-4 min-h-[380px]">
-              {!hasAnything ? (
-                <div className="text-sm text-muted-foreground">Fill at least one field to generate a QR.</div>
-              ) : loading && !svg ? (
-                <div className="text-sm text-muted-foreground">Generating…</div>
-              ) : (
-                <div
-                  className="w-full max-w-[420px]"
-                  // qrcode svg is safe markup here (no user HTML), but it includes user content in <desc> sometimes.
-                  // Still: treat as trusted library output.
-                  dangerouslySetInnerHTML={{ __html: svg }}
-                />
-              )}
-            </div>
-
-            {/* Canvas used for PNG export (kept hidden) */}
-            <canvas ref={canvasRef} className="hidden" />
-
-            <div className="space-y-2">
+            <div className="space-y-2 mt-15">
               <div className="text-sm font-medium">vCard payload</div>
-              <pre className="text-xs rounded-xl border p-3 overflow-auto whitespace-pre-wrap">{vcard}</pre>
+              <pre className="text-xs rounded-xl border p-3 overflow-auto whitespace-pre-wrap">
+                {vcard.split(/\r?\n/).map((line, i) => {
+                  const colonIdx = line.indexOf(":");
+                  if (colonIdx === -1) {
+                    return <span key={i}>{line}{"\n"}</span>;
+                  }
+                  const field = line.slice(0, colonIdx);
+                  const value = line.slice(colonIdx + 1);
+                  // Highlight keywords
+                  const isStructural = /^(BEGIN|END|VERSION)$/i.test(field);
+                  const isProperty = /^(FN|N|TITLE|ORG|TEL|EMAIL|ADR|URL|NOTE|X-SOCIALPROFILE)/i.test(field);
+                  return (
+                    <span key={i}>
+                      <span className={isStructural ? "text-violet-600 font-semibold" : isProperty ? "text-sky-600 font-medium" : ""}>
+                        {field}
+                      </span>
+                      <span className="text-slate-400">:</span>
+                      <span className="text-emerald-700">{value}</span>
+                      {"\n"}
+                    </span>
+                  );
+                })}
+              </pre>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="rounded-2xl shadow-sm mt-4">
-        <CardContent className="p-5 space-y-2">
-          <div className="text-sm font-medium">Install dependency</div>
-          <pre className="text-xs rounded-xl border p-3 overflow-auto">npm i qrcode</pre>
-          <div className="text-sm text-muted-foreground">
-            Tip: If you want better scanner compatibility, keep URLs short, avoid emojis, and don’t stuff too much address
-            detail.
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
