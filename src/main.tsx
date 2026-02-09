@@ -7,9 +7,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "./index.css";
 
-// VCard QR Code Generator
-// - Fields: name, job title, company, address, phone, email, website, LinkedIn URL
-// - Downloads: PNG (canvas) + SVG (generated string)
+type PhoneEntry = { number: string; type: "WORK" | "CELL" };
+type SocialEntry = { type: string; url: string };
+
+const SOCIAL_TYPES = [
+  "linkedin",
+  "twitter",
+  "facebook",
+  "instagram",
+  "github",
+  "youtube",
+  "tiktok",
+  "mastodon",
+  "other",
+] as const;
 
 function sanitizeLine(v: string) {
   // Escape per vCard text rules (basic): backslash, semicolon, comma, newline
@@ -29,41 +40,44 @@ function ensureUrl(v: string) {
 }
 
 function buildVCard(data: {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   jobTitle: string;
   company: string;
   address: string;
-  phone: string;
+  phones: PhoneEntry[];
   email: string;
   website: string;
-  linkedin: string;
+  socials: SocialEntry[];
 }) {
   // vCard 3.0 is the most widely compatible for QR scanners.
-  const fullName = sanitizeLine(data.fullName);
+  const firstName = sanitizeLine(data.firstName);
+  const lastName = sanitizeLine(data.lastName);
   const jobTitle = sanitizeLine(data.jobTitle);
   const company = sanitizeLine(data.company);
   const address = sanitizeLine(data.address);
-  const phone = sanitizeLine(data.phone);
   const email = sanitizeLine(data.email);
   const website = sanitizeLine(ensureUrl(data.website));
-  const linkedin = sanitizeLine(ensureUrl(data.linkedin));
 
   const lines: string[] = ["BEGIN:VCARD", "VERSION:3.0"];
 
+  const fullName = [firstName, lastName].filter(Boolean).join(" ");
   if (fullName) {
     lines.push(`FN:${fullName}`);
-    // Best-effort split for N: Last;First;Additional;Prefix;Suffix
-    // If user enters one name, keep it as First.
-    const parts = fullName.split(" ").filter(Boolean);
-    const first = parts.length ? parts[0] : "";
-    const last = parts.length > 1 ? parts.slice(1).join(" ") : "";
-    lines.push(`N:${sanitizeLine(last)};${sanitizeLine(first)};;;`);
+    lines.push(`N:${lastName};${firstName};;;`);
   }
 
   if (jobTitle) lines.push(`TITLE:${jobTitle}`);
   if (company) lines.push(`ORG:${company}`);
 
-  if (phone) lines.push(`TEL;TYPE=CELL:${phone}`);
+  // Multiple phone numbers
+  for (const phone of data.phones) {
+    const num = sanitizeLine(phone.number);
+    if (num) {
+      lines.push(`TEL;TYPE=${phone.type}:${num}`);
+    }
+  }
+
   if (email) lines.push(`EMAIL;TYPE=INTERNET:${email}`);
 
   if (address) {
@@ -73,10 +87,12 @@ function buildVCard(data: {
 
   if (website) lines.push(`URL:${website}`);
 
-  // LinkedIn: put as URL with label note for better compatibility
-  if (linkedin) {
-    lines.push(`X-SOCIALPROFILE;type=linkedin:${linkedin}`);
-    lines.push(`NOTE:LinkedIn ${linkedin}`);
+  // Social profiles
+  for (const social of data.socials) {
+    const url = sanitizeLine(ensureUrl(social.url));
+    if (url) {
+      lines.push(`X-SOCIALPROFILE;type=${social.type}:${url}`);
+    }
   }
 
   lines.push("END:VCARD");
@@ -107,15 +123,17 @@ function downloadDataUrl(filename: string, dataUrl: string) {
 
 export default function VCardQrGenerator() {
   const [form, setForm] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     jobTitle: "",
     company: "",
     address: "",
-    phone: "",
     email: "",
     website: "",
-    linkedin: "",
   });
+
+  const [phones, setPhones] = useState<PhoneEntry[]>([{ number: "", type: "CELL" }]);
+  const [socials, setSocials] = useState<SocialEntry[]>([]);
 
   const [errorCorrection, setErrorCorrection] = useState<"L" | "M" | "Q" | "H">("M");
   const [size, setSize] = useState(320);
@@ -123,11 +141,17 @@ export default function VCardQrGenerator() {
   const [loading, setLoading] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const vcard = useMemo(() => buildVCard(form), [form]);
+  const vcard = useMemo(
+    () => buildVCard({ ...form, phones, socials }),
+    [form, phones, socials]
+  );
 
   const hasAnything = useMemo(() => {
-    return Object.values(form).some((v) => (v || "").trim().length > 0);
-  }, [form]);
+    const formHasContent = Object.values(form).some((v) => (v || "").trim().length > 0);
+    const phonesHaveContent = phones.some((p) => p.number.trim().length > 0);
+    const socialsHaveContent = socials.some((s) => s.url.trim().length > 0);
+    return formHasContent || phonesHaveContent || socialsHaveContent;
+  }, [form, phones, socials]);
 
   useEffect(() => {
     let cancelled = false;
@@ -178,18 +202,51 @@ export default function VCardQrGenerator() {
     setForm((p) => ({ ...p, [k]: v }));
   }
 
+  const fullName = useMemo(
+    () => [form.firstName, form.lastName].filter(Boolean).join(" "),
+    [form.firstName, form.lastName]
+  );
+
   async function onDownloadPNG() {
     if (!canvasRef.current) return;
     const dataUrl = canvasRef.current.toDataURL("image/png");
-    const safeName = (form.fullName || "vcard").trim().replace(/\s+/g, "-").toLowerCase();
+    const safeName = (fullName || "vcard").trim().replace(/\s+/g, "-").toLowerCase();
     downloadDataUrl(`${safeName || "vcard"}-qr.png`, dataUrl);
   }
 
   async function onDownloadSVG() {
-    const safeName = (form.fullName || "vcard").trim().replace(/\s+/g, "-").toLowerCase();
+    const safeName = (fullName || "vcard").trim().replace(/\s+/g, "-").toLowerCase();
     const content = svg || "";
     const blob = new Blob([content], { type: "image/svg+xml;charset=utf-8" });
     downloadBlob(`${safeName || "vcard"}-qr.svg`, blob);
+  }
+
+  function addPhone() {
+    setPhones((prev) => [...prev, { number: "", type: "CELL" }]);
+  }
+
+  function removePhone(index: number) {
+    setPhones((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updatePhone(index: number, field: keyof PhoneEntry, value: string) {
+    setPhones((prev) =>
+      prev.map((p, i) => (i === index ? { ...p, [field]: value } : p))
+    );
+  }
+
+  function addSocial() {
+    setSocials((prev) => [...prev, { type: "linkedin", url: "" }]);
+  }
+
+  function removeSocial(index: number) {
+    setSocials((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updateSocial(index: number, field: keyof SocialEntry, value: string) {
+    setSocials((prev) =>
+      prev.map((s, i) => (i === index ? { ...s, [field]: value } : s))
+    );
   }
 
   async function onCopyVCard() {
@@ -218,9 +275,15 @@ export default function VCardQrGenerator() {
             </div>
 
             <div className="grid gap-3">
-              <div className="grid gap-1">
-                <Label htmlFor="fullName">Name</Label>
-                <Input id="fullName" value={form.fullName} onChange={(e) => update("fullName", e.target.value)}  />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="grid gap-1">
+                  <Label htmlFor="firstName">First name</Label>
+                  <Input id="firstName" value={form.firstName} onChange={(e) => update("firstName", e.target.value)} />
+                </div>
+                <div className="grid gap-1">
+                  <Label htmlFor="lastName">Last name</Label>
+                  <Input id="lastName" value={form.lastName} onChange={(e) => update("lastName", e.target.value)} />
+                </div>
               </div>
 
               <div className="grid gap-1">
@@ -238,9 +301,43 @@ export default function VCardQrGenerator() {
                 <Input id="address" value={form.address} onChange={(e) => update("address", e.target.value)} />
               </div>
 
-              <div className="grid gap-1">
-                <Label htmlFor="phone">Phone</Label>
-                <Input id="phone" value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+41 79 123 45 67" />
+              {/* Multiple phones */}
+              <div className="grid gap-2">
+                <div className="flex items-center justify-between">
+                  <Label>Phone numbers</Label>
+                  <Button type="button" variant="ghost" size="sm" onClick={addPhone} className="h-7 text-xs">
+                    + Add phone
+                  </Button>
+                </div>
+                {phones.map((phone, i) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <select
+                      className="h-10 rounded-md border border-input bg-background px-2 text-sm w-24 shrink-0"
+                      value={phone.type}
+                      onChange={(e) => updatePhone(i, "type", e.target.value)}
+                    >
+                      <option value="CELL">Cell</option>
+                      <option value="WORK">Work</option>
+                    </select>
+                    <Input
+                      value={phone.number}
+                      onChange={(e) => updatePhone(i, "number", e.target.value)}
+                      placeholder="+41 79 123 45 67"
+                      className="flex-1"
+                    />
+                    {phones.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removePhone(i)}
+                        className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                      >
+                        ×
+                      </Button>
+                    )}
+                  </div>
+                ))}
               </div>
 
               <div className="grid gap-1">
@@ -253,9 +350,47 @@ export default function VCardQrGenerator() {
                 <Input id="website" value={form.website} onChange={(e) => update("website", e.target.value)} placeholder="example.com" />
               </div>
 
-              <div className="grid gap-1">
-                <Label htmlFor="linkedin">LinkedIn URL</Label>
-                <Input id="linkedin" value={form.linkedin} onChange={(e) => update("linkedin", e.target.value)} placeholder="linkedin.com/in/example" />
+              {/* Multiple social profiles */}
+              <div className="grid gap-2">
+                <div className="flex items-center justify-between">
+                  <Label>Social profiles</Label>
+                  <Button type="button" variant="ghost" size="sm" onClick={addSocial} className="h-7 text-xs">
+                    + Add social
+                  </Button>
+                </div>
+                {socials.length === 0 && (
+                  <div className="text-xs text-muted-foreground">No social profiles added yet.</div>
+                )}
+                {socials.map((social, i) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <select
+                      className="h-10 rounded-md border border-input bg-background px-2 text-sm w-28 shrink-0 capitalize"
+                      value={social.type}
+                      onChange={(e) => updateSocial(i, "type", e.target.value)}
+                    >
+                      {SOCIAL_TYPES.map((t) => (
+                        <option key={t} value={t} className="capitalize">
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                    <Input
+                      value={social.url}
+                      onChange={(e) => updateSocial(i, "url", e.target.value)}
+                      placeholder={social.type === "linkedin" ? "linkedin.com/in/example" : `${social.type}.com/...`}
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeSocial(i)}
+                      className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                    >
+                      ×
+                    </Button>
+                  </div>
+                ))}
               </div>
             </div>
           </CardContent>
