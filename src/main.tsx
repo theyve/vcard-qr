@@ -220,22 +220,22 @@ export default function VCardQrGenerator() {
             <div className="grid gap-3">
               <div className="grid gap-1">
                 <Label htmlFor="fullName">Name</Label>
-                <Input id="fullName" value={form.fullName} onChange={(e) => update("fullName", e.target.value)} placeholder="Jane Doe" />
+                <Input id="fullName" value={form.fullName} onChange={(e) => update("fullName", e.target.value)}  />
               </div>
 
               <div className="grid gap-1">
                 <Label htmlFor="jobTitle">Job title</Label>
-                <Input id="jobTitle" value={form.jobTitle} onChange={(e) => update("jobTitle", e.target.value)} placeholder="Product Designer" />
+                <Input id="jobTitle" value={form.jobTitle} onChange={(e) => update("jobTitle", e.target.value)} />
               </div>
 
               <div className="grid gap-1">
                 <Label htmlFor="company">Company</Label>
-                <Input id="company" value={form.company} onChange={(e) => update("company", e.target.value)} placeholder="Acme Inc." />
+                <Input id="company" value={form.company} onChange={(e) => update("company", e.target.value)} />
               </div>
 
               <div className="grid gap-1">
                 <Label htmlFor="address">Address</Label>
-                <Input id="address" value={form.address} onChange={(e) => update("address", e.target.value)} placeholder="Street, City, ZIP, Country" />
+                <Input id="address" value={form.address} onChange={(e) => update("address", e.target.value)} />
               </div>
 
               <div className="grid gap-1">
@@ -245,17 +245,17 @@ export default function VCardQrGenerator() {
 
               <div className="grid gap-1">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="jane@acme.com" />
+                <Input id="email" value={form.email} onChange={(e) => update("email", e.target.value)} />
               </div>
 
               <div className="grid gap-1">
                 <Label htmlFor="website">Website</Label>
-                <Input id="website" value={form.website} onChange={(e) => update("website", e.target.value)} placeholder="acme.com" />
+                <Input id="website" value={form.website} onChange={(e) => update("website", e.target.value)} placeholder="example.com" />
               </div>
 
               <div className="grid gap-1">
                 <Label htmlFor="linkedin">LinkedIn URL</Label>
-                <Input id="linkedin" value={form.linkedin} onChange={(e) => update("linkedin", e.target.value)} placeholder="linkedin.com/in/janedoe" />
+                <Input id="linkedin" value={form.linkedin} onChange={(e) => update("linkedin", e.target.value)} placeholder="linkedin.com/in/example" />
               </div>
             </div>
           </CardContent>
