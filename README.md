@@ -2,6 +2,8 @@
 
 A privacy-focused, client-side vCard QR code generator. Create QR codes that encode contact information in vCard 3.0 format—scan to add a contact on most phones.
 
+**[Live Demo →](https://vcard-qr.netlify.app/)**
+
 ## Features
 
 - **Contact fields**: First/last name, job title, company, address, email, website
@@ -17,12 +19,12 @@ This application is designed with privacy as a core principle. Here's exactly wh
 
 ### Trust Checklist
 
-- **Runs fully client-side**: No server, no backend, no API calls
-- **No network requests**: All processing happens in your browser (verify: `grep -r "fetch\|axios" src/`)
-- **No analytics or tracking**: No Google Analytics, no pixels, no telemetry
-- **No data storage**: Nothing saved to localStorage, sessionStorage, cookies, or IndexedDB
-- **No third-party services**: Only the `qrcode` npm package is used (runs locally)
-- **Fully auditable**: Source code is open and readable
+- ✅ **Runs fully client-side**: No server, no backend, no API calls
+- ✅ **No network requests**: All processing happens in your browser
+- ✅ **No analytics or tracking**: No Google Analytics, no pixels, no telemetry
+- ✅ **No data storage**: Nothing saved to localStorage, sessionStorage, cookies, or IndexedDB
+- ✅ **No third-party services**: Only the `qrcode` npm package is used (runs locally)
+- ✅ **Fully auditable**: Source code is open and readable
 
 ### What the code does
 
@@ -85,6 +87,10 @@ src/
 - [qrcode](https://www.npmjs.com/package/qrcode) for QR generation
 - TypeScript throughout
 
+## Built with AI
+
+This project was developed using AI coding assistants. The entire codebase—components, styling, documentation, and configuration—was written with AI tools. This is noted for transparency; the code remains fully auditable and the privacy guarantees are verifiable by reading the source.
+
 ## vCard Format
 
 The app generates vCard 3.0, the most widely compatible format for QR scanners:
@@ -106,11 +112,3 @@ END:VCARD
 ## License
 
 MIT - see [LICENSE](LICENSE)
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md)
-
-## Security
-
-See [SECURITY.md](SECURITY.md)

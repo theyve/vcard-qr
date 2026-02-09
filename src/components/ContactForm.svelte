@@ -58,9 +58,9 @@
 
 <Card>
   <header>
-    <h1 class="text-xl font-semibold">VCard QR code generator</h1>
+    <h2 class="text-lg font-semibold">Contact Details</h2>
     <p class="text-sm text-muted-foreground">
-      Fill what you want. The QR encodes a vCard 3.0 contact.
+      Fill in what you want on the QR code. All fields are optional.
     </p>
   </header>
 
