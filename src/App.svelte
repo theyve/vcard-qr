@@ -203,8 +203,7 @@
         <div>
           <h2 class="font-semibold mb-2">About this tool</h2>
           <p class="text-sm text-muted-foreground">
-            This open source vCard QR code generator creates scannable contact cards in vCard 3.0 format — 
-            the most widely compatible format for smartphones. Your contact information never leaves your browser.
+            This open source vCard QR code generator creates scannable contact cards in vCard 3.0 format. Your contact information never leaves your browser.
             All processing happens locally, and the source code is fully auditable on GitHub.
           </p>
         </div>
@@ -216,7 +215,6 @@
             <li>• No server, no backend, no API calls</li>
             <li>• No cookies, localStorage, or session storage</li>
             <li>• No analytics, tracking pixels, or telemetry</li>
-            <li>• Downloads use browser APIs — nothing is uploaded</li>
           </ul>
         </div>
       </div>
