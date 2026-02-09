@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useMemo, useRef, useState } from "react";
+import { StrictMode, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import QRCode from "qrcode";
 import { Card, CardContent } from "@/components/ui/card";
@@ -136,10 +136,8 @@ export default function VCardQrGenerator() {
   const [socials, setSocials] = useState<SocialEntry[]>([]);
 
   const [errorCorrection, setErrorCorrection] = useState<"L" | "M" | "Q" | "H">("M");
-  const [size, setSize] = useState(320);
   const [svg, setSvg] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const vcard = useMemo(
     () => buildVCard({ ...form, phones, socials }),
@@ -153,16 +151,14 @@ export default function VCardQrGenerator() {
     return formHasContent || phonesHaveContent || socialsHaveContent;
   }, [form, phones, socials]);
 
+  const PREVIEW_SIZE = 320;
+  const DOWNLOAD_SIZE = 1024;
+
   useEffect(() => {
     let cancelled = false;
     async function gen() {
       if (!hasAnything) {
         setSvg("");
-        // clear canvas
-        if (canvasRef.current) {
-          const ctx = canvasRef.current.getContext("2d");
-          if (ctx) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        }
         return;
       }
 
@@ -171,20 +167,13 @@ export default function VCardQrGenerator() {
         const opts = {
           errorCorrectionLevel: errorCorrection,
           margin: 2,
-          width: size,
+          width: PREVIEW_SIZE,
         } as const;
 
-        // SVG string
+        // SVG string for preview
         const svgString = await QRCode.toString(vcard, { ...opts, type: "svg" });
         if (!cancelled) setSvg(svgString);
-
-        // Canvas for PNG
-        if (canvasRef.current) {
-          canvasRef.current.width = size;
-          canvasRef.current.height = size;
-          await QRCode.toCanvas(canvasRef.current, vcard, opts);
-        }
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (!cancelled) setSvg("");
         console.error(e);
       } finally {
@@ -196,7 +185,7 @@ export default function VCardQrGenerator() {
     return () => {
       cancelled = true;
     };
-  }, [vcard, errorCorrection, size, hasAnything]);
+  }, [vcard, errorCorrection, hasAnything]);
 
   function update<K extends keyof typeof form>(k: K, v: string) {
     setForm((p) => ({ ...p, [k]: v }));
@@ -208,10 +197,21 @@ export default function VCardQrGenerator() {
   );
 
   async function onDownloadPNG() {
-    if (!canvasRef.current) return;
-    const dataUrl = canvasRef.current.toDataURL("image/png");
-    const safeName = (fullName || "vcard").trim().replace(/\s+/g, "-").toLowerCase();
-    downloadDataUrl(`${safeName || "vcard"}-qr.png`, dataUrl);
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = DOWNLOAD_SIZE;
+      canvas.height = DOWNLOAD_SIZE;
+      await QRCode.toCanvas(canvas, vcard, {
+        errorCorrectionLevel: errorCorrection,
+        margin: 2,
+        width: DOWNLOAD_SIZE,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const safeName = (fullName || "vcard").trim().replace(/\s+/g, "-").toLowerCase();
+      downloadDataUrl(`${safeName || "vcard"}-qr.png`, dataUrl);
+    } catch (e) {
+      console.error("Failed to generate PNG:", e);
+    }
   }
 
   async function onDownloadSVG() {
@@ -412,7 +412,7 @@ export default function VCardQrGenerator() {
                 <div className="text-sm text-muted-foreground">Generating…</div>
               ) : (
                 <div
-                  className="w-full max-w-[420px]"
+                  className="max-w-full max-h-full flex items-center justify-center [&>svg]:max-w-full [&>svg]:h-auto"
                   // qrcode svg is safe markup here (no user HTML), but it includes user content in <desc> sometimes.
                   // Still: treat as trusted library output.
                   dangerouslySetInnerHTML={{ __html: svg }}
@@ -420,37 +420,21 @@ export default function VCardQrGenerator() {
               )}
             </div>
 
-            {/* Canvas used for PNG export (kept hidden) */}
-            <canvas ref={canvasRef} className="hidden" />
 
-            <div className="grid gap-3 ">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="grid gap-1">
-                  <Label htmlFor="size">QR size (px)</Label>
-                  <Input
-                    id="size"
-                    type="number"
-                    min={160}
-                    max={1024}
-                    value={size}
-                    onChange={(e) => setSize(Math.max(160, Math.min(1024, Number(e.target.value || 0))))}
-                  />
-                </div>
-
-                <div className="grid gap-1">
-                  <Label htmlFor="ec">Error correction</Label>
-                  <select
-                    id="ec"
-                    className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-                    value={errorCorrection}
-                    onChange={(e) => setErrorCorrection(e.target.value as any)}
-                  >
-                    <option value="L">L (smallest QR)</option>
-                    <option value="M">M (balanced)</option>
-                    <option value="Q">Q (robust)</option>
-                    <option value="H">H (most robust)</option>
-                  </select>
-                </div>
+            <div className="grid gap-3">
+              <div className="grid gap-1">
+                <Label htmlFor="ec">Error correction</Label>
+                <select
+                  id="ec"
+                  className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={errorCorrection}
+                  onChange={(e) => setErrorCorrection(e.target.value as "L" | "M" | "Q" | "H")}
+                >
+                  <option value="L">L (smallest QR)</option>
+                  <option value="M">M (balanced)</option>
+                  <option value="Q">Q (robust)</option>
+                  <option value="H">H (most robust)</option>
+                </select>
               </div>
 
               {showWarning && (
