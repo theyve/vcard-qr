@@ -9,6 +9,17 @@
 
   const GITHUB_URL = 'https://github.com/theyve/vcard-qr';
 
+  // Bookmark helper
+  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent);
+  const bookmarkHint = isMac ? 'Press ⌘D to bookmark' : 'Press Ctrl+D to bookmark';
+
+  let showBookmarkToast = $state(false);
+
+  function handleBookmark() {
+    showBookmarkToast = true;
+    setTimeout(() => { showBookmarkToast = false; }, 3000);
+  }
+
   // Form state - Name fields
   let prefix = $state('');
   let firstName = $state('');
@@ -119,19 +130,28 @@
   }
 
   const features = [
-    '100% Client-side',
+    'Works offline',
     'No data collection',
-    'No analytics',
+    'No sign-up needed',
     'Open source',
-    'vCard 3.0',
+    'iPhone & Android',
   ];
 </script>
+
+{#if showBookmarkToast}
+  <div class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-foreground text-background px-4 py-2.5 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 animate-fade-in">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+    </svg>
+    Press {isMac ? '⌘D' : 'Ctrl+D'} to bookmark this page
+  </div>
+{/if}
 
 <div class="min-h-screen flex flex-col">
   <!-- Header -->
   <header class="border-b bg-card/80 backdrop-blur-sm top-0 z-10">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="brand-qr" aria-hidden="true">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,25 +160,24 @@
           </div>
           <div>
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight">
-              vCard QR Generator
+              vCard QR Code Generator
             </h1>
             <p class="text-sm text-muted-foreground hidden sm:block">
-              Free, private, open source
+              Create a QR code for your business card
             </p>
           </div>
         </div>
-        <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border bg-card hover:bg-secondary transition-all text-sm font-medium hover-lift"
+        <button
+          type="button"
+          onclick={handleBookmark}
+          class="inline-flex items-center gap-2 px-3 py-2 rounded-full border bg-card hover:bg-secondary transition-all text-sm text-muted-foreground hover:text-foreground"
+          title={bookmarkHint}
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
           </svg>
-          <span class="hidden sm:inline">View on GitHub</span>
-          <span class="sm:hidden">GitHub</span>
-        </a>
+          <span class="hidden sm:inline">Bookmark</span>
+        </button>
       </div>
     </div>
   </header>
@@ -204,14 +223,23 @@
   <footer class="border-t bg-card mt-auto">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
       <!-- SEO content -->
-      <div class="mb-8 pb-8 border-b">
-        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
-          Free Contact QR Code Generator
-        </h2>
-        <p class="text-muted-foreground mb-4">
-          Generate scannable vCard QR codes that work on any phone —
-          <span class="text-foreground font-medium">no tracking, no data collection</span>.
-        </p>
+      <div class="mb-8 pb-8 border-b space-y-6">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+            Free QR Code Generator for Business Cards
+          </h2>
+          <p class="text-muted-foreground">
+            Turn your contact details into a scannable QR code. Anyone who scans it can save your name, phone number, email, and more directly to their phone — no app needed. Perfect for business cards, email signatures, conference badges, and networking events.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold mb-1.5">How does it work?</h3>
+          <p class="text-muted-foreground">
+            This tool creates a <a href="https://en.wikipedia.org/wiki/VCard" target="_blank" rel="noopener noreferrer" class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">vCard QR code</a> — an industry-standard format (vCard 3.0) that both iPhones and Android phones understand. When someone scans the QR code with their camera, it prompts them to save your contact information. No special app required.
+          </p>
+        </div>
+
         <div class="flex flex-wrap gap-2">
           {#each features as feature}
             <span class="feature-badge">
@@ -234,7 +262,7 @@
             About this tool
           </h2>
           <p class="text-sm text-muted-foreground leading-relaxed">
-            This open source vCard QR code generator creates scannable contact cards in vCard 3.0 format. Your contact information never leaves your browser — all processing happens locally.
+            A free, open source QR code generator for business cards and contact info. Your data never leaves your browser — everything happens right on your device. No sign-up, no account needed.
           </p>
         </div>
         
@@ -249,15 +277,15 @@
           <ul class="text-sm text-muted-foreground space-y-1.5">
             <li class="flex items-center gap-2">
               <span class="w-1 h-1 rounded-full bg-success"></span>
-              No server, no backend, no API calls
+              Everything happens on your device — nothing is sent anywhere
             </li>
             <li class="flex items-center gap-2">
               <span class="w-1 h-1 rounded-full bg-success"></span>
-              No cookies, localStorage, or session storage
+              No account needed, nothing is saved or stored
             </li>
             <li class="flex items-center gap-2">
               <span class="w-1 h-1 rounded-full bg-success"></span>
-              No analytics, tracking pixels, or telemetry
+              No tracking, no ads, no data collection of any kind
             </li>
           </ul>
         </div>
@@ -274,9 +302,12 @@
           href={GITHUB_URL}
           target="_blank"
           rel="noopener noreferrer"
-          class="text-foreground hover:text-accent transition-colors font-medium"
+          class="inline-flex items-center gap-1.5 text-foreground hover:text-accent transition-colors font-medium"
         >
-          github.com/theyve/vcard-qr →
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+          </svg>
+          View on GitHub →
         </a>
       </div>
     </div>
