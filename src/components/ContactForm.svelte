@@ -73,44 +73,52 @@
 
 <Card>
   <header>
-    <h2 class="text-lg font-semibold">Contact Details</h2>
-    <p class="text-sm text-muted-foreground">
-      Fill in what you want on the QR code. All fields are optional.
-    </p>
+    <h2 class="flex items-center gap-2">
+      <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+      </svg>
+      Contact Details
+    </h2>
+    <p>Fill in what you want on the QR code. All fields are optional.</p>
   </header>
 
-  <div class="grid gap-3">
+  <div class="space-y-5">
     <!-- Name section -->
-    <div class="grid gap-2">
+    <fieldset class="space-y-2">
       <Label>Name</Label>
-      <div class="grid grid-cols-[80px_1fr_1fr] gap-2">
+      <div class="grid grid-cols-[72px_1fr_1fr] gap-2">
         <Input bind:value={prefix} placeholder="Dr." title="Title/Prefix" />
-        <Input bind:value={firstName} placeholder="First" title="First name" />
-        <Input bind:value={lastName} placeholder="Last" title="Last name" />
+        <Input bind:value={firstName} placeholder="First name" title="First name" />
+        <Input bind:value={lastName} placeholder="Last name" title="Last name" />
       </div>
+    </fieldset>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <fieldset class="space-y-2">
+        <Label for="jobTitle">Job title</Label>
+        <Input id="jobTitle" bind:value={jobTitle} placeholder="e.g. Product Designer" />
+      </fieldset>
+
+      <fieldset class="space-y-2">
+        <Label for="company">Company</Label>
+        <Input id="company" bind:value={company} placeholder="e.g. Acme Inc." />
+      </fieldset>
     </div>
 
-    <div class="grid gap-1">
-      <Label for="jobTitle">Job title</Label>
-      <Input id="jobTitle" bind:value={jobTitle} />
-    </div>
-
-    <div class="grid gap-1">
-      <Label for="company">Company</Label>
-      <Input id="company" bind:value={company} />
-    </div>
-
-    <div class="grid gap-1">
+    <fieldset class="space-y-2">
       <Label for="address">Address</Label>
-      <Input id="address" bind:value={address} />
-    </div>
+      <Input id="address" bind:value={address} placeholder="123 Main St, City, Country" />
+    </fieldset>
 
     <!-- Phone numbers -->
-    <div class="grid gap-2">
+    <fieldset class="space-y-3">
       <div class="flex items-center justify-between">
         <Label>Phone numbers</Label>
-        <Button type="button" variant="ghost" size="sm" onclick={addPhone} class="h-7 text-xs">
-          + Add phone
+        <Button type="button" variant="ghost" size="sm" onclick={addPhone} class="h-8 text-xs gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Add phone
         </Button>
       </div>
       {#each phones as phone, i (i)}
@@ -121,14 +129,17 @@
           onremove={() => removePhone(i)}
         />
       {/each}
-    </div>
+    </fieldset>
 
     <!-- Email addresses -->
-    <div class="grid gap-2">
+    <fieldset class="space-y-3">
       <div class="flex items-center justify-between">
         <Label>Email addresses</Label>
-        <Button type="button" variant="ghost" size="sm" onclick={addEmail} class="h-7 text-xs">
-          + Add email
+        <Button type="button" variant="ghost" size="sm" onclick={addEmail} class="h-8 text-xs gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Add email
         </Button>
       </div>
       {#each emails as email, i (i)}
@@ -139,23 +150,28 @@
           onremove={() => removeEmail(i)}
         />
       {/each}
-    </div>
+    </fieldset>
 
-    <div class="grid gap-1">
+    <fieldset class="space-y-2">
       <Label for="website">Website</Label>
       <Input id="website" bind:value={website} placeholder="example.com" />
-    </div>
+    </fieldset>
 
     <!-- Social profiles -->
-    <div class="grid gap-2">
+    <fieldset class="space-y-3">
       <div class="flex items-center justify-between">
         <Label>Social profiles</Label>
-        <Button type="button" variant="ghost" size="sm" onclick={addSocial} class="h-7 text-xs">
-          + Add social
+        <Button type="button" variant="ghost" size="sm" onclick={addSocial} class="h-8 text-xs gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Add social
         </Button>
       </div>
       {#if socials.length === 0}
-        <p class="text-xs text-muted-foreground">No social profiles added yet.</p>
+        <p class="text-sm text-muted-foreground py-2 px-3 bg-secondary/50 rounded-xl text-center">
+          No social profiles added yet
+        </p>
       {/if}
       {#each socials as social, i (i)}
         <SocialInput
@@ -164,6 +180,6 @@
           onremove={() => removeSocial(i)}
         />
       {/each}
-    </div>
+    </fieldset>
   </div>
 </Card>

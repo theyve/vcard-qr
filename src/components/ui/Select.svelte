@@ -11,7 +11,7 @@
 </script>
 
 <select
-  class="h-10 rounded-md border border-input bg-background px-2 text-sm {className}"
+  class="h-11 rounded-xl border border-input bg-card px-3 text-sm transition-all duration-150 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer {className}"
   bind:value
   {...rest}
 >
