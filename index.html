@@ -2,7 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="vCard QR" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="qFNy7FHhs9IVRSUQn-kqqCAhpbfCM2poXrqFUXiW5Dg" />
     
@@ -12,24 +19,52 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- SEO -->
-    <title>Open Source vCard QR Code Generator — Free, Private, No Tracking</title>
-    <meta name="description" content="Free open source vCard QR code generator. Create contact QR codes that work on any phone. No tracking, no data collection, 100% client-side. Download as PNG, SVG, or .vcf file." />
-    <meta name="keywords" content="vcard, qr code, qr code generator, contact qr code, open source, privacy, free, no tracking, vcf, business card qr" />
+    <title>Free QR Code Generator for Business Cards & Contacts — vCard QR Code Generator</title>
+    <meta name="description" content="Create a QR code for your business card — scan to instantly save your contact info to any phone. Free, private, no sign-up. Works with iPhone & Android. Open source vCard QR generator." />
+    <meta name="keywords" content="qr code business card, contact qr code, qr code generator, business card qr code, digital business card, share contact qr code, vcard qr code, phone contact qr, networking qr code, open source, free, no tracking, vcf" />
     <meta name="author" content="theyve" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://vcard-qr.netlify.app/" />
     
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Open Source vCard QR Code Generator" />
-    <meta property="og:description" content="Create contact QR codes privately. No tracking, no data collection. Free and open source." />
+    <meta property="og:title" content="Free QR Code Generator for Business Cards & Contacts" />
+    <meta property="og:description" content="Create a QR code that saves your contact info to any phone. Free, private, no sign-up required. Open source vCard QR generator." />
     <meta property="og:url" content="https://vcard-qr.netlify.app/" />
-    <meta property="og:site_name" content="vCard QR Generator" />
+    <meta property="og:site_name" content="vCard QR Code Generator" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Open Source vCard QR Code Generator" />
-    <meta name="twitter:description" content="Create contact QR codes privately. No tracking, no data collection. Free and open source." />
+    <meta name="twitter:title" content="Free QR Code Generator for Business Cards & Contacts" />
+    <meta name="twitter:description" content="Create a QR code that saves your contact info to any phone. Free, private, no sign-up required. Open source vCard QR generator." />
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "vCard QR Code Generator",
+      "alternateName": "Contact QR Code Generator",
+      "description": "Create a QR code for your business card or contact details. Scan to instantly save to any phone. Free, private, open source.",
+      "url": "https://vcard-qr.netlify.app/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "QR code generation for business cards and contacts",
+        "vCard 3.0 format support",
+        "PNG, SVG, and VCF download",
+        "Custom QR code colors",
+        "100% client-side processing",
+        "No data collection or tracking",
+        "Works on iPhone and Android"
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="app"></div>
