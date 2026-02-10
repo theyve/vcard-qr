@@ -1,33 +1,36 @@
 <script lang="ts">
-  import type { PhoneEntry, SocialEntry, SocialType } from '$lib/vcard';
+  import type { PhoneEntry, EmailEntry, SocialEntry, SocialType } from '$lib/vcard';
   import Card from './ui/Card.svelte';
   import Input from './ui/Input.svelte';
   import Label from './ui/Label.svelte';
   import Button from './ui/Button.svelte';
   import PhoneInput from './PhoneInput.svelte';
+  import EmailInput from './EmailInput.svelte';
   import SocialInput from './SocialInput.svelte';
 
   interface Props {
+    prefix: string;
     firstName: string;
     lastName: string;
     jobTitle: string;
     company: string;
     address: string;
-    email: string;
     website: string;
     phones: PhoneEntry[];
+    emails: EmailEntry[];
     socials: SocialEntry[];
   }
 
   let {
+    prefix = $bindable(),
     firstName = $bindable(),
     lastName = $bindable(),
     jobTitle = $bindable(),
     company = $bindable(),
     address = $bindable(),
-    email = $bindable(),
     website = $bindable(),
     phones = $bindable(),
+    emails = $bindable(),
     socials = $bindable(),
   }: Props = $props();
 
@@ -41,6 +44,18 @@
 
   function updatePhone(index: number, phone: PhoneEntry) {
     phones = phones.map((p, i) => (i === index ? phone : p));
+  }
+
+  function addEmail() {
+    emails = [...emails, { address: '', type: 'WORK' }];
+  }
+
+  function removeEmail(index: number) {
+    emails = emails.filter((_, i) => i !== index);
+  }
+
+  function updateEmail(index: number, email: EmailEntry) {
+    emails = emails.map((e, i) => (i === index ? email : e));
   }
 
   function addSocial() {
@@ -65,14 +80,13 @@
   </header>
 
   <div class="grid gap-3">
-    <div class="grid grid-cols-2 gap-3">
-      <div class="grid gap-1">
-        <Label for="firstName">First name</Label>
-        <Input id="firstName" bind:value={firstName} />
-      </div>
-      <div class="grid gap-1">
-        <Label for="lastName">Last name</Label>
-        <Input id="lastName" bind:value={lastName} />
+    <!-- Name section -->
+    <div class="grid gap-2">
+      <Label>Name</Label>
+      <div class="grid grid-cols-[80px_1fr_1fr] gap-2">
+        <Input bind:value={prefix} title="Title/Prefix" />
+        <Input bind:value={firstName} title="First name" />
+        <Input bind:value={lastName} title="Last name" />
       </div>
     </div>
 
@@ -109,14 +123,27 @@
       {/each}
     </div>
 
-    <div class="grid gap-1">
-      <Label for="email">Email</Label>
-      <Input id="email" bind:value={email} />
+    <!-- Email addresses -->
+    <div class="grid gap-2">
+      <div class="flex items-center justify-between">
+        <Label>Email addresses</Label>
+        <Button type="button" variant="ghost" size="sm" onclick={addEmail} class="h-7 text-xs">
+          + Add email
+        </Button>
+      </div>
+      {#each emails as email, i (i)}
+        <EmailInput
+          {email}
+          canRemove={emails.length > 1}
+          onchange={(e) => updateEmail(i, e)}
+          onremove={() => removeEmail(i)}
+        />
+      {/each}
     </div>
 
     <div class="grid gap-1">
       <Label for="website">Website</Label>
-      <Input id="website" bind:value={website} placeholder="example.com" />
+      <Input id="website" bind:value={website} />
     </div>
 
     <!-- Social profiles -->

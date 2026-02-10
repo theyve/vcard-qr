@@ -1,42 +1,42 @@
 <script lang="ts">
-  import type { PhoneEntry, PhoneType } from '$lib/vcard';
+  import type { EmailEntry, EmailType } from '$lib/vcard';
   import Input from './ui/Input.svelte';
   import Select from './ui/Select.svelte';
   import Button from './ui/Button.svelte';
 
   interface Props {
-    phone: PhoneEntry;
+    email: EmailEntry;
     canRemove: boolean;
-    onchange: (phone: PhoneEntry) => void;
+    onchange: (email: EmailEntry) => void;
     onremove: () => void;
   }
 
-  let { phone, canRemove, onchange, onremove }: Props = $props();
+  let { email, canRemove, onchange, onremove }: Props = $props();
 
-  function handleNumberChange(e: Event) {
+  function handleAddressChange(e: Event) {
     const target = e.target as HTMLInputElement;
-    onchange({ ...phone, number: target.value });
+    onchange({ ...email, address: target.value });
   }
 
   function handleTypeChange(e: Event) {
     const target = e.target as HTMLSelectElement;
-    onchange({ ...phone, type: target.value as PhoneType });
+    onchange({ ...email, type: target.value as EmailType });
   }
 </script>
 
 <div class="flex gap-2 items-center">
   <Select
-    value={phone.type}
+    value={email.type}
     onchange={handleTypeChange}
     class="w-24 shrink-0"
   >
-    <option value="CELL">Cell</option>
     <option value="WORK">Work</option>
     <option value="HOME">Home</option>
   </Select>
   <Input
-    value={phone.number}
-    oninput={handleNumberChange}
+    type="email"
+    value={email.address}
+    oninput={handleAddressChange}
     class="flex-1"
   />
   {#if canRemove}

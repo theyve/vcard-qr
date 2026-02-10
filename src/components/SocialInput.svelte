@@ -23,11 +23,6 @@
     onchange({ ...social, type: target.value as SocialType });
   }
 
-  let placeholder = $derived(
-    social.type === 'linkedin'
-      ? 'linkedin.com/in/example'
-      : `${social.type}.com/...`
-  );
 </script>
 
 <div class="flex gap-2 items-center">
@@ -43,7 +38,6 @@
   <Input
     value={social.url}
     oninput={handleUrlChange}
-    {placeholder}
     class="flex-1"
   />
   <Button

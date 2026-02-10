@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PhoneEntry, SocialEntry } from '$lib/vcard';
+  import type { PhoneEntry, EmailEntry, SocialEntry } from '$lib/vcard';
   import type { ErrorCorrectionLevel } from '$lib/qr';
   import { buildVCard } from '$lib/vcard';
   import { generateQrSvg, generateQrPng, DOWNLOAD_SIZE } from '$lib/qr';
@@ -9,15 +9,18 @@
 
   const GITHUB_URL = 'https://github.com/theyve/vcard-qr';
 
-  // Form state
+  // Form state - Name fields
+  let prefix = $state('');
   let firstName = $state('');
   let lastName = $state('');
+
+  // Form state - Other fields
   let jobTitle = $state('');
   let company = $state('');
   let address = $state('');
-  let email = $state('');
   let website = $state('');
   let phones = $state<PhoneEntry[]>([{ number: '', type: 'CELL' }]);
+  let emails = $state<EmailEntry[]>([{ address: '', type: 'WORK' }]);
   let socials = $state<SocialEntry[]>([]);
 
   // QR options
@@ -30,27 +33,31 @@
   // Derived values
   let vcard = $derived(
     buildVCard({
+      prefix,
       firstName,
       lastName,
       jobTitle,
       company,
       address,
       phones,
-      email,
+      emails,
       website,
       socials,
     })
   );
 
   let hasContent = $derived(
-    [firstName, lastName, jobTitle, company, address, email, website].some(
+    [prefix, firstName, lastName, jobTitle, company, address, website].some(
       (v) => v.trim().length > 0
     ) ||
       phones.some((p) => p.number.trim().length > 0) ||
+      emails.some((e) => e.address.trim().length > 0) ||
       socials.some((s) => s.url.trim().length > 0)
   );
 
-  let fullName = $derived([firstName, lastName].filter(Boolean).join(' '));
+  let fullName = $derived(
+    [prefix, firstName, lastName].filter(Boolean).join(' ')
+  );
 
   let showLengthWarning = $derived(vcard.length > 900);
 
@@ -169,14 +176,15 @@
   <main class="flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full mt-10">
     <div class="grid gap-4 md:grid-cols-2">
       <ContactForm
+        bind:prefix
         bind:firstName
         bind:lastName
         bind:jobTitle
         bind:company
         bind:address
-        bind:email
         bind:website
         bind:phones
+        bind:emails
         bind:socials
       />
 

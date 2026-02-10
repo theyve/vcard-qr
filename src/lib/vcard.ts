@@ -3,11 +3,22 @@
  * All processing is local - no network calls.
  */
 
-export type PhoneType = 'WORK' | 'CELL';
+/** Phone types supported by vCard */
+export const PHONE_TYPES = ['CELL', 'WORK', 'HOME'] as const;
+export type PhoneType = (typeof PHONE_TYPES)[number];
+
+/** Email types supported by vCard */
+export const EMAIL_TYPES = ['WORK', 'HOME'] as const;
+export type EmailType = (typeof EMAIL_TYPES)[number];
 
 export interface PhoneEntry {
   number: string;
   type: PhoneType;
+}
+
+export interface EmailEntry {
+  address: string;
+  type: EmailType;
 }
 
 export interface SocialEntry {
@@ -16,13 +27,14 @@ export interface SocialEntry {
 }
 
 export interface VCardData {
+  prefix: string;      // e.g., "Dr.", "Prof."
   firstName: string;
   lastName: string;
   jobTitle: string;
   company: string;
   address: string;
   phones: PhoneEntry[];
-  email: string;
+  emails: EmailEntry[];
   website: string;
   socials: SocialEntry[];
 }
@@ -69,20 +81,24 @@ export function ensureUrl(v: string): string {
  * vCard 3.0 is the most widely compatible format for QR scanners.
  */
 export function buildVCard(data: VCardData): string {
+  const prefix = sanitizeLine(data.prefix);
   const firstName = sanitizeLine(data.firstName);
   const lastName = sanitizeLine(data.lastName);
   const jobTitle = sanitizeLine(data.jobTitle);
   const company = sanitizeLine(data.company);
   const address = sanitizeLine(data.address);
-  const email = sanitizeLine(data.email);
   const website = sanitizeLine(ensureUrl(data.website));
 
   const lines: string[] = ['BEGIN:VCARD', 'VERSION:3.0'];
 
-  const fullName = [firstName, lastName].filter(Boolean).join(' ');
+  // Build full name for FN field (displayed name)
+  const fnParts = [prefix, firstName, lastName].filter(Boolean);
+  const fullName = fnParts.join(' ');
+  
   if (fullName) {
     lines.push(`FN:${fullName}`);
-    lines.push(`N:${lastName};${firstName};;;`);
+    // N format: <lastName>;<firstName>;<middleName>;<prefix>;<suffix>
+    lines.push(`N:${lastName};${firstName};;${prefix};`);
   }
 
   if (jobTitle) lines.push(`TITLE:${jobTitle}`);
@@ -96,7 +112,13 @@ export function buildVCard(data: VCardData): string {
     }
   }
 
-  if (email) lines.push(`EMAIL;TYPE=INTERNET:${email}`);
+  // Multiple email addresses
+  for (const email of data.emails) {
+    const addr = sanitizeLine(email.address);
+    if (addr) {
+      lines.push(`EMAIL;TYPE=INTERNET,${email.type}:${addr}`);
+    }
+  }
 
   if (address) {
     // Put everything into the street field to avoid over-complication.
