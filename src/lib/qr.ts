@@ -12,6 +12,7 @@ export interface QrOptions {
   errorCorrectionLevel: ErrorCorrectionLevel;
   margin?: number;
   width?: number;
+  color?: string; // QR code foreground color (default: black)
 }
 
 const DEFAULT_MARGIN = 2;
@@ -32,6 +33,10 @@ export async function generateQrSvg(
     errorCorrectionLevel: options.errorCorrectionLevel,
     margin: options.margin ?? DEFAULT_MARGIN,
     width: options.width ?? PREVIEW_SIZE,
+    color: {
+      dark: options.color ?? '#000000',
+      light: '#ffffff',
+    },
   });
 }
 
@@ -51,8 +56,11 @@ export async function generateQrPng(
     errorCorrectionLevel: options.errorCorrectionLevel,
     margin: options.margin ?? DEFAULT_MARGIN,
     width,
+    color: {
+      dark: options.color ?? '#000000',
+      light: '#ffffff',
+    },
   });
 
   return canvas.toDataURL('image/png');
 }
-

@@ -25,6 +25,7 @@
 
   // QR options
   let errorCorrection = $state<ErrorCorrectionLevel>('M');
+  let qrColor = $state('#000000');
 
   // QR generation state
   let svg = $state('');
@@ -61,10 +62,11 @@
 
   let showLengthWarning = $derived(vcard.length > 900);
 
-  // Generate QR code when vcard or error correction changes
+  // Generate QR code when vcard, error correction, or color changes
   $effect(() => {
     const currentVcard = vcard;
     const currentEc = errorCorrection;
+    const currentColor = qrColor;
 
     if (!hasContent) {
       svg = '';
@@ -74,7 +76,7 @@
     loading = true;
     let cancelled = false;
 
-    generateQrSvg(currentVcard, { errorCorrectionLevel: currentEc })
+    generateQrSvg(currentVcard, { errorCorrectionLevel: currentEc, color: currentColor })
       .then((result) => {
         if (!cancelled) svg = result;
       })
@@ -98,6 +100,7 @@
       const dataUrl = await generateQrPng(vcard, {
         errorCorrectionLevel: errorCorrection,
         width: DOWNLOAD_SIZE,
+        color: qrColor,
       });
       downloadDataUrl(`${safeFilename(fullName)}-qr.png`, dataUrl);
     } catch (err) {
@@ -126,7 +129,7 @@
 
 <div class="min-h-screen flex flex-col">
   <!-- Header -->
-  <header class="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
+  <header class="border-b bg-card/80 backdrop-blur-sm top-0 z-10">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -160,34 +163,8 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-b from-accent-muted/50 to-background">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <div class="text-center max-w-2xl mx-auto">
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
-          Create Contact QR Codes
-        </h2>
-        <p class="text-lg text-muted-foreground mb-6">
-          Generate scannable vCard QR codes that work on any phone — 
-          <span class="text-foreground font-medium">no tracking, no data collection</span>
-        </p>
-        <!-- Feature badges -->
-        <div class="flex flex-wrap justify-center gap-2">
-          {#each features as feature}
-            <span class="feature-badge">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-              </svg>
-              {feature}
-            </span>
-          {/each}
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Main content -->
-  <main class="flex-1 px-4 sm:px-6 py-8 sm:py-12">
+  <main class="flex-1 px-4 mb-10 sm:px-6 py-6 sm:py-8">
     <div class="max-w-5xl mx-auto">
       <div class="grid gap-6 lg:grid-cols-2 lg:items-start">
         <ContactForm
@@ -203,7 +180,7 @@
           bind:socials
         />
 
-        <div class="lg:sticky lg:top-24">
+        <div class="lg:sticky lg:top-2">
           <QrPreview
             {svg}
             {vcard}
@@ -211,7 +188,9 @@
             {loading}
             {showLengthWarning}
             {errorCorrection}
+            {qrColor}
             onErrorCorrectionChange={(level) => (errorCorrection = level)}
+            onColorChange={(color) => (qrColor = color)}
             onDownloadPng={handleDownloadPng}
             onDownloadSvg={handleDownloadSvg}
             onDownloadVCard={handleDownloadVCard}
@@ -224,6 +203,27 @@
   <!-- Footer -->
   <footer class="border-t bg-card mt-auto">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+      <!-- SEO content -->
+      <div class="mb-8 pb-8 border-b">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
+          Free Contact QR Code Generator
+        </h2>
+        <p class="text-muted-foreground mb-4">
+          Generate scannable vCard QR codes that work on any phone —
+          <span class="text-foreground font-medium">no tracking, no data collection</span>.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          {#each features as feature}
+            <span class="feature-badge">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+              </svg>
+              {feature}
+            </span>
+          {/each}
+        </div>
+      </div>
+
       <div class="grid gap-8 sm:grid-cols-2">
         <!-- About -->
         <div>
