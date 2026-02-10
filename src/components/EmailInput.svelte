@@ -37,6 +37,7 @@
     type="email"
     value={email.address}
     oninput={handleAddressChange}
+    placeholder="email@example.com"
     class="flex-1"
   />
   {#if canRemove}

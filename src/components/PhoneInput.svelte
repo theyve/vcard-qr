@@ -37,6 +37,7 @@
   <Input
     value={phone.number}
     oninput={handleNumberChange}
+    placeholder="+1 555 123 4567"
     class="flex-1"
   />
   {#if canRemove}

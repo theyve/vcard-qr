@@ -13,6 +13,14 @@
 
   let { social, onchange, onremove }: Props = $props();
 
+  let placeholder = $derived(
+    social.type === 'linkedin'
+      ? 'linkedin.com/in/yourname'
+      : social.type === 'other'
+        ? 'https://...'
+        : `${social.type}.com/yourname`
+  );
+
   function handleUrlChange(e: Event) {
     const target = e.target as HTMLInputElement;
     onchange({ ...social, url: target.value });
@@ -38,6 +46,7 @@
   <Input
     value={social.url}
     oninput={handleUrlChange}
+    {placeholder}
     class="flex-1"
   />
   <Button

@@ -84,9 +84,9 @@
     <div class="grid gap-2">
       <Label>Name</Label>
       <div class="grid grid-cols-[80px_1fr_1fr] gap-2">
-        <Input bind:value={prefix} title="Title/Prefix" />
-        <Input bind:value={firstName} title="First name" />
-        <Input bind:value={lastName} title="Last name" />
+        <Input bind:value={prefix} placeholder="Dr." title="Title/Prefix" />
+        <Input bind:value={firstName} placeholder="First" title="First name" />
+        <Input bind:value={lastName} placeholder="Last" title="Last name" />
       </div>
     </div>
 
@@ -143,7 +143,7 @@
 
     <div class="grid gap-1">
       <Label for="website">Website</Label>
-      <Input id="website" bind:value={website} />
+      <Input id="website" bind:value={website} placeholder="example.com" />
     </div>
 
     <!-- Social profiles -->
