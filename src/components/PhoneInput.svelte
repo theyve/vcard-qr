@@ -28,6 +28,7 @@
   <Select
     value={phone.type}
     onchange={handleTypeChange}
+    aria-label="Phone type"
     class="w-24 shrink-0"
   >
     <option value="CELL">Cell</option>

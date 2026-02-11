@@ -28,6 +28,7 @@
   <Select
     value={email.type}
     onchange={handleTypeChange}
+    aria-label="Email type"
     class="w-24 shrink-0"
   >
     <option value="WORK">Work</option>

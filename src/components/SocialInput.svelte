@@ -37,6 +37,7 @@
   <Select
     value={social.type}
     onchange={handleTypeChange}
+    aria-label="Social platform"
     class="w-28 shrink-0 capitalize"
   >
     {#each SOCIAL_TYPES as t (t)}
