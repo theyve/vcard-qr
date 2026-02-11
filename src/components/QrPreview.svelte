@@ -125,7 +125,7 @@
   >
     {#if !hasContent}
       <!-- Empty state -->
-      <div class="flex items-center justify-center min-h-[320px] text-center px-6 py-8">
+      <div class="flex flex-col items-center justify-center min-h-[320px] text-center px-6 py-8">
         <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-accent/10 flex items-center justify-center">
           <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
@@ -231,14 +231,46 @@
       </div>
     </div>
 
-    <div class="grid gap-2">
-      <Label for="ec">Error correction level</Label>
-      <Select id="ec" value={errorCorrection} onchange={handleEcChange} class="w-full">
-        <option value="L">L — Smallest QR, less redundancy</option>
-        <option value="M">M — Balanced (recommended)</option>
-        <option value="Q">Q — More robust</option>
-        <option value="H">H — Most robust, largest QR</option>
-      </Select>
+    <!-- Collapsible sections -->
+    <div class="space-y-1">
+      <details class="group">
+        <summary class="flex items-center justify-between cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2">
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+            </svg>
+            Advanced settings
+          </span>
+          <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </summary>
+        <div class="mt-2 grid gap-2">
+          <Label for="ec">Error correction</Label>
+          <Select id="ec" value={errorCorrection} onchange={handleEcChange} class="w-full" aria-label="Error correction level">
+            <option value="L">L — Smallest QR, less redundancy</option>
+            <option value="M">M — Balanced (recommended)</option>
+            <option value="Q">Q — More robust</option>
+            <option value="H">H — Most robust, largest QR</option>
+          </Select>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary class="flex items-center justify-between cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2">
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+            </svg>
+            View vCard payload
+          </span>
+          <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </summary>
+        <pre class="mt-2 text-xs font-mono rounded-xl border bg-secondary/50 p-4 overflow-auto whitespace-pre-wrap max-h-64">{#each vcardLines as line, i (i)}{@const parsed = parseVCardLine(line)}<span><span class={parsed.isStructural ? 'text-violet-600 font-semibold' : parsed.isProperty ? 'text-sky-600 font-medium' : ''}>{parsed.field}</span>{#if parsed.value || line.includes(':')}<span class="text-slate-400">:</span><span class="text-emerald-700">{parsed.value}</span>{/if}
+</span>{/each}</pre>
+      </details>
     </div>
 
     {#if showLengthWarning}
@@ -280,20 +312,4 @@
     </div>
   </div>
 
-  <!-- vCard Payload Display (collapsible) -->
-  <details class="group">
-    <summary class="flex items-center justify-between cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2">
-      <span class="flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-        </svg>
-        View vCard payload
-      </span>
-      <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-      </svg>
-    </summary>
-    <pre class="mt-3 text-xs font-mono rounded-xl border bg-secondary/50 p-4 overflow-auto whitespace-pre-wrap max-h-64">{#each vcardLines as line, i (i)}{@const parsed = parseVCardLine(line)}<span><span class={parsed.isStructural ? 'text-violet-600 font-semibold' : parsed.isProperty ? 'text-sky-600 font-medium' : ''}>{parsed.field}</span>{#if parsed.value || line.includes(':')}<span class="text-slate-400">:</span><span class="text-emerald-700">{parsed.value}</span>{/if}
-</span>{/each}</pre>
-  </details>
 </Card>
