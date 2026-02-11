@@ -37,6 +37,6 @@
   div :global(header p) {
     margin-top: 0.25rem;
     font-size: 0.875rem;
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--secondary-foreground));
   }
 </style>

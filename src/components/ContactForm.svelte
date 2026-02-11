@@ -169,7 +169,7 @@
         </Button>
       </div>
       {#if socials.length === 0}
-        <p class="text-sm text-muted-foreground py-2 px-3 bg-secondary/50 rounded-xl text-center">
+        <p class="text-sm text-secondary-foreground py-2 px-3 bg-secondary rounded-xl text-center">
           No social profiles added yet
         </p>
       {/if}
