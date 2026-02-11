@@ -136,6 +136,16 @@
     'Open source',
     'iPhone & Android',
   ];
+
+  // Privacy banner dismissal (persisted in localStorage)
+  let privacyDismissed = $state(
+    typeof localStorage !== 'undefined' && localStorage.getItem('privacy-dismissed') === '1'
+  );
+
+  function dismissPrivacy() {
+    privacyDismissed = true;
+    localStorage.setItem('privacy-dismissed', '1');
+  }
 </script>
 
 {#if showBookmarkToast}
@@ -181,6 +191,33 @@
       </div>
     </div>
   </header>
+
+  <!-- Privacy banner -->
+  {#if !privacyDismissed}
+    <div class="bg-emerald-50 border-b border-emerald-200">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-start sm:items-center gap-3">
+        <div class="shrink-0 w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mt-0.5 sm:mt-0">
+          <svg class="w-4.5 h-4.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <p class="flex-1 text-sm text-emerald-800 leading-relaxed">
+          <strong class="font-semibold">Totally private</strong> — your info never leaves your device. No servers, no tracking, no storage, nothing gets shared or sold.
+        </p>
+        <button
+          type="button"
+          onclick={dismissPrivacy}
+          class="shrink-0 p-1 rounded-lg text-emerald-500 hover:text-emerald-700 hover:bg-emerald-100 transition-colors"
+          title="Dismiss"
+          aria-label="Dismiss privacy notice"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  {/if}
 
   <!-- Main content -->
   <main class="flex-1 px-4 mb-10 sm:px-6 py-6 sm:py-8">
