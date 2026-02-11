@@ -37,6 +37,7 @@
   // QR options
   let errorCorrection = $state<ErrorCorrectionLevel>('M');
   let qrColor = $state('#000000');
+  let qrBgColor = $state('#ffffff');
 
   // QR generation state
   let svg = $state('');
@@ -78,6 +79,7 @@
     const currentVcard = vcard;
     const currentEc = errorCorrection;
     const currentColor = qrColor;
+    const currentBgColor = qrBgColor;
 
     if (!hasContent) {
       svg = '';
@@ -87,7 +89,7 @@
     loading = true;
     let cancelled = false;
 
-    generateQrSvg(currentVcard, { errorCorrectionLevel: currentEc, color: currentColor })
+    generateQrSvg(currentVcard, { errorCorrectionLevel: currentEc, color: currentColor, bgColor: currentBgColor })
       .then((result) => {
         if (!cancelled) svg = result;
       })
@@ -112,6 +114,7 @@
         errorCorrectionLevel: errorCorrection,
         width: DOWNLOAD_SIZE,
         color: qrColor,
+        bgColor: qrBgColor,
       });
       downloadDataUrl(`${safeFilename(fullName)}-qr.png`, dataUrl);
     } catch (err) {
@@ -245,8 +248,10 @@
             {showLengthWarning}
             {errorCorrection}
             {qrColor}
+            {qrBgColor}
             onErrorCorrectionChange={(level) => (errorCorrection = level)}
             onColorChange={(color) => (qrColor = color)}
+            onBgColorChange={(color) => (qrBgColor = color)}
             onDownloadPng={handleDownloadPng}
             onDownloadSvg={handleDownloadSvg}
             onDownloadVCard={handleDownloadVCard}

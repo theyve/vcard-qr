@@ -13,6 +13,7 @@ export interface QrOptions {
   margin?: number;
   width?: number;
   color?: string; // QR code foreground color (default: black)
+  bgColor?: string; // QR code background color (default: white)
 }
 
 const DEFAULT_MARGIN = 2;
@@ -35,7 +36,7 @@ export async function generateQrSvg(
     width: options.width ?? PREVIEW_SIZE,
     color: {
       dark: options.color ?? '#000000',
-      light: '#ffffff',
+      light: options.bgColor ?? '#ffffff',
     },
   });
 }
@@ -58,7 +59,7 @@ export async function generateQrPng(
     width,
     color: {
       dark: options.color ?? '#000000',
-      light: '#ffffff',
+      light: options.bgColor ?? '#ffffff',
     },
   });
 
