@@ -25,13 +25,11 @@
     isInstalled = true;
   }
 
-  // Detect iOS (no beforeinstallprompt support)
-  const isIOS =
-    typeof navigator !== 'undefined' &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-    !(window as any).MSStream;
+  // Bookmark shortcut hint
+  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent);
+  const bookmarkShortcut = isMac ? '⌘D' : 'Ctrl+D';
 
-  // Listen for beforeinstallprompt (Chrome, Edge, Samsung, etc.)
+  // Listen for beforeinstallprompt (Chrome, Edge, Opera, Samsung Internet — desktop & mobile)
   if (typeof window !== 'undefined') {
     window.addEventListener('beforeinstallprompt', (e: Event) => {
       e.preventDefault();
@@ -53,35 +51,25 @@
 
   async function handleInstall() {
     if (deferredPrompt) {
-      // Native install prompt available (Chromium browsers)
+      // Native install prompt (all browsers that fire beforeinstallprompt)
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
         deferredPrompt = null;
       }
-    } else if (isIOS) {
-      // iOS: guide user to use Safari's "Add to Home Screen"
-      showToast('Tap the Share button, then "Add to Home Screen"');
     } else {
-      // Fallback for other browsers
-      const isMac = /Mac/.test(navigator.userAgent);
-      showToast(isMac ? 'Press ⌘D to bookmark this page' : 'Press Ctrl+D to bookmark this page');
+      // Fallback: bookmark hint for browsers without install support
+      showToast(`Press ${bookmarkShortcut} to bookmark this page`);
     }
   }
 
-  // Button label and icon depend on the install state
+  // Button label depends on install state
   let installLabel = $derived(
-    isInstalled ? 'Installed' : deferredPrompt ? 'Install App' : isIOS ? 'Add to Home' : 'Bookmark'
+    deferredPrompt ? 'Install App' : 'Bookmark'
   );
 
   let installTitle = $derived(
-    isInstalled
-      ? 'App is installed'
-      : deferredPrompt
-        ? 'Install as app on your device'
-        : isIOS
-          ? 'Add to your Home Screen'
-          : 'Bookmark this page'
+    deferredPrompt ? 'Install as app on your device' : `Bookmark this page (${bookmarkShortcut})`
   );
 
   // Form state - Name fields
@@ -217,15 +205,9 @@
 
 {#if showInstallToast}
   <div class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-foreground text-background px-4 py-2.5 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 animate-fade-in">
-    {#if isIOS}
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-      </svg>
-    {:else}
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-      </svg>
-    {/if}
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+    </svg>
     {installToastMessage}
   </div>
 {/if}
@@ -261,11 +243,6 @@
               <!-- Download / install icon -->
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-              </svg>
-            {:else if isIOS}
-              <!-- Share icon (iOS-style) -->
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
               </svg>
             {:else}
               <!-- Bookmark icon (fallback) -->
