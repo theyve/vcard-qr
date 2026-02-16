@@ -1,0 +1,142 @@
+{
+  "header": {
+    "title": "vCard QR-Code Generator",
+    "subtitle": "Kontaktdaten als QR-Code – einfach, ohne Anmeldung."
+  },
+  "privacy_banner": {
+    "text": "Deine Daten bleiben auf deinem Gerät. Kein Server, kein Tracking, keine Speicherung.",
+    "strong": "Komplett privat",
+    "dismiss": "Schliessen"
+  },
+  "install": {
+    "install_app": "App installieren",
+    "bookmark": "Lesezeichen",
+    "install_title": "Als App auf deinem Gerät installieren",
+    "bookmark_title": "Diese Seite als Lesezeichen speichern ({shortcut})",
+    "installed_toast": "App wurde installiert!",
+    "bookmark_toast": "Drücke {shortcut}, um diese Seite als Lesezeichen zu speichern"
+  },
+  "form": {
+    "heading": "Kontaktdaten",
+    "description": "Fülle die Felder aus, die auf dem QR-Code erscheinen sollen. Alle Felder sind optional.",
+    "name": "Name",
+    "prefix_placeholder": "Dr.",
+    "first_name_placeholder": "Vorname",
+    "last_name_placeholder": "Nachname",
+    "prefix_title": "Titel/Anrede",
+    "first_name_title": "Vorname",
+    "last_name_title": "Nachname",
+    "job_title": "Berufsbezeichnung",
+    "job_title_placeholder": "z.B. Product Designer",
+    "company": "Firma",
+    "company_placeholder": "z.B. Acme AG",
+    "address": "Adresse",
+    "address_placeholder": "Musterstrasse 1, 8000 Zürich",
+    "phone_numbers": "Telefonnummern",
+    "add_phone": "Telefon hinzufügen",
+    "email_addresses": "E-Mail-Adressen",
+    "add_email": "E-Mail hinzufügen",
+    "website": "Webseite",
+    "website_placeholder": "beispiel.ch",
+    "social_profiles": "Soziale Profile",
+    "add_social": "Profil hinzufügen",
+    "no_socials": "Noch keine sozialen Profile hinzugefügt"
+  },
+  "phone_type": {
+    "CELL": "Mobil",
+    "WORK": "Arbeit",
+    "HOME": "Privat"
+  },
+  "email_type": {
+    "WORK": "Arbeit",
+    "HOME": "Privat"
+  },
+  "qr": {
+    "empty_title": "Dein QR-Code erscheint hier",
+    "empty_subtitle": "Fülle mindestens ein Feld aus",
+    "loading": "QR-Code wird erstellt…",
+    "updating": "Wird aktualisiert",
+    "color_label": "QR-Farbe",
+    "bg_label": "Hintergrund",
+    "advanced": "Erweiterte Einstellungen",
+    "ec_label": "Fehlerkorrektur",
+    "ec_L": "L — Kleinstes QR, weniger Redundanz",
+    "ec_M": "M — Ausgewogen (empfohlen)",
+    "ec_Q": "Q — Robuster",
+    "ec_H": "H — Am robustesten, grösstes QR",
+    "view_payload": "vCard-Daten anzeigen",
+    "length_warning_title": "Grosse vCard:",
+    "length_warning_text": "Der QR-Code könnte sehr dicht werden. Kürze einzelne Felder oder reduziere die Fehlerkorrektur.",
+    "download_png": "PNG herunterladen",
+    "download_png_size": "(1024×1024)",
+    "download_svg": "SVG",
+    "download_svg_hint": "(Vektorgrafik)",
+    "download_vcard": "vCard",
+    "download_vcard_hint": "(vCard 3.0)"
+  },
+  "features": {
+    "offline": "Funktioniert offline",
+    "no_tracking": "Kein Tracking",
+    "no_signup": "Ohne Anmeldung",
+    "open_source": "Open Source",
+    "cross_platform": "iPhone & Android"
+  },
+  "footer": {
+    "seo_heading": "QR-Code Generator für Visitenkarten",
+    "seo_text": "Verwandle deine Kontaktdaten in einen scannbaren QR-Code. Wer ihn scannt, kann Name, Telefonnummer, E-Mail und mehr direkt im Handy speichern – ohne App. Ideal für Visitenkarten, E-Mail-Signaturen und Networking-Events.",
+    "how_heading": "Wie funktioniert es?",
+    "how_text_before": "Dieses Tool erstellt einen ",
+    "how_link_text": "vCard QR-Code",
+    "how_text_after": " – ein branchenübliches Format (vCard 3.0), das iPhones und Android-Geräte verstehen. Beim Scannen des QR-Codes mit der Kamera wird angeboten, die Kontaktdaten zu speichern. Keine spezielle App nötig.",
+    "about_heading": "Über dieses Tool",
+    "about_text": "Ein Open-Source QR-Code-Generator für Visitenkarten und Kontaktdaten. Deine Daten verlassen nie deinen Browser – alles passiert direkt auf deinem Gerät.",
+    "privacy_heading": "Datenschutz",
+    "privacy_1": "Alles passiert auf deinem Gerät – nichts wird irgendwohin gesendet",
+    "privacy_2": "Kein Konto nötig, nichts wird gespeichert",
+    "privacy_3": "Kein Tracking, keine Werbung, keine Datenerhebung",
+    "built_with_before": "Gebaut mit ",
+    "built_with_mid": ", ",
+    "built_with_after": " und AI. MIT-Lizenz.",
+    "github_link": "Auf GitHub ansehen →",
+    "lang_de": "Deutsch",
+    "lang_en": "English"
+  },
+  "seo": {
+    "title_home": "vCard QR-Code Generator – Kontaktdaten als QR-Code",
+    "desc_home": "Erstelle einen QR-Code für deine Visitenkarte. Beim Scannen werden Kontaktdaten direkt im Handy gespeichert. Privat, ohne Anmeldung. Open Source.",
+    "title_vcard": "Was ist eine vCard? – vCard QR-Code Generator",
+    "desc_vcard": "Erfahre, was eine vCard ist, wie du sie als QR-Code nutzt und wie das Scannen auf iPhone und Android funktioniert.",
+    "title_faq": "FAQ – vCard QR-Code Generator",
+    "desc_faq": "Häufig gestellte Fragen zum vCard QR-Code Generator: Was gehört in eine vCard? Wie gross drucke ich den QR-Code?"
+  },
+  "vcard_page": {
+    "heading": "Was ist eine vCard?",
+    "intro": "Eine vCard ist ein standardisiertes Dateiformat (.vcf) zum Austausch von Kontaktdaten. Sie enthält Informationen wie Name, Telefonnummer, E-Mail-Adresse, Firma und mehr – alles in einer kleinen Textdatei.",
+    "usage_heading": "Wofür wird eine vCard verwendet?",
+    "usage_text": "vCards werden genutzt, um Kontaktdaten einfach und fehlerfrei zu teilen. Statt eine Telefonnummer abzutippen, kann man die Daten per QR-Code oder Datei direkt ins Adressbuch übernehmen.",
+    "scan_heading": "Wie funktioniert das Scannen?",
+    "scan_iphone": "iPhone: Öffne die Kamera-App und halte sie auf den QR-Code. Es erscheint ein Hinweis, um den Kontakt zu speichern.",
+    "scan_android": "Android: Die meisten Kamera-Apps erkennen QR-Codes automatisch. Alternativ kann Google Lens verwendet werden.",
+    "print_heading": "QR-Code auf Visitenkarten drucken",
+    "print_text": "Lade den QR-Code als PNG (1024×1024 Pixel) oder SVG (Vektorgrafik) herunter. Für den Druck empfehlen wir eine Grösse von mindestens 2×2 cm und das SVG-Format für beste Qualität.",
+    "format_heading": "Technisches Format",
+    "format_text": "Dieses Tool verwendet vCard 3.0 – das am weitesten verbreitete und kompatible Format. Es wird von allen gängigen Smartphones und Kontakt-Apps unterstützt.",
+    "back_link": "← Zurück zum Generator"
+  },
+  "faq": {
+    "heading": "Häufig gestellte Fragen",
+    "q1": "Was gehört in eine vCard?",
+    "a1": "Eine vCard kann Name, Telefonnummern, E-Mail-Adressen, Firma, Berufsbezeichnung, Adresse, Webseite und soziale Profile enthalten. Alle Felder sind optional – du kannst genau das eintragen, was du teilen möchtest.",
+    "q2": "Wie gross sollte ich den QR-Code drucken?",
+    "a2": "Für zuverlässiges Scannen empfehlen wir eine Mindestgrösse von 2×2 cm. Für Visitenkarten reichen 2,5×2,5 cm in der Regel aus. Je mehr Daten im QR-Code enthalten sind, desto grösser sollte er gedruckt werden.",
+    "q3": "Welches Dateiformat soll ich verwenden?",
+    "a3": "Für den Druck empfehlen wir SVG (Vektorgrafik) – es lässt sich verlustfrei in jeder Grösse drucken. PNG eignet sich gut für digitale Verwendung (E-Mail-Signatur, Webseite).",
+    "q4": "Funktioniert der QR-Code auf allen Handys?",
+    "a4": "Ja. vCard QR-Codes funktionieren auf iPhones und Android-Geräten. Die Kamera-App erkennt den QR-Code und bietet an, den Kontakt zu speichern.",
+    "q5": "Werden meine Daten irgendwo gespeichert?",
+    "a5": "Nein. Alles passiert direkt in deinem Browser. Es werden keine Daten an einen Server gesendet, gespeichert oder weitergegeben.",
+    "q6": "Kann ich den QR-Code farbig gestalten?",
+    "a6": "Ja. Du kannst die QR-Code-Farbe und den Hintergrund individuell anpassen. Achte aber darauf, dass genügend Kontrast vorhanden ist, damit der Code gut lesbar bleibt.",
+    "back_link": "← Zurück zum Generator"
+  }
+}

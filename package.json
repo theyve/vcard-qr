@@ -20,7 +20,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "svelte-i18n": "^4.0.1"
   },
   "devDependencies": {
     "@babel/plugin-bugfix-firefox-class-in-computed-class-key": "^7.28.5",

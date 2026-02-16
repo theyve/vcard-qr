@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import type { EmailEntry, EmailType } from '$lib/vcard';
   import Input from './ui/Input.svelte';
   import Select from './ui/Select.svelte';
@@ -28,11 +29,11 @@
   <Select
     value={email.type}
     onchange={handleTypeChange}
-    aria-label="Email type"
+    aria-label={$_('form.email_addresses')}
     class="w-24 shrink-0"
   >
-    <option value="WORK">Work</option>
-    <option value="HOME">Home</option>
+    <option value="WORK">{$_('email_type.WORK')}</option>
+    <option value="HOME">{$_('email_type.HOME')}</option>
   </Select>
   <Input
     type="email"

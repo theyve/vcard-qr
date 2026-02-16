@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Home: German -->
+  <url>
+    <loc>https://vcardqr.ch/de/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
+  </url>
+  <!-- Home: English -->
+  <url>
+    <loc>https://vcardqr.ch/en/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
+  </url>
+  <!-- What is a vCard: German -->
+  <url>
+    <loc>https://vcardqr.ch/de/was-ist-vcard</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/was-ist-vcard"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/what-is-vcard"/>
+  </url>
+  <!-- What is a vCard: English -->
+  <url>
+    <loc>https://vcardqr.ch/en/what-is-vcard</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/was-ist-vcard"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/what-is-vcard"/>
+  </url>
+  <!-- FAQ: German -->
+  <url>
+    <loc>https://vcardqr.ch/de/faq</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/faq"/>
+  </url>
+  <!-- FAQ: English -->
+  <url>
+    <loc>https://vcardqr.ch/en/faq</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/faq"/>
+  </url>
+</urlset>

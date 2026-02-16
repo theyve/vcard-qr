@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import type { SocialEntry, SocialType } from '$lib/vcard';
   import { SOCIAL_TYPES } from '$lib/vcard';
   import Input from './ui/Input.svelte';
@@ -37,7 +38,7 @@
   <Select
     value={social.type}
     onchange={handleTypeChange}
-    aria-label="Social platform"
+    aria-label={$_('form.social_profiles')}
     class="w-28 shrink-0 capitalize"
   >
     {#each SOCIAL_TYPES as t (t)}

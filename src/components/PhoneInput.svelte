@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import type { PhoneEntry, PhoneType } from '$lib/vcard';
   import Input from './ui/Input.svelte';
   import Select from './ui/Select.svelte';
@@ -28,17 +29,17 @@
   <Select
     value={phone.type}
     onchange={handleTypeChange}
-    aria-label="Phone type"
+    aria-label={$_('form.phone_numbers')}
     class="w-24 shrink-0"
   >
-    <option value="CELL">Cell</option>
-    <option value="WORK">Work</option>
-    <option value="HOME">Home</option>
+    <option value="CELL">{$_('phone_type.CELL')}</option>
+    <option value="WORK">{$_('phone_type.WORK')}</option>
+    <option value="HOME">{$_('phone_type.HOME')}</option>
   </Select>
   <Input
     value={phone.number}
     oninput={handleNumberChange}
-    placeholder="+1 555 123 4567"
+    placeholder="+41 79 123 45 67"
     class="flex-1"
   />
   {#if canRemove}

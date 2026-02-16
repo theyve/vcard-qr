@@ -2,6 +2,14 @@
   command = "npm run build"
   publish = "dist"
 
+# 301 redirect from Netlify subdomain to main domain
+[[redirects]]
+  from = "/*"
+  to = "https://vcardqr.ch/:splat"
+  status = 301
+  force = true
+  conditions = {Host = ["vcard-qr.netlify.app"]}
+
 # Service worker must not be cached by the CDN
 [[headers]]
   for = "/sw.js"

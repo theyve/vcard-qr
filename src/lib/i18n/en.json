@@ -1,0 +1,142 @@
+{
+  "header": {
+    "title": "vCard QR Code Generator",
+    "subtitle": "Contact details as a QR code – simple, no signup."
+  },
+  "privacy_banner": {
+    "text": "Your data stays on your device. No servers, no tracking, no storage.",
+    "strong": "Completely private",
+    "dismiss": "Dismiss"
+  },
+  "install": {
+    "install_app": "Install App",
+    "bookmark": "Bookmark",
+    "install_title": "Install as app on your device",
+    "bookmark_title": "Bookmark this page ({shortcut})",
+    "installed_toast": "App installed successfully!",
+    "bookmark_toast": "Press {shortcut} to bookmark this page"
+  },
+  "form": {
+    "heading": "Contact Details",
+    "description": "Fill in what you want on the QR code. All fields are optional.",
+    "name": "Name",
+    "prefix_placeholder": "Dr.",
+    "first_name_placeholder": "First name",
+    "last_name_placeholder": "Last name",
+    "prefix_title": "Title/Prefix",
+    "first_name_title": "First name",
+    "last_name_title": "Last name",
+    "job_title": "Job title",
+    "job_title_placeholder": "e.g. Product Designer",
+    "company": "Company",
+    "company_placeholder": "e.g. Acme Inc.",
+    "address": "Address",
+    "address_placeholder": "123 Main St, City, Country",
+    "phone_numbers": "Phone numbers",
+    "add_phone": "Add phone",
+    "email_addresses": "Email addresses",
+    "add_email": "Add email",
+    "website": "Website",
+    "website_placeholder": "example.com",
+    "social_profiles": "Social profiles",
+    "add_social": "Add social",
+    "no_socials": "No social profiles added yet"
+  },
+  "phone_type": {
+    "CELL": "Cell",
+    "WORK": "Work",
+    "HOME": "Home"
+  },
+  "email_type": {
+    "WORK": "Work",
+    "HOME": "Home"
+  },
+  "qr": {
+    "empty_title": "Your QR code will appear here",
+    "empty_subtitle": "Fill in at least one field to generate",
+    "loading": "Generating QR code…",
+    "updating": "Updating",
+    "color_label": "QR color",
+    "bg_label": "Background",
+    "advanced": "Advanced settings",
+    "ec_label": "Error correction",
+    "ec_L": "L — Smallest QR, less redundancy",
+    "ec_M": "M — Balanced (recommended)",
+    "ec_Q": "Q — More robust",
+    "ec_H": "H — Most robust, largest QR",
+    "view_payload": "View vCard payload",
+    "length_warning_title": "Large vCard:",
+    "length_warning_text": "The QR might be dense. Consider shortening fields or lowering error correction.",
+    "download_png": "Download PNG",
+    "download_png_size": "(1024×1024)",
+    "download_svg": "SVG",
+    "download_svg_hint": "(Scalable Vector)",
+    "download_vcard": "vCard",
+    "download_vcard_hint": "(vCard 3.0)"
+  },
+  "features": {
+    "offline": "Works offline",
+    "no_tracking": "No tracking",
+    "no_signup": "No account needed",
+    "open_source": "Open source",
+    "cross_platform": "iPhone & Android"
+  },
+  "footer": {
+    "seo_heading": "QR Code Generator for Business Cards",
+    "seo_text": "Turn your contact details into a scannable QR code. Anyone who scans it can save your name, phone number, email, and more directly to their phone – no app needed. Great for business cards, email signatures, and networking events.",
+    "how_heading": "How does it work?",
+    "how_text_before": "This tool creates a ",
+    "how_link_text": "vCard QR code",
+    "how_text_after": " – an industry-standard format (vCard 3.0) that both iPhones and Android phones understand. When someone scans the QR code with their camera, it prompts them to save your contact information. No special app required.",
+    "about_heading": "About this tool",
+    "about_text": "An open-source QR code generator for business cards and contact info. Your data never leaves your browser – everything happens right on your device.",
+    "privacy_heading": "Privacy",
+    "privacy_1": "Everything happens on your device – nothing is sent anywhere",
+    "privacy_2": "No account needed, nothing is saved or stored",
+    "privacy_3": "No tracking, no ads, no data collection of any kind",
+    "built_with_before": "Built with ",
+    "built_with_mid": ", ",
+    "built_with_after": ", and AI. MIT licensed.",
+    "github_link": "View on GitHub →",
+    "lang_de": "Deutsch",
+    "lang_en": "English"
+  },
+  "seo": {
+    "title_home": "vCard QR Code Generator – Contact Details as QR Code",
+    "desc_home": "Create a QR code for your business card. Scan to save contact info directly to any phone. Private, no signup. Open source.",
+    "title_vcard": "What is a vCard? – vCard QR Code Generator",
+    "desc_vcard": "Learn what a vCard is, how to use it as a QR code, and how scanning works on iPhone and Android.",
+    "title_faq": "FAQ – vCard QR Code Generator",
+    "desc_faq": "Frequently asked questions about the vCard QR Code Generator: What belongs in a vCard? How big should I print the QR code?"
+  },
+  "vcard_page": {
+    "heading": "What is a vCard?",
+    "intro": "A vCard is a standardized file format (.vcf) for sharing contact information. It contains details like name, phone number, email address, company, and more – all in a small text file.",
+    "usage_heading": "What is a vCard used for?",
+    "usage_text": "vCards are used to share contact information easily and without errors. Instead of typing in a phone number, you can transfer the data directly to your address book via QR code or file.",
+    "scan_heading": "How does scanning work?",
+    "scan_iphone": "iPhone: Open the Camera app and point it at the QR code. A notification will appear to save the contact.",
+    "scan_android": "Android: Most camera apps detect QR codes automatically. Alternatively, you can use Google Lens.",
+    "print_heading": "Printing QR codes on business cards",
+    "print_text": "Download the QR code as PNG (1024×1024 pixels) or SVG (vector graphic). For printing, we recommend a minimum size of 2×2 cm and SVG format for the best quality.",
+    "format_heading": "Technical format",
+    "format_text": "This tool uses vCard 3.0 – the most widely supported and compatible format. It works with all common smartphones and contact apps.",
+    "back_link": "← Back to generator"
+  },
+  "faq": {
+    "heading": "Frequently Asked Questions",
+    "q1": "What belongs in a vCard?",
+    "a1": "A vCard can contain name, phone numbers, email addresses, company, job title, address, website, and social profiles. All fields are optional – you can include exactly what you want to share.",
+    "q2": "How big should I print the QR code?",
+    "a2": "For reliable scanning, we recommend a minimum size of 2×2 cm. For business cards, 2.5×2.5 cm usually works well. The more data in the QR code, the larger it should be printed.",
+    "q3": "Which file format should I use?",
+    "a3": "For printing, we recommend SVG (vector graphic) – it can be printed at any size without loss of quality. PNG works well for digital use (email signatures, websites).",
+    "q4": "Does the QR code work on all phones?",
+    "a4": "Yes. vCard QR codes work on iPhones and Android devices. The camera app recognizes the QR code and offers to save the contact.",
+    "q5": "Is my data stored anywhere?",
+    "a5": "No. Everything happens directly in your browser. No data is sent to a server, stored, or shared.",
+    "q6": "Can I customize the QR code colors?",
+    "a6": "Yes. You can customize the QR code color and background. Just make sure there is enough contrast so the code remains easy to scan.",
+    "back_link": "← Back to generator"
+  }
+}

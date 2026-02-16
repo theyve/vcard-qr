@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import type { ErrorCorrectionLevel } from '$lib/qr';
   import Card from './ui/Card.svelte';
   import Label from './ui/Label.svelte';
@@ -98,7 +99,6 @@
 
   /**
    * Parse a vCard line for syntax highlighting.
-   * Returns field name, value, and classification for styling.
    */
   function parseVCardLine(line: string) {
     const colonIdx = line.indexOf(':');
@@ -131,8 +131,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
           </svg>
         </div>
-        <p class="text-sm font-medium text-foreground mb-1">Your QR code will appear here</p>
-        <p class="text-sm text-muted-foreground">Fill in at least one field to generate</p>
+        <p class="text-sm font-medium text-foreground mb-1">{$_('qr.empty_title')}</p>
+        <p class="text-sm text-muted-foreground">{$_('qr.empty_subtitle')}</p>
       </div>
     {:else if loading && !svg}
       <!-- Loading state -->
@@ -143,10 +143,10 @@
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         </div>
-        <p class="text-sm font-medium text-foreground">Generating QR code…</p>
+        <p class="text-sm font-medium text-foreground">{$_('qr.loading')}</p>
       </div>
     {:else}
-      <!-- QR code display — fills the entire dashed container -->
+      <!-- QR code display -->
       <div class="[&>svg]:w-full [&>svg]:h-auto [&>svg]:block" style="background-color: {qrBgColor}">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -- SVG is from trusted qrcode library -->
         {@html svg}
@@ -154,13 +154,13 @@
     {/if}
     
     {#if loading && svg}
-      <!-- Updating indicator (when regenerating) -->
+      <!-- Updating indicator -->
       <div class="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 bg-accent/90 text-accent-foreground rounded-full text-xs font-medium">
         <svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
         </svg>
-        Updating
+        {$_('qr.updating')}
       </div>
     {/if}
   </div>
@@ -170,7 +170,7 @@
     <!-- Color pickers -->
     <div class="grid grid-cols-2 gap-3">
       <div class="grid gap-2">
-        <Label for="qr-color">QR color</Label>
+        <Label for="qr-color">{$_('qr.color_label')}</Label>
         <div class="flex items-center gap-2">
           <div class="relative flex-1">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 text-sm font-mono">#</span>
@@ -187,7 +187,7 @@
           </div>
           <label
             class="w-11 h-11 rounded-full border border-input cursor-pointer shrink-0 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            title="Pick QR color"
+            title={$_('qr.color_label')}
             style="background-color: {qrColor}"
           >
             <input
@@ -200,7 +200,7 @@
         </div>
       </div>
       <div class="grid gap-2">
-        <Label for="qr-bg-color">Background</Label>
+        <Label for="qr-bg-color">{$_('qr.bg_label')}</Label>
         <div class="flex items-center gap-2">
           <div class="relative flex-1">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 text-sm font-mono">#</span>
@@ -217,7 +217,7 @@
           </div>
           <label
             class="w-11 h-11 rounded-full border border-input cursor-pointer shrink-0 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            title="Pick background color"
+            title={$_('qr.bg_label')}
             style="background-color: {qrBgColor}"
           >
             <input
@@ -239,19 +239,19 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
             </svg>
-            Advanced settings
+            {$_('qr.advanced')}
           </span>
           <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </summary>
         <div class="mt-2 grid gap-2">
-          <Label for="ec">Error correction</Label>
-          <Select id="ec" value={errorCorrection} onchange={handleEcChange} class="w-full" aria-label="Error correction level">
-            <option value="L">L — Smallest QR, less redundancy</option>
-            <option value="M">M — Balanced (recommended)</option>
-            <option value="Q">Q — More robust</option>
-            <option value="H">H — Most robust, largest QR</option>
+          <Label for="ec">{$_('qr.ec_label')}</Label>
+          <Select id="ec" value={errorCorrection} onchange={handleEcChange} class="w-full" aria-label={$_('qr.ec_label')}>
+            <option value="L">{$_('qr.ec_L')}</option>
+            <option value="M">{$_('qr.ec_M')}</option>
+            <option value="Q">{$_('qr.ec_Q')}</option>
+            <option value="H">{$_('qr.ec_H')}</option>
           </Select>
         </div>
       </details>
@@ -262,7 +262,7 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
             </svg>
-            View vCard payload
+            {$_('qr.view_payload')}
           </span>
           <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -279,7 +279,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <p class="text-sm">
-          <strong>Large vCard:</strong> The QR might be dense. Consider shortening fields or lowering error correction.
+          <strong>{$_('qr.length_warning_title')}</strong> {$_('qr.length_warning_text')}
         </p>
       </div>
     {/if}
@@ -290,23 +290,23 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
         </svg>
-        Download PNG
-        <span class="text-xs opacity-70 font-normal">(1024×1024)</span>
+        {$_('qr.download_png')}
+        <span class="text-xs opacity-70 font-normal">{$_('qr.download_png_size')}</span>
       </Button>
       <div class="grid grid-cols-2 gap-2">
         <Button variant="outline" onclick={onDownloadSvg} disabled={!hasContent || loading || !svg} class="w-full">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
-          SVG
-          <span class="text-xs opacity-70 font-normal">(Scalable Vector)</span>
+          {$_('qr.download_svg')}
+          <span class="text-xs opacity-70 font-normal">{$_('qr.download_svg_hint')}</span>
         </Button>
         <Button variant="outline" onclick={onDownloadVCard} disabled={!hasContent} class="w-full">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
-          vCard
-          <span class="text-xs opacity-70 font-normal">(vCard 3.0)</span>
+          {$_('qr.download_vcard')}
+          <span class="text-xs opacity-70 font-normal">{$_('qr.download_vcard_hint')}</span>
         </Button>
       </div>
     </div>
