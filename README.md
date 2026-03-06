@@ -2,7 +2,7 @@
 
 A privacy-focused, client-side vCard QR code generator. Create QR codes that encode contact information in vCard 3.0 format—scan to add a contact on most phones.
 
-**[Live Demo →](https://vcard-qr.netlify.app/)**
+**[Live Instance →](https://vcardqr.ch/)**
 
 ## Features
 
