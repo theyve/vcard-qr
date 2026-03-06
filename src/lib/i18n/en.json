@@ -1,7 +1,7 @@
 {
   "header": {
     "title": "vCard QR Code Generator",
-    "subtitle": "Contact details as a QR code – simple, no signup."
+    "subtitle": "Create QR code for your business card – contact details straight to the phone when scanned."
   },
   "privacy_banner": {
     "text": "Your data stays on your device. No servers, no tracking, no storage.",
@@ -82,8 +82,8 @@
     "cross_platform": "iPhone & Android"
   },
   "footer": {
-    "seo_heading": "QR Code Generator for Business Cards",
-    "seo_text": "Turn your contact details into a scannable QR code. Anyone who scans it can save your name, phone number, email, and more directly to their phone – no app needed. Great for business cards, email signatures, and networking events.",
+    "seo_heading": "vCard QR Code Generator for Business Cards",
+    "seo_text": "Turn your contact details into a scannable QR code. Anyone who scans it can save your name, phone number, email, and more directly to their phone – no app needed. Great for business cards, email signatures, and capturing contact data via QR code.",
     "how_heading": "How does it work?",
     "how_text_before": "This tool creates a ",
     "how_link_text": "vCard QR code",
@@ -102,8 +102,8 @@
     "lang_en": "English"
   },
   "seo": {
-    "title_home": "vCard QR Code Generator – Contact Details as QR Code",
-    "desc_home": "Create a QR code for your business card. Scan to save contact info directly to any phone. Private, no signup. Open source.",
+    "title_home": "Create free QR code for business card – Free & Open Source vCard QR Code Generator",
+    "desc_home": "vCard QR code for your business card: save contact details to any phone when scanned – no app, no signup. Ideal for capturing contact data.",
     "title_vcard": "What is a vCard? – vCard QR Code Generator",
     "desc_vcard": "Learn what a vCard is, how to use it as a QR code, and how scanning works on iPhone and Android.",
     "title_faq": "FAQ – vCard QR Code Generator",
@@ -137,6 +137,8 @@
     "a5": "No. Everything happens directly in your browser. No data is sent to a server, stored, or shared.",
     "q6": "Can I customize the QR code colors?",
     "a6": "Yes. You can customize the QR code color and background. Just make sure there is enough contrast so the code remains easy to scan.",
+    "q7": "How do you capture contact details with a QR code?",
+    "a7": "You create a vCard QR code here with your contact details. Anyone who scans the code with their phone camera gets the option to save the contact right away – no typing, no form. That’s how contact data capture via QR code works: one scan, contact in the address book.",
     "back_link": "← Back to generator"
   }
 }

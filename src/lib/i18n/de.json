@@ -1,7 +1,7 @@
 {
   "header": {
     "title": "vCard QR-Code Generator",
-    "subtitle": "Kontaktdaten als QR-Code – einfach, ohne Anmeldung."
+    "subtitle": "QR-Code für deine Visitenkarte erstellen – Kontaktdaten beim Scannen direkt ins Handy."
   },
   "privacy_banner": {
     "text": "Deine Daten bleiben auf deinem Gerät. Kein Server, kein Tracking, keine Speicherung.",
@@ -82,8 +82,8 @@
     "cross_platform": "iPhone & Android"
   },
   "footer": {
-    "seo_heading": "QR-Code Generator für Visitenkarten",
-    "seo_text": "Verwandle deine Kontaktdaten in einen scannbaren QR-Code. Wer ihn scannt, kann Name, Telefonnummer, E-Mail und mehr direkt im Handy speichern – ohne App. Ideal für Visitenkarten, E-Mail-Signaturen und Networking-Events.",
+    "seo_heading": "vCard QR-Code Generator für Visitenkarten",
+    "seo_text": "Verwandle deine Kontaktdaten in einen scannbaren QR-Code. Wer ihn scannt, kann Name, Telefonnummer, E-Mail und mehr direkt im Handy speichern – ohne App. Ideal für Visitenkarten, E-Mail-Signaturen und zur Kontaktdatenerfassung per QR-Code.",
     "how_heading": "Wie funktioniert es?",
     "how_text_before": "Dieses Tool erstellt einen ",
     "how_link_text": "vCard QR-Code",
@@ -102,8 +102,8 @@
     "lang_en": "English"
   },
   "seo": {
-    "title_home": "vCard QR-Code Generator – Kontaktdaten als QR-Code",
-    "desc_home": "Erstelle einen QR-Code für deine Visitenkarte. Beim Scannen werden Kontaktdaten direkt im Handy gespeichert. Privat, ohne Anmeldung. Open Source.",
+    "title_home": "QR-Code für Visitenkarte kostenlos erstellen – Gratis & Open Source vCard QR-Code Generator",
+    "desc_home": "vCard QR-Code für deine Visitenkarte: Kontaktdaten beim Scannen direkt ins Handy übernehmen – ohne App, ohne Anmeldung. Ideal zur Kontaktdatenerfassung.",
     "title_vcard": "Was ist eine vCard? – vCard QR-Code Generator",
     "desc_vcard": "Erfahre, was eine vCard ist, wie du sie als QR-Code nutzt und wie das Scannen auf iPhone und Android funktioniert.",
     "title_faq": "FAQ – vCard QR-Code Generator",
@@ -137,6 +137,8 @@
     "a5": "Nein. Alles passiert direkt in deinem Browser. Es werden keine Daten an einen Server gesendet, gespeichert oder weitergegeben.",
     "q6": "Kann ich den QR-Code farbig gestalten?",
     "a6": "Ja. Du kannst die QR-Code-Farbe und den Hintergrund individuell anpassen. Achte aber darauf, dass genügend Kontrast vorhanden ist, damit der Code gut lesbar bleibt.",
+    "q7": "Wie erfasst man Kontaktdaten mit einem QR-Code?",
+    "a7": "Du erstellst hier einen vCard QR-Code mit deinen Kontaktdaten. Wer den Code mit der Handykamera scannt, bekommt sofort die Option, den Kontakt zu speichern – ohne Abtippen, ohne Formular. So funktioniert die Kontaktdatenerfassung per QR-Code: einmal scannen, Kontakt im Adressbuch.",
     "back_link": "← Zurück zum Generator"
   }
 }

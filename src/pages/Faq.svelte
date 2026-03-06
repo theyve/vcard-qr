@@ -2,6 +2,8 @@
   import { _ } from 'svelte-i18n';
   import type { SupportedLocale } from '$lib/i18n';
   import Card from '../components/ui/Card.svelte';
+  import de from '$lib/i18n/de.json';
+  import en from '$lib/i18n/en.json';
 
   interface Props {
     navigate: (path: string, e?: MouseEvent) => void;
@@ -12,7 +14,35 @@
 
   let homePath = $derived(`/${lang}/`);
 
-  const faqKeys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'] as const;
+  const faqKeys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'] as const;
+
+  function buildFaqSchema(locale: SupportedLocale): string {
+    const messages = locale === 'de' ? de : en;
+    const faq = (messages as { faq: Record<string, string> }).faq;
+    const mainEntity = faqKeys.map((qKey) => {
+      const aKey = qKey.replace('q', 'a') as 'a1' | 'a2' | 'a3' | 'a4' | 'a5' | 'a6' | 'a7';
+      return {
+        '@type': 'Question',
+        name: faq[qKey],
+        acceptedAnswer: { '@type': 'Answer', text: faq[aKey] },
+      };
+    });
+    return JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity,
+    });
+  }
+
+  $effect(() => {
+    const scriptEl = document.createElement('script');
+    scriptEl.type = 'application/ld+json';
+    scriptEl.textContent = buildFaqSchema(lang);
+    document.head.appendChild(scriptEl);
+    return () => {
+      scriptEl.remove();
+    };
+  });
 </script>
 
 <div class="max-w-3xl mx-auto space-y-6">
