@@ -41,16 +41,8 @@
   }: Props = $props();
 
   // Local hex input state (without # prefix for display)
-  let hexInput = $state(qrColor.replace('#', ''));
-  let bgHexInput = $state(qrBgColor.replace('#', ''));
-  
-  // Sync hex inputs when colors change externally
-  $effect(() => {
-    hexInput = qrColor.replace('#', '');
-  });
-  $effect(() => {
-    bgHexInput = qrBgColor.replace('#', '');
-  });
+  let hexInput = $derived(qrColor.replace('#', ''));
+  let bgHexInput = $derived(qrBgColor.replace('#', ''));
 
   function handleEcChange(e: Event) {
     const target = e.target as HTMLSelectElement;

@@ -1,3 +1,11 @@
 /sitemap.xml   /sitemap.xml   200!
 /robots.txt    /robots.txt    200!
+/de/            /de/index.html   200!
+/en/            /en/index.html   200!
+/de/qr-code-visitenkarte  /de/qr-code-visitenkarte/index.html  200!
+/en/business-card-qr-code /en/business-card-qr-code/index.html 200!
+/de/was-ist-vcard         /de/was-ist-vcard/index.html         200!
+/en/what-is-vcard         /en/what-is-vcard/index.html         200!
+/de/faq                   /de/faq/index.html                   200!
+/en/faq                   /en/faq/index.html                   200!
 /*             /index.html    200

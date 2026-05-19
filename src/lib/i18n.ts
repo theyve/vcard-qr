@@ -59,6 +59,16 @@ const ROUTE_MAP: Record<string, RouteInfo> = {
     seoKey: 'vcard',
     hreflangPairs: { de: '/de/was-ist-vcard', en: '/en/what-is-vcard' },
   },
+  'qr-code-visitenkarte': {
+    page: 'business-card-guide',
+    seoKey: 'businessCardGuide',
+    hreflangPairs: { de: '/de/qr-code-visitenkarte', en: '/en/business-card-qr-code' },
+  },
+  'business-card-qr-code': {
+    page: 'business-card-guide',
+    seoKey: 'businessCardGuide',
+    hreflangPairs: { de: '/de/qr-code-visitenkarte', en: '/en/business-card-qr-code' },
+  },
   'faq': {
     page: 'faq',
     seoKey: 'faq',
@@ -97,11 +107,13 @@ const SEO_TITLES: Record<SupportedLocale, Record<string, string>> = {
   de: {
     home: de.seo.title_home,
     vcard: de.seo.title_vcard,
+    businessCardGuide: de.seo.title_business_card_guide,
     faq: de.seo.title_faq,
   },
   en: {
     home: en.seo.title_home,
     vcard: en.seo.title_vcard,
+    businessCardGuide: en.seo.title_business_card_guide,
     faq: en.seo.title_faq,
   },
 };
@@ -110,11 +122,13 @@ const SEO_DESCRIPTIONS: Record<SupportedLocale, Record<string, string>> = {
   de: {
     home: de.seo.desc_home,
     vcard: de.seo.desc_vcard,
+    businessCardGuide: de.seo.desc_business_card_guide,
     faq: de.seo.desc_faq,
   },
   en: {
     home: en.seo.desc_home,
     vcard: en.seo.desc_vcard,
+    businessCardGuide: en.seo.desc_business_card_guide,
     faq: en.seo.desc_faq,
   },
 };
@@ -142,7 +156,8 @@ export function updateSeoForRoute(lang: SupportedLocale, pathname: string): void
   metaDesc.setAttribute('content', SEO_DESCRIPTIONS[lang]?.[seoKey] ?? SEO_DESCRIPTIONS[lang]?.home ?? '');
 
   // <link rel="canonical">
-  const canonicalUrl = `${BASE_URL}${pathname.replace(/\/$/, '') || '/'}`;
+  const canonicalPath = route?.hreflangPairs[lang] ?? `/${lang}/`;
+  const canonicalUrl = `${BASE_URL}${canonicalPath}`;
   let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
   if (!canonical) {
     canonical = document.createElement('link');

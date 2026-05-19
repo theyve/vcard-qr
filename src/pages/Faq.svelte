@@ -14,13 +14,13 @@
 
   let homePath = $derived(`/${lang}/`);
 
-  const faqKeys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'] as const;
+  const faqKeys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'] as const;
 
   function buildFaqSchema(locale: SupportedLocale): string {
     const messages = locale === 'de' ? de : en;
     const faq = (messages as { faq: Record<string, string> }).faq;
     const mainEntity = faqKeys.map((qKey) => {
-      const aKey = qKey.replace('q', 'a') as 'a1' | 'a2' | 'a3' | 'a4' | 'a5' | 'a6' | 'a7';
+      const aKey = qKey.replace('q', 'a');
       return {
         '@type': 'Question',
         name: faq[qKey],
@@ -54,7 +54,7 @@
     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">{$_('faq.heading')}</h1>
 
     <div class="space-y-1">
-      {#each faqKeys as qKey}
+      {#each faqKeys as qKey (qKey)}
         <details class="group">
           <summary class="flex items-center justify-between cursor-pointer text-sm font-medium text-foreground hover:text-accent transition-colors py-3 border-b border-border/50">
             <span>{$_(`faq.${qKey}`)}</span>

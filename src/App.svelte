@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { _, locale, isLoading } from 'svelte-i18n';
+  import { _, locale } from 'svelte-i18n';
   import type { PhoneEntry, EmailEntry, SocialEntry } from '$lib/vcard';
   import type { ErrorCorrectionLevel } from '$lib/qr';
   import { buildVCard } from '$lib/vcard';
@@ -17,16 +17,19 @@
   import QrPreview from './components/QrPreview.svelte';
   import WhatIsVcard from './pages/WhatIsVcard.svelte';
   import Faq from './pages/Faq.svelte';
+  import BusinessCardGuide from './pages/BusinessCardGuide.svelte';
 
   const GITHUB_URL = 'https://github.com/theyve/vcard-qr';
+  const footerUseCaseKeys = ['business_cards', 'free_generator', 'contact_capture'] as const;
 
   // ---------------------------------------------------------------------------
   // Router
   // ---------------------------------------------------------------------------
-  let currentPath = $state(window.location.pathname);
+  const initialPath = window.location.pathname;
+  let currentPath = $state(initialPath);
 
   // On first load: if bare "/" redirect to language-prefixed path
-  if (!getLocaleFromPath(currentPath)) {
+  if (!getLocaleFromPath(initialPath)) {
     const detected = detectBrowserLocale();
     const target = `/${detected}/`;
     window.history.replaceState(null, '', target);
@@ -73,7 +76,11 @@
   // ---------------------------------------------------------------------------
   // PWA Install prompt
   // ---------------------------------------------------------------------------
-  let deferredPrompt = $state<any>(null);
+  interface BeforeInstallPromptEvent extends Event {
+    prompt: () => Promise<void>;
+    userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+  }
+  let deferredPrompt = $state<BeforeInstallPromptEvent | null>(null);
   let isInstalled = $state(false);
   let showInstallToast = $state(false);
   let installToastMessage = $state('');
@@ -81,7 +88,7 @@
   const isStandalone =
     typeof window !== 'undefined' &&
     (window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone === true);
+      Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone));
 
   if (isStandalone) {
     isInstalled = true;
@@ -93,7 +100,7 @@
   if (typeof window !== 'undefined') {
     window.addEventListener('beforeinstallprompt', (e: Event) => {
       e.preventDefault();
-      deferredPrompt = e;
+      deferredPrompt = e as BeforeInstallPromptEvent;
     });
 
     window.addEventListener('appinstalled', () => {
@@ -263,9 +270,15 @@
             </svg>
           </div>
           <div>
-            <h1 class="text-xl sm:text-2xl font-bold tracking-tight">
-              {$_('header.title')}
-            </h1>
+            {#if currentPage === 'home'}
+              <h1 class="text-xl sm:text-2xl font-bold tracking-tight">
+                {$_('header.title')}
+              </h1>
+            {:else}
+              <p class="text-xl sm:text-2xl font-bold tracking-tight">
+                {$_('header.title')}
+              </p>
+            {/if}
             <p class="text-sm text-muted-foreground hidden sm:block">
               {$_('header.subtitle')}
             </p>
@@ -360,6 +373,8 @@
         </div>
       {:else if currentPage === 'vcard'}
         <WhatIsVcard {navigate} lang={currentLang} />
+      {:else if currentPage === 'business-card-guide'}
+        <BusinessCardGuide {navigate} lang={currentLang} />
       {:else if currentPage === 'faq'}
         <Faq {navigate} lang={currentLang} />
       {:else}
@@ -391,8 +406,22 @@
             </p>
           </div>
 
+          <div class="my-8 sm:my-10">
+            <h3 class="text-lg font-semibold mb-3">{$_('footer.use_cases_heading')}</h3>
+            <div class="grid gap-3 sm:grid-cols-3">
+              {#each footerUseCaseKeys as useCaseKey (useCaseKey)}
+                <section class="rounded-xl border bg-card p-4">
+                  <h4 class="font-semibold mb-1">{$_(`footer.use_case_${useCaseKey}_heading`)}</h4>
+                  <p class="text-sm text-muted-foreground leading-relaxed">
+                    {$_(`footer.use_case_${useCaseKey}_text`)}
+                  </p>
+                </section>
+              {/each}
+            </div>
+          </div>
+
           <div class="flex flex-wrap gap-2">
-            {#each ['offline', 'no_tracking', 'no_signup', 'open_source', 'cross_platform'] as featureKey}
+            {#each ['offline', 'no_tracking', 'no_signup', 'open_source', 'cross_platform'] as featureKey (featureKey)}
               <span class="feature-badge">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
@@ -405,9 +434,11 @@
           <!-- Links to static pages -->
           <div class="flex flex-wrap gap-4 text-sm">
             {#if currentLang === 'de'}
+              <a href="/de/qr-code-visitenkarte" onclick={(e) => navigate('/de/qr-code-visitenkarte', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">QR-Code für Visitenkarte erstellen</a>
               <a href="/de/was-ist-vcard" onclick={(e) => navigate('/de/was-ist-vcard', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">Was ist eine vCard?</a>
               <a href="/de/faq" onclick={(e) => navigate('/de/faq', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">Häufige Fragen (FAQ)</a>
             {:else}
+              <a href="/en/business-card-qr-code" onclick={(e) => navigate('/en/business-card-qr-code', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">Create QR code for business card</a>
               <a href="/en/what-is-vcard" onclick={(e) => navigate('/en/what-is-vcard', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">What is a vCard?</a>
               <a href="/en/faq" onclick={(e) => navigate('/en/faq', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">FAQ</a>
             {/if}
@@ -456,9 +487,6 @@
       
       <div class="mt-8 pt-6 border-t flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-muted-foreground">
         <div class="flex flex-col gap-4">
-          <p>
-            {$_('footer.built_with_before')}<a href="https://svelte.dev" target="_blank" rel="noopener noreferrer" class="text-foreground hover:text-accent transition-colors underline underline-offset-2">Svelte</a>{$_('footer.built_with_mid')}<a href="https://www.npmjs.com/package/qrcode" target="_blank" rel="noopener noreferrer" class="text-foreground hover:text-accent transition-colors underline underline-offset-2">qrcode</a>{$_('footer.built_with_after')}
-          </p>
           <a
           href={GITHUB_URL}
           target="_blank"

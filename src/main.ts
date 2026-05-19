@@ -11,8 +11,11 @@ import { registerSW } from 'virtual:pwa-register';
 
 registerSW({ immediate: true });
 
+const target = document.getElementById('app')!;
+target.textContent = '';
+
 const app = mount(App, {
-  target: document.getElementById('app')!,
+  target,
 });
 
 export default app;
