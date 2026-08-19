@@ -1,6 +1,6 @@
 # VCard QR Code Generator
 
-A privacy-focused, client-side vCard QR code generator. Create QR codes that encode contact information in vCard 3.0 format—scan to add a contact on most phones.
+A privacy-focused, client-side vCard QR code generator. Create QR codes that encode contact information in vCard 3.0 format—scan to add a contact on most phones. Contact details stay in your browser.
 
 **[Live Instance →](https://vcardqr.ch/)**
 
@@ -15,15 +15,13 @@ A privacy-focused, client-side vCard QR code generator. Create QR codes that enc
 
 ## Transparency & Privacy
 
-This application is designed with privacy as a core principle. Here's exactly what it does and doesn't do:
+Contact details are processed locally in the browser. The live site uses [Plausible](https://plausible.io/) for privacy-friendly, cookieless usage stats (page views, not your vCard contents).
 
 ### Trust Checklist
 
-- ✅ **Runs fully client-side**: No server, no backend, no API calls
-- ✅ **No network requests**: All processing happens in your browser
-- ✅ **No analytics or tracking**: No Google Analytics, no pixels, no telemetry
-- ✅ **No data storage**: Nothing saved to localStorage, sessionStorage, cookies, or IndexedDB
-- ✅ **No third-party services**: Only the `qrcode` npm package is used (runs locally)
+- ✅ **QR generation is client-side**: No backend stores or receives your contact details
+- ✅ **No ads, no personal profiles**: Analytics is anonymous and cookieless
+- ✅ **No account**: You do not need to sign up
 - ✅ **Fully auditable**: Source code is open and readable
 
 ### What the code does
@@ -33,14 +31,7 @@ This application is designed with privacy as a core principle. Here's exactly wh
 3. Generates a QR code from that string using the `qrcode` library
 4. Renders the QR as SVG/PNG entirely in your browser
 5. Downloads happen via browser APIs (Blob URLs)—no upload
-
-### What the code does NOT do
-
-- Make any HTTP requests
-- Send data anywhere
-- Store anything persistently
-- Load external resources
-- Track usage or behavior
+6. The production site loads Plausible for anonymous page-view stats
 
 ## Run Locally
 
@@ -89,7 +80,7 @@ src/
 
 ## Built with AI
 
-This project was developed using AI coding assistants. The entire codebase—components, styling, documentation, and configuration—was written with AI tools. This is noted for transparency; the code remains fully auditable and the privacy guarantees are verifiable by reading the source.
+This project was developed using AI coding assistants. The entire codebase—components, styling, documentation, and configuration—was written with AI tools. This is noted for transparency; the code remains fully auditable.
 
 ## vCard Format
 

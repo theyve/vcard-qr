@@ -4,8 +4,8 @@
     "subtitle": "Create QR code for your business card – contact details straight to the phone when scanned."
   },
   "privacy_banner": {
-    "text": "Your data stays on your device. No servers, no tracking, no storage.",
-    "strong": "Completely private",
+    "text": "Your contact details stay on your device. No ads, your contacts are not stored.",
+    "strong": "Contacts stay local",
     "dismiss": "Dismiss"
   },
   "install": {
@@ -76,7 +76,7 @@
   },
   "features": {
     "offline": "Works offline",
-    "no_tracking": "No tracking",
+    "no_tracking": "Contacts stay local",
     "no_signup": "No account needed",
     "open_source": "Open source",
     "cross_platform": "iPhone & Android"
@@ -96,11 +96,11 @@
     "use_case_contact_capture_heading": "Contact data via QR code",
     "use_case_contact_capture_text": "Use the QR code for contact data capture in everyday workflows: scan, review the contact, and save it to the address book.",
     "about_heading": "About this tool",
-    "about_text": "An open-source QR code generator for business cards and contact info. Your data never leaves your browser – everything happens right on your device.",
+    "about_text": "An open-source QR code generator for business cards and contact info. Your contact details never leave your browser – the QR code is generated on your device.",
     "privacy_heading": "Privacy",
-    "privacy_1": "Everything happens on your device – nothing is sent anywhere",
-    "privacy_2": "No account needed, nothing is saved or stored",
-    "privacy_3": "No tracking, no ads, no data collection of any kind",
+    "privacy_1": "Your contact details stay in the browser – the QR code is generated locally",
+    "privacy_2": "No account needed, your contacts are not stored",
+    "privacy_3": "No ads. Privacy-friendly usage stats only (Plausible), without cookies",
     "built_with_before": "Built with ",
     "built_with_mid": ", ",
     "built_with_after": ", and AI. MIT licensed.",
@@ -198,7 +198,7 @@
     "q4": "Does the QR code work on all phones?",
     "a4": "Yes. vCard QR codes work on iPhones and Android devices. The camera app recognizes the QR code and offers to save the contact.",
     "q5": "Is my data stored anywhere?",
-    "a5": "No. Everything happens directly in your browser. No data is sent to a server, stored, or shared.",
+    "a5": "Your contact details stay in the browser and are not stored. For anonymous usage stats we use Plausible – no cookies and no personal profiles.",
     "q6": "Can I customize the QR code colors?",
     "a6": "Yes. You can customize the QR code color and background. Just make sure there is enough contrast so the code remains easy to scan.",
     "q7": "How do you capture contact details with a QR code?",

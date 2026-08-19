@@ -4,8 +4,8 @@
     "subtitle": "QR-Code für deine Visitenkarte erstellen – Kontaktdaten beim Scannen direkt ins Handy."
   },
   "privacy_banner": {
-    "text": "Deine Daten bleiben auf deinem Gerät. Kein Server, kein Tracking, keine Speicherung.",
-    "strong": "Komplett privat",
+    "text": "Deine Kontaktdaten bleiben auf deinem Gerät. Keine Werbung, keine Speicherung deiner Kontakte.",
+    "strong": "Kontakte bleiben lokal",
     "dismiss": "Schliessen"
   },
   "install": {
@@ -76,7 +76,7 @@
   },
   "features": {
     "offline": "Funktioniert offline",
-    "no_tracking": "Kein Tracking",
+    "no_tracking": "Kontakte bleiben lokal",
     "no_signup": "Ohne Anmeldung",
     "open_source": "Open Source",
     "cross_platform": "iPhone & Android"
@@ -96,11 +96,11 @@
     "use_case_contact_capture_heading": "Kontaktdaten per QR-Code",
     "use_case_contact_capture_text": "Nutze den QR-Code zur Kontaktdatenerfassung im Alltag: scannen, Kontakt prüfen und im Adressbuch speichern.",
     "about_heading": "Über dieses Tool",
-    "about_text": "Ein Open-Source QR-Code-Generator für Visitenkarten und Kontaktdaten. Deine Daten verlassen nie deinen Browser – alles passiert direkt auf deinem Gerät.",
+    "about_text": "Ein Open-Source QR-Code-Generator für Visitenkarten und Kontaktdaten. Deine Kontaktdaten verlassen den Browser nicht – der QR-Code entsteht direkt auf deinem Gerät.",
     "privacy_heading": "Datenschutz",
-    "privacy_1": "Alles passiert auf deinem Gerät – nichts wird irgendwohin gesendet",
-    "privacy_2": "Kein Konto nötig, nichts wird gespeichert",
-    "privacy_3": "Kein Tracking, keine Werbung, keine Datenerhebung",
+    "privacy_1": "Deine Kontaktdaten bleiben im Browser – der QR-Code entsteht lokal",
+    "privacy_2": "Kein Konto nötig, deine Kontakte werden nicht gespeichert",
+    "privacy_3": "Keine Werbung. Nur datenschutzfreundliche Nutzungsstatistik (Plausible), ohne Cookies",
     "built_with_before": "Gebaut mit ",
     "built_with_mid": ", ",
     "built_with_after": " und AI. MIT-Lizenz.",
@@ -198,7 +198,7 @@
     "q4": "Funktioniert der QR-Code auf allen Handys?",
     "a4": "Ja. vCard QR-Codes funktionieren auf iPhones und Android-Geräten. Die Kamera-App erkennt den QR-Code und bietet an, den Kontakt zu speichern.",
     "q5": "Werden meine Daten irgendwo gespeichert?",
-    "a5": "Nein. Alles passiert direkt in deinem Browser. Es werden keine Daten an einen Server gesendet, gespeichert oder weitergegeben.",
+    "a5": "Deine Kontaktdaten bleiben im Browser und werden nicht gespeichert. Für anonyme Nutzungsstatistiken nutzen wir Plausible – ohne Cookies und ohne personenbezogene Profile.",
     "q6": "Kann ich den QR-Code farbig gestalten?",
     "a6": "Ja. Du kannst die QR-Code-Farbe und den Hintergrund individuell anpassen. Achte aber darauf, dass genügend Kontrast vorhanden ist, damit der Code gut lesbar bleibt.",
     "q7": "Wie erfasst man Kontaktdaten mit einem QR-Code?",

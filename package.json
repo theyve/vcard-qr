@@ -1,7 +1,7 @@
 {
   "name": "vcard-qr",
   "version": "1.0.0",
-  "description": "Client-side vCard QR code generator. No tracking, no data collection.",
+  "description": "Client-side vCard QR code generator. Contact details stay in the browser.",
   "keywords": [
     "vcard",
     "qr",
