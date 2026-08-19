@@ -14,12 +14,18 @@
 
   let homePath = $derived(`/${lang}/`);
 
-  const faqKeys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10'] as const;
+  function faqQuestionKeys(faq: Record<string, string>): string[] {
+    return Object.keys(faq)
+      .filter((key) => /^q\d+$/.test(key))
+      .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+  }
+
+  let faqKeys = $derived(faqQuestionKeys((lang === 'de' ? de : en).faq));
 
   function buildFaqSchema(locale: SupportedLocale): string {
     const messages = locale === 'de' ? de : en;
     const faq = (messages as { faq: Record<string, string> }).faq;
-    const mainEntity = faqKeys.map((qKey) => {
+    const mainEntity = faqQuestionKeys(faq).map((qKey) => {
       const aKey = qKey.replace('q', 'a');
       return {
         '@type': 'Question',
@@ -35,12 +41,18 @@
   }
 
   $effect(() => {
-    const scriptEl = document.createElement('script');
-    scriptEl.type = 'application/ld+json';
+    let scriptEl = document.querySelector('script[data-seo="faq"]') as HTMLScriptElement | null;
+    const created = !scriptEl;
+    if (!scriptEl) {
+      scriptEl = document.createElement('script');
+      scriptEl.type = 'application/ld+json';
+      scriptEl.setAttribute('data-seo', 'faq');
+      document.head.appendChild(scriptEl);
+    }
     scriptEl.textContent = buildFaqSchema(lang);
-    document.head.appendChild(scriptEl);
     return () => {
-      scriptEl.remove();
+      if (created) scriptEl.remove();
+      else scriptEl.textContent = '';
     };
   });
 </script>

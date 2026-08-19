@@ -1,7 +1,7 @@
 {
   "name": "vcard-qr",
   "version": "1.0.0",
-  "description": "Client-side vCard QR code generator. Contact details stay in the browser.",
+  "description": "Free and open-source privacy-friendly vCard QR code generator. Create QR codes for contact details directly in the browser.",
   "keywords": [
     "vcard",
     "qr",

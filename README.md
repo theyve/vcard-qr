@@ -1,8 +1,8 @@
 # VCard QR Code Generator
 
-A privacy-focused, client-side vCard QR code generator. Create QR codes that encode contact information in vCard 3.0 format—scan to add a contact on most phones. Contact details stay in your browser.
+vcardqr.ch is a free and open-source vCard QR code generator. Contact data is processed locally in the browser and is never uploaded to a server.
 
-**[Live Instance →](https://vcardqr.ch/)**
+**Website:** [https://vcardqr.ch/](https://vcardqr.ch/)
 
 ## Features
 
@@ -15,13 +15,12 @@ A privacy-focused, client-side vCard QR code generator. Create QR codes that enc
 
 ## Transparency & Privacy
 
-Contact details are processed locally in the browser. The live site uses [Plausible](https://plausible.io/) for privacy-friendly, cookieless usage stats (page views, not your vCard contents).
+Contact details are processed locally in the browser and are never uploaded to a server.
 
 ### Trust Checklist
 
 - ✅ **QR generation is client-side**: No backend stores or receives your contact details
-- ✅ **No ads, no personal profiles**: Analytics is anonymous and cookieless
-- ✅ **No account**: You do not need to sign up
+- ✅ **No ads, no account**: You do not need to sign up
 - ✅ **Fully auditable**: Source code is open and readable
 
 ### What the code does
@@ -31,7 +30,6 @@ Contact details are processed locally in the browser. The live site uses [Plausi
 3. Generates a QR code from that string using the `qrcode` library
 4. Renders the QR as SVG/PNG entirely in your browser
 5. Downloads happen via browser APIs (Blob URLs)—no upload
-6. The production site loads Plausible for anonymous page-view stats
 
 ## Run Locally
 

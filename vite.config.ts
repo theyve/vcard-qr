@@ -21,7 +21,7 @@ export default defineConfig({
       manifest: {
         name: 'vCard QR Code Generator',
         short_name: 'vCard QR',
-        description: 'Create a QR code for your business card — contact details stay in your browser, works offline.',
+        description: 'Free open-source vCard QR code generator. Contact details stay in your browser.',
         theme_color: '#f9cb15',
         background_color: '#faf8f3',
         display: 'standalone',

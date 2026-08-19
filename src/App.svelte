@@ -20,6 +20,7 @@
   import BusinessCardGuide from './pages/BusinessCardGuide.svelte';
 
   const GITHUB_URL = 'https://github.com/theyve/vcard-qr';
+  const LICENSE_URL = 'https://github.com/theyve/vcard-qr/blob/main/LICENSE';
   const footerUseCaseKeys = ['business_cards', 'free_generator', 'contact_capture'] as const;
 
   // ---------------------------------------------------------------------------
@@ -338,6 +339,9 @@
   <main class="flex-1 px-4 mb-10 sm:px-6 py-6 sm:py-8">
     <div class="max-w-5xl mx-auto">
       {#if currentPage === 'home'}
+        <p class="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 max-w-3xl">
+          {$_('header.positioning')}
+        </p>
         <div class="grid gap-6 lg:grid-cols-2 lg:items-start">
           <ContactForm
             bind:prefix
@@ -434,13 +438,17 @@
           <!-- Links to static pages -->
           <div class="flex flex-wrap gap-4 text-sm">
             {#if currentLang === 'de'}
-              <a href="/de/qr-code-visitenkarte" onclick={(e) => navigate('/de/qr-code-visitenkarte', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">QR-Code für Visitenkarte erstellen</a>
-              <a href="/de/was-ist-vcard" onclick={(e) => navigate('/de/was-ist-vcard', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">Was ist eine vCard?</a>
-              <a href="/de/faq" onclick={(e) => navigate('/de/faq', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">Häufige Fragen (FAQ)</a>
+              <a href="/de/was-ist-vcard" onclick={(e) => navigate('/de/was-ist-vcard', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.how_page_link')}</a>
+              <a href="#privacy" class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.privacy_link')}</a>
+              <a href="/de/faq" onclick={(e) => navigate('/de/faq', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.faq_link')}</a>
+              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.github_link')}</a>
+              <a href="/de/qr-code-visitenkarte" onclick={(e) => navigate('/de/qr-code-visitenkarte', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.use_case_business_cards_heading')}</a>
             {:else}
-              <a href="/en/business-card-qr-code" onclick={(e) => navigate('/en/business-card-qr-code', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">Create QR code for business card</a>
-              <a href="/en/what-is-vcard" onclick={(e) => navigate('/en/what-is-vcard', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">What is a vCard?</a>
-              <a href="/en/faq" onclick={(e) => navigate('/en/faq', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">FAQ</a>
+              <a href="/en/what-is-vcard" onclick={(e) => navigate('/en/what-is-vcard', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.how_page_link')}</a>
+              <a href="#privacy" class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.privacy_link')}</a>
+              <a href="/en/faq" onclick={(e) => navigate('/en/faq', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.faq_link')}</a>
+              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.github_link')}</a>
+              <a href="/en/business-card-qr-code" onclick={(e) => navigate('/en/business-card-qr-code', e)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.use_case_business_cards_heading')}</a>
             {/if}
           </div>
         </div>
@@ -461,44 +469,41 @@
         </div>
         
         <!-- Privacy -->
-        <div>
+        <div id="privacy">
           <h2 class="font-semibold mb-3 flex items-center gap-2">
             <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
             </svg>
             {$_('footer.privacy_heading')}
           </h2>
-          <ul class="text-sm text-muted-foreground space-y-1.5">
-            <li class="flex items-center gap-2">
-              <span class="w-1 h-1 rounded-full bg-success"></span>
-              {$_('footer.privacy_1')}
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1 h-1 rounded-full bg-success"></span>
-              {$_('footer.privacy_2')}
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1 h-1 rounded-full bg-success"></span>
-              {$_('footer.privacy_3')}
-            </li>
-          </ul>
+          <p class="text-sm text-muted-foreground leading-relaxed">
+            {$_('footer.privacy_text')}
+          </p>
         </div>
       </div>
       
       <div class="mt-8 pt-6 border-t flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-muted-foreground">
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
           <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 text-foreground hover:text-accent transition-colors font-medium"
-        >
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-          </svg>
-          {$_('footer.github_link')}
-        </a>
-      </div>
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-foreground hover:text-accent transition-colors font-medium"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+            {$_('footer.github_link')}
+          </a>
+          <a
+            href={LICENSE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-foreground hover:text-accent transition-colors font-medium"
+          >
+            {$_('footer.license_link')}
+          </a>
+        </div>
         <div class="flex items-center gap-4">
           <!-- Language switcher -->
           <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
