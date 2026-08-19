@@ -6,6 +6,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 const baseUrl = 'https://vcardqr.ch';
+const githubUrl = 'https://github.com/theyve/vcard-qr';
+const licenseUrl = 'https://github.com/theyve/vcard-qr/blob/main/LICENSE';
+const ogImageUrl = `${baseUrl}/web-app-manifest-512x512.png`;
 
 const [template, de, en] = await Promise.all([
   fs.readFile(path.join(distDir, 'index.html'), 'utf8'),
@@ -21,6 +24,7 @@ const routes = [
     description: de.seo.desc_home,
     alternates: { de: '/de/', en: '/en/', 'x-default': '/' },
     body: homeContent(de, 'de'),
+    ogLocale: 'de_CH',
   },
   {
     path: '/en/',
@@ -29,56 +33,63 @@ const routes = [
     description: en.seo.desc_home,
     alternates: { de: '/de/', en: '/en/', 'x-default': '/' },
     body: homeContent(en, 'en'),
+    ogLocale: 'en_US',
   },
   {
     path: '/de/qr-code-visitenkarte',
     lang: 'de',
     title: de.seo.title_business_card_guide,
     description: de.seo.desc_business_card_guide,
-    alternates: { de: '/de/qr-code-visitenkarte', en: '/en/business-card-qr-code' },
+    alternates: { de: '/de/qr-code-visitenkarte', en: '/en/business-card-qr-code', 'x-default': '/' },
     body: guideContent(de, 'de'),
+    ogLocale: 'de_CH',
   },
   {
     path: '/en/business-card-qr-code',
     lang: 'en',
     title: en.seo.title_business_card_guide,
     description: en.seo.desc_business_card_guide,
-    alternates: { de: '/de/qr-code-visitenkarte', en: '/en/business-card-qr-code' },
+    alternates: { de: '/de/qr-code-visitenkarte', en: '/en/business-card-qr-code', 'x-default': '/' },
     body: guideContent(en, 'en'),
+    ogLocale: 'en_US',
   },
   {
     path: '/de/was-ist-vcard',
     lang: 'de',
     title: de.seo.title_vcard,
     description: de.seo.desc_vcard,
-    alternates: { de: '/de/was-ist-vcard', en: '/en/what-is-vcard' },
+    alternates: { de: '/de/was-ist-vcard', en: '/en/what-is-vcard', 'x-default': '/' },
     body: vcardContent(de, 'de'),
+    ogLocale: 'de_CH',
   },
   {
     path: '/en/what-is-vcard',
     lang: 'en',
     title: en.seo.title_vcard,
     description: en.seo.desc_vcard,
-    alternates: { de: '/de/was-ist-vcard', en: '/en/what-is-vcard' },
+    alternates: { de: '/de/was-ist-vcard', en: '/en/what-is-vcard', 'x-default': '/' },
     body: vcardContent(en, 'en'),
+    ogLocale: 'en_US',
   },
   {
     path: '/de/faq',
     lang: 'de',
     title: de.seo.title_faq,
     description: de.seo.desc_faq,
-    alternates: { de: '/de/faq', en: '/en/faq' },
+    alternates: { de: '/de/faq', en: '/en/faq', 'x-default': '/' },
     body: faqContent(de, 'de'),
     structuredData: faqStructuredData(de),
+    ogLocale: 'de_CH',
   },
   {
     path: '/en/faq',
     lang: 'en',
     title: en.seo.title_faq,
     description: en.seo.desc_faq,
-    alternates: { de: '/de/faq', en: '/en/faq' },
+    alternates: { de: '/de/faq', en: '/en/faq', 'x-default': '/' },
     body: faqContent(en, 'en'),
     structuredData: faqStructuredData(en),
+    ogLocale: 'en_US',
   },
 ];
 
@@ -99,8 +110,9 @@ function renderRoute(route) {
   const alternateLinks = Object.entries(route.alternates)
     .map(([hreflang, href]) => `    <link rel="alternate" hreflang="${hreflang}" href="${baseUrl}${href}" />`)
     .join('\n');
-  const structuredData = route.structuredData
-    ? `\n    <script type="application/ld+json">${escapeScriptJson(route.structuredData)}</script>`
+  const webAppJson = webApplicationJsonLd(route.lang, `${baseUrl}/${route.lang}/`, route.description);
+  const extraStructuredData = route.structuredData
+    ? `\n    <script type="application/ld+json" data-seo="faq">${escapeScriptJson(route.structuredData)}</script>`
     : '';
 
   return template
@@ -114,37 +126,59 @@ function renderRoute(route) {
     .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${escapeAttr(route.title)}" />`)
     .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${escapeAttr(route.description)}" />`)
     .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${baseUrl}${route.path}" />`)
+    .replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${ogImageUrl}" />`)
+    .replace(/<meta property="og:locale" content="[^"]*" \/>/, `<meta property="og:locale" content="${route.ogLocale}" />`)
     .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${escapeAttr(route.title)}" />`)
     .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${escapeAttr(route.description)}" />`)
+    .replace(/<meta name="twitter:image" content="[^"]*" \/>/, `<meta name="twitter:image" content="${ogImageUrl}" />`)
     .replace(/(?:[ ]{4}<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>\n?)+/, `${alternateLinks}\n`)
+    .replace(
+      /<script type="application\/ld\+json" data-seo="webapp">[\s\S]*?<\/script>/,
+      `<script type="application/ld+json" data-seo="webapp">${escapeScriptJson(webAppJson)}</script>`
+    )
     .replace(/<div id="app"><\/div>/, `<div id="app" data-prerendered="true">${route.body}</div>`)
-    .replace('</head>', `${structuredData}\n  </head>`);
+    .replace('</head>', `${extraStructuredData}\n  </head>`);
+}
+
+function webApplicationJsonLd(lang, url, description) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: lang === 'de' ? 'vCard QR-Code Generator' : 'vCard QR Code Generator',
+    url,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    isAccessibleForFree: true,
+    inLanguage: lang,
+    description,
+    codeRepository: githubUrl,
+    license: licenseUrl,
+  };
 }
 
 function homeContent(messages, lang) {
-  const guidePath = lang === 'de' ? '/de/qr-code-visitenkarte' : '/en/business-card-qr-code';
   const vcardPath = lang === 'de' ? '/de/was-ist-vcard' : '/en/what-is-vcard';
   const faqPath = `/${lang}/faq`;
   return pageShell(messages, lang, `
     <section class="space-y-4">
       <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">${escapeHtml(messages.header.title)}</h1>
-      <p class="text-lg text-muted-foreground leading-relaxed">${escapeHtml(messages.header.subtitle)}</p>
+      <p class="text-lg text-muted-foreground leading-relaxed">${escapeHtml(messages.header.positioning)}</p>
       <p class="text-muted-foreground leading-relaxed">${escapeHtml(messages.footer.seo_text)}</p>
-      <a class="inline-flex items-center justify-center rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background" href="${guidePath}">${escapeHtml(messages.footer.use_case_business_cards_heading)}</a>
+    </section>
+    <section class="space-y-3">
+      <h2 class="text-2xl font-bold tracking-tight">${escapeHtml(messages.footer.seo_heading)}</h2>
+      <p class="text-muted-foreground leading-relaxed">${escapeHtml(messages.footer.privacy_text)}</p>
     </section>
     <section class="grid gap-3 sm:grid-cols-3">
       ${useCaseCard(messages.footer.use_case_business_cards_heading, messages.footer.use_case_business_cards_text)}
       ${useCaseCard(messages.footer.use_case_free_generator_heading, messages.footer.use_case_free_generator_text)}
       ${useCaseCard(messages.footer.use_case_contact_capture_heading, messages.footer.use_case_contact_capture_text)}
     </section>
-    <section class="space-y-3">
-      <h2 class="text-2xl font-bold tracking-tight">${escapeHtml(messages.footer.how_heading)}</h2>
-      <p class="text-muted-foreground leading-relaxed">${escapeHtml(messages.footer.how_link_text)}${escapeHtml(messages.footer.how_text_after)}</p>
-    </section>
     <nav class="flex flex-wrap gap-4 text-sm">
-      <a class="font-medium underline underline-offset-2" href="${guidePath}">${escapeHtml(lang === 'de' ? 'QR-Code für Visitenkarte erstellen' : 'Create QR code for business card')}</a>
-      <a class="font-medium underline underline-offset-2" href="${vcardPath}">${escapeHtml(messages.guide_page.more_vcard_link)}</a>
-      <a class="font-medium underline underline-offset-2" href="${faqPath}">${escapeHtml(messages.guide_page.more_faq_link)}</a>
+      <a class="font-medium underline underline-offset-2" href="${vcardPath}">${escapeHtml(messages.footer.how_page_link)}</a>
+      <a class="font-medium underline underline-offset-2" href="#privacy">${escapeHtml(messages.footer.privacy_link)}</a>
+      <a class="font-medium underline underline-offset-2" href="${faqPath}">${escapeHtml(messages.footer.faq_link)}</a>
+      <a class="font-medium underline underline-offset-2" href="${githubUrl}">${escapeHtml(messages.footer.github_link)}</a>
     </nav>
   `);
 }
@@ -211,12 +245,12 @@ function vcardContent(messages, lang) {
 }
 
 function faqContent(messages, lang) {
-  const faqItems = Array.from({ length: 10 }, (_, index) => {
-    const number = index + 1;
+  const faqItems = faqQuestionKeys(messages).map((qKey) => {
+    const aKey = qKey.replace('q', 'a');
     return `
       <details class="group border-b border-border/50 p-4" open>
-        <summary class="font-semibold">${escapeHtml(messages.faq[`q${number}`])}</summary>
-        <p class="mt-2 text-sm text-muted-foreground leading-relaxed">${escapeHtml(messages.faq[`a${number}`])}</p>
+        <summary class="font-semibold">${escapeHtml(messages.faq[qKey])}</summary>
+        <p class="mt-2 text-sm text-muted-foreground leading-relaxed">${escapeHtml(messages.faq[aKey])}</p>
       </details>
     `;
   }).join('');
@@ -249,6 +283,19 @@ function pageShell(messages, lang, content) {
           <article class="rounded-2xl border bg-card p-5 sm:p-8 space-y-8">${content}</article>
         </div>
       </main>
+      <footer class="border-t bg-card mt-auto">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-4">
+          <div id="privacy">
+            <h2 class="font-semibold mb-2">${escapeHtml(messages.footer.privacy_heading)}</h2>
+            <p class="text-sm text-muted-foreground leading-relaxed">${escapeHtml(messages.footer.privacy_text)}</p>
+          </div>
+          <p class="text-sm">
+            <a class="font-medium underline underline-offset-2" href="${githubUrl}">${escapeHtml(messages.footer.github_link)}</a>
+            ·
+            <a class="font-medium underline underline-offset-2" href="${licenseUrl}">${escapeHtml(messages.footer.license_link)}</a>
+          </p>
+        </div>
+      </footer>
     </div>
   `;
 }
@@ -275,18 +322,24 @@ function useCaseCard(title, text) {
   `;
 }
 
+function faqQuestionKeys(messages) {
+  return Object.keys(messages.faq)
+    .filter((key) => /^q\d+$/.test(key))
+    .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+}
+
 function faqStructuredData(messages) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: Array.from({ length: 10 }, (_, index) => {
-      const number = index + 1;
+    mainEntity: faqQuestionKeys(messages).map((qKey) => {
+      const aKey = qKey.replace('q', 'a');
       return {
         '@type': 'Question',
-        name: messages.faq[`q${number}`],
+        name: messages.faq[qKey],
         acceptedAnswer: {
           '@type': 'Answer',
-          text: messages.faq[`a${number}`],
+          text: messages.faq[aKey],
         },
       };
     }),

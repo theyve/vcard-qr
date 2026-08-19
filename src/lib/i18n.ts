@@ -11,6 +11,10 @@ export type SupportedLocale = 'de' | 'en';
 
 const SUPPORTED_LOCALES: SupportedLocale[] = ['de', 'en'];
 const BASE_URL = 'https://vcardqr.ch';
+const GITHUB_URL = 'https://github.com/theyve/vcard-qr';
+const LICENSE_URL = 'https://github.com/theyve/vcard-qr/blob/main/LICENSE';
+const OG_IMAGE_URL = `${BASE_URL}/web-app-manifest-512x512.png`;
+const OG_LOCALES: Record<SupportedLocale, string> = { de: 'de_CH', en: 'en_US' };
 
 // Register messages
 addMessages('de', de);
@@ -147,13 +151,8 @@ export function updateSeoForRoute(lang: SupportedLocale, pathname: string): void
   document.title = SEO_TITLES[lang]?.[seoKey] ?? SEO_TITLES[lang]?.home ?? '';
 
   // <meta name="description">
-  let metaDesc = document.querySelector('meta[name="description"]');
-  if (!metaDesc) {
-    metaDesc = document.createElement('meta');
-    metaDesc.setAttribute('name', 'description');
-    document.head.appendChild(metaDesc);
-  }
-  metaDesc.setAttribute('content', SEO_DESCRIPTIONS[lang]?.[seoKey] ?? SEO_DESCRIPTIONS[lang]?.home ?? '');
+  const description = SEO_DESCRIPTIONS[lang]?.[seoKey] ?? SEO_DESCRIPTIONS[lang]?.home ?? '';
+  setMetaContent('meta[name="description"]', 'name', 'description', description);
 
   // <link rel="canonical">
   const canonicalPath = route?.hreflangPairs[lang] ?? `/${lang}/`;
@@ -166,16 +165,67 @@ export function updateSeoForRoute(lang: SupportedLocale, pathname: string): void
   }
   canonical.href = canonicalUrl;
 
+  setMetaContent('meta[property="og:title"]', 'property', 'og:title', document.title);
+  setMetaContent('meta[property="og:description"]', 'property', 'og:description', description);
+  setMetaContent('meta[property="og:url"]', 'property', 'og:url', canonicalUrl);
+  setMetaContent('meta[property="og:image"]', 'property', 'og:image', OG_IMAGE_URL);
+  setMetaContent('meta[property="og:locale"]', 'property', 'og:locale', OG_LOCALES[lang]);
+  setMetaContent('meta[name="twitter:title"]', 'name', 'twitter:title', document.title);
+  setMetaContent('meta[name="twitter:description"]', 'name', 'twitter:description', description);
+  setMetaContent('meta[name="twitter:image"]', 'name', 'twitter:image', OG_IMAGE_URL);
+
+  upsertJsonLd('webapp', webApplicationJsonLd(lang, `${BASE_URL}/${lang}/`, description));
+
   // hreflang tags
   updateHreflangTags(route?.hreflangPairs ?? { de: '/de/', en: '/en/' });
+}
+
+function setMetaContent(selector: string, attr: string, name: string, content: string): void {
+  let el = document.querySelector(selector);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(attr, name);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', content);
+}
+
+function upsertJsonLd(id: string, data: Record<string, unknown>): void {
+  let script = document.querySelector(`script[type="application/ld+json"][data-seo="${id}"]`) as HTMLScriptElement | null;
+  if (!script) {
+    script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-seo', id);
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(data);
+}
+
+export function webApplicationJsonLd(
+  lang: SupportedLocale,
+  url: string,
+  description: string,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: lang === 'de' ? 'vCard QR-Code Generator' : 'vCard QR Code Generator',
+    url,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    isAccessibleForFree: true,
+    inLanguage: lang,
+    description,
+    codeRepository: GITHUB_URL,
+    license: LICENSE_URL,
+  };
 }
 
 /**
  * Create or update hreflang <link> tags in <head>.
  */
 function updateHreflangTags(pairs: Record<SupportedLocale, string>): void {
-  // Remove existing hreflang tags we manage
-  document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
 
   for (const loc of SUPPORTED_LOCALES) {
     const link = document.createElement('link');
@@ -209,4 +259,4 @@ export function initI18n(): void {
   });
 }
 
-export { locale, SUPPORTED_LOCALES, BASE_URL };
+export { locale, SUPPORTED_LOCALES, BASE_URL, GITHUB_URL, LICENSE_URL, OG_IMAGE_URL };
