@@ -20,35 +20,41 @@
     <loc>https://vcardqr.ch/de/was-ist-vcard</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/was-ist-vcard"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/what-is-vcard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
   </url>
   <!-- What is a vCard: English -->
   <url>
     <loc>https://vcardqr.ch/en/what-is-vcard</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/was-ist-vcard"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/what-is-vcard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
   </url>
   <!-- Business card QR guide: German -->
   <url>
     <loc>https://vcardqr.ch/de/qr-code-visitenkarte</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/qr-code-visitenkarte"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/business-card-qr-code"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
   </url>
   <!-- Business card QR guide: English -->
   <url>
     <loc>https://vcardqr.ch/en/business-card-qr-code</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/qr-code-visitenkarte"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/business-card-qr-code"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
   </url>
   <!-- FAQ: German -->
   <url>
     <loc>https://vcardqr.ch/de/faq</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/faq"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/faq"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
   </url>
   <!-- FAQ: English -->
   <url>
     <loc>https://vcardqr.ch/en/faq</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/faq"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/faq"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/"/>
   </url>
 </urlset>
