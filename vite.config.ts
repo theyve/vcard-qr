@@ -36,7 +36,8 @@ export default defineConfig({
         theme_color: '#f9cb15',
         background_color: '#faf8f3',
         display: 'standalone',
-        start_url: '/',
+        // Open the German generator directly; `/` is a Netlify 302 that the SW must not cache.
+        start_url: '/de/',
         scope: '/',
         icons: [
           {
@@ -60,10 +61,16 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
+        // Multipage static site: skip SPA NavigationRoute so `/` hits Netlify's 302 → /de/.
+        navigateFallback: '',
+        // Prefixes matter: @vite-pwa/sveltekit otherwise auto-adds prerendered/**/*.html.
+        globPatterns: ['client/**/*.{js,css,svg,png,ico,webmanifest}'],
+        // Never precache HTML — cached `/` would skip the locale redirect.
+        globIgnores: ['prerendered/**'],
       },
       kit: {
         includeVersionFile: true,
+        trailingSlash: 'always',
       },
     }),
   ],
