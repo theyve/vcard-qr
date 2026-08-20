@@ -1,3 +1,7 @@
+# Netlify subdomain → canonical domain. Keep before all path rules.
+https://vcard-qr.netlify.app/*  https://vcardqr.ch/:splat  301!
+http://vcard-qr.netlify.app/*   https://vcardqr.ch/:splat  301!
+
 /sitemap.xml   /sitemap.xml   200!
 /robots.txt    /robots.txt    200!
 
