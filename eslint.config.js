@@ -5,7 +5,7 @@ import svelte from 'eslint-plugin-svelte'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', '.svelte-kit']),
+  globalIgnores(['dist', 'build', '.svelte-kit']),
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...svelte.configs.recommended,

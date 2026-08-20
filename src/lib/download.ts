@@ -33,6 +33,12 @@ export function downloadDataUrl(filename: string, dataUrl: string): void {
  * Generate a safe filename from a name
  */
 export function safeFilename(name: string, fallback: string = 'vcard'): string {
-  const safe = (name || '').trim().replace(/\s+/g, '-').toLowerCase();
+  const safe = (name || '')
+    .trim()
+    .replace(/[/\\:*?"<>|]/g, '-')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase();
   return safe || fallback;
 }

@@ -35,8 +35,12 @@
     socials = $bindable(),
   }: Props = $props();
 
+  let phoneSeq = $state(1);
+  let emailSeq = $state(1);
+  let socialSeq = $state(1);
+
   function addPhone() {
-    phones = [...phones, { number: '', type: 'CELL' }];
+    phones = [...phones, { id: `phone-${phoneSeq++}`, number: '', type: 'CELL' }];
   }
 
   function removePhone(index: number) {
@@ -48,7 +52,7 @@
   }
 
   function addEmail() {
-    emails = [...emails, { address: '', type: 'WORK' }];
+    emails = [...emails, { id: `email-${emailSeq++}`, address: '', type: 'WORK' }];
   }
 
   function removeEmail(index: number) {
@@ -60,7 +64,7 @@
   }
 
   function addSocial() {
-    socials = [...socials, { type: 'linkedin' as SocialType, url: '' }];
+    socials = [...socials, { id: `social-${socialSeq++}`, type: 'linkedin' as SocialType, url: '' }];
   }
 
   function removeSocial(index: number) {
@@ -73,7 +77,7 @@
 </script>
 
 <Card>
-  <header class="">
+  <header>
     <h2 class="flex items-center gap-2">
       <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -86,11 +90,20 @@
   <div class="space-y-5">
     <!-- Name section -->
     <fieldset class="space-y-2">
-      <Label>{$_('form.name')}</Label>
+      <legend class="text-sm font-medium text-foreground/90">{$_('form.name')}</legend>
       <div class="grid grid-cols-[72px_1fr_1fr] gap-2">
-        <Input bind:value={prefix} placeholder={$_('form.prefix_placeholder')} title={$_('form.prefix_title')} />
-        <Input bind:value={firstName} placeholder={$_('form.first_name_placeholder')} title={$_('form.first_name_title')} />
-        <Input bind:value={lastName} placeholder={$_('form.last_name_placeholder')} title={$_('form.last_name_title')} />
+        <div class="space-y-1">
+          <Label for="prefix">{$_('form.prefix_title')}</Label>
+          <Input id="prefix" bind:value={prefix} placeholder={$_('form.prefix_placeholder')} autocomplete="honorific-prefix" />
+        </div>
+        <div class="space-y-1">
+          <Label for="firstName">{$_('form.first_name_title')}</Label>
+          <Input id="firstName" bind:value={firstName} placeholder={$_('form.first_name_placeholder')} autocomplete="given-name" />
+        </div>
+        <div class="space-y-1">
+          <Label for="lastName">{$_('form.last_name_title')}</Label>
+          <Input id="lastName" bind:value={lastName} placeholder={$_('form.last_name_placeholder')} autocomplete="family-name" />
+        </div>
       </div>
     </fieldset>
 
@@ -122,7 +135,7 @@
           {$_('form.add_phone')}
         </Button>
       </div>
-      {#each phones as phone, i (i)}
+      {#each phones as phone, i (phone.id)}
         <PhoneInput
           {phone}
           canRemove={phones.length > 1}
@@ -143,7 +156,7 @@
           {$_('form.add_email')}
         </Button>
       </div>
-      {#each emails as email, i (i)}
+      {#each emails as email, i (email.id)}
         <EmailInput
           {email}
           canRemove={emails.length > 1}
@@ -174,7 +187,7 @@
           {$_('form.no_socials')}
         </p>
       {/if}
-      {#each socials as social, i (i)}
+      {#each socials as social, i (social.id)}
         <SocialInput
           {social}
           onchange={(s) => updateSocial(i, s)}

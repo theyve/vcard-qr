@@ -1,88 +1,60 @@
-# VCard QR Code Generator
+# vcardqr.ch
 
-vcardqr.ch is a free and open-source vCard QR code generator. Contact data is processed locally in the browser and is never uploaded to a server.
+Free vCard QR codes for printed business cards. The QR code holds a vCard, not a URL. Form data stays in the browser.
 
-**Website:** [https://vcardqr.ch/](https://vcardqr.ch/)
+**Site:** [https://vcardqr.ch/](https://vcardqr.ch/)
 
-## Features
+## What it does
 
-- **Contact fields**: First/last name, job title, company, address, email, website
-- **Multiple phone numbers**: Add as many as needed, with type (Cell/Work)
-- **Social profiles**: LinkedIn, Twitter, GitHub, and more
-- **Live QR preview**: Updates in real-time as you type
-- **Download options**: PNG (1024×1024), SVG (vector), or vCard (.vcf) file
-- **Error correction control**: Adjust QR density vs. robustness
+1. You fill in contact fields in the browser
+2. The page builds a vCard 3.0 string locally (FN is always present)
+3. `qrcode` draws SVG/PNG from that string
+4. You download PNG, SVG, or `.vcf`
 
-## Transparency & Privacy
+There is no account and no hosted profile. Scans are not counted: the code is not a link.
 
-Contact details are processed locally in the browser and are never uploaded to a server.
+## Privacy
 
-### Trust Checklist
+Contact details never leave the device. The site measures anonymous page views with [Plausible](https://plausible.io/). That is traffic on vcardqr.ch, not activity on the QR code.
 
-- ✅ **QR generation is client-side**: No backend stores or receives your contact details
-- ✅ **No ads, no account**: You do not need to sign up
-- ✅ **Fully auditable**: Source code is open and readable
+## URLs
 
-### What the code does
+German is the default.
 
-1. Takes your input from form fields
-2. Builds a vCard 3.0 formatted string locally
-3. Generates a QR code from that string using the `qrcode` library
-4. Renders the QR as SVG/PNG entirely in your browser
-5. Downloads happen via browser APIs (Blob URLs)—no upload
+| Page | DE | EN |
+| --- | --- | --- |
+| Generator | `/de/` | `/en/` |
+| What a vCard is | `/de/was-ist-vcard/` | `/en/what-is-vcard/` |
+| FAQ | `/de/faq/` | `/en/faq/` |
 
-## Run Locally
+`/` redirects by `Accept-Language` (German if unmatched). Unknown paths are HTTP 404 with `noindex`.
+
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
-
-## Build for Production
+Open [http://127.0.0.1:5180](http://127.0.0.1:5180) (`npm run dev` pins that port). Port 5173 is often taken by DDEV on this machine; Vite then used to bind IPv6 only, so `localhost:5173` showed DDEV's empty 404. In dev, `/` is an HTTP 302 from the server hook. Pages are real SvelteKit routes, prerendered to HTML on build.
 
 ```bash
 npm run build
-npm run preview  # to test the build locally
+npm run preview
 ```
 
-The `dist/` folder contains static files ready to deploy anywhere (Netlify, Vercel, GitHub Pages, any static host).
+`build/` is static output for Netlify (`netlify.toml` publish directory).
 
-## Project Structure
+## Stack
 
-```
-src/
-├── App.svelte              # Main application, state management
-├── main.ts                 # Entry point
-├── app.css                 # Global styles (Tailwind CSS variables)
-├── lib/
-│   ├── vcard.ts           # vCard 3.0 generation (fully auditable)
-│   ├── qr.ts              # QR code generation (wraps qrcode lib)
-│   └── download.ts        # File download utilities
-└── components/
-    ├── ContactForm.svelte  # Contact input form
-    ├── QrPreview.svelte    # QR preview + download actions
-    ├── PhoneInput.svelte   # Phone number row component
-    ├── SocialInput.svelte  # Social profile row component
-    └── ui/                 # Minimal UI primitives (Button, Card, etc.)
-```
+- SvelteKit 2 + Svelte 5, `@sveltejs/adapter-static`
+- Tailwind CSS v4
+- `svelte-i18n` (strings in `src/lib/i18n/de.json` and `en.json`)
+- `qrcode` for QR drawing
+- PWA via `@vite-pwa/sveltekit`
+- Plausible on every HTML page
 
-## Tech Stack
-
-- [Svelte 5](https://svelte.dev/) with runes
-- [Vite](https://vitejs.dev/) for bundling
-- [Tailwind CSS v4](https://tailwindcss.com/)
-- [qrcode](https://www.npmjs.com/package/qrcode) for QR generation
-- TypeScript throughout
-
-## Built with AI
-
-This project was developed using AI coding assistants. The entire codebase—components, styling, documentation, and configuration—was written with AI tools. This is noted for transparency; the code remains fully auditable.
-
-## vCard Format
-
-The app generates vCard 3.0, the most widely compatible format for QR scanners:
+## vCard 3.0
 
 ```
 BEGIN:VCARD
@@ -92,12 +64,13 @@ N:Doe;John;;;
 TITLE:Software Engineer
 ORG:Acme Inc
 TEL;TYPE=CELL:+1234567890
-EMAIL;TYPE=INTERNET:john@example.com
+EMAIL;TYPE=INTERNET,WORK:john@example.com
 URL:https://example.com
-X-SOCIALPROFILE;type=linkedin:https://linkedin.com/in/johndoe
 END:VCARD
 ```
 
+Phone types: Cell, Work, Home.
+
 ## License
 
-MIT - see [LICENSE](LICENSE)
+MIT. See [LICENSE](LICENSE).

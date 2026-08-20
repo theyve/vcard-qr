@@ -12,16 +12,19 @@ export const EMAIL_TYPES = ['WORK', 'HOME'] as const;
 export type EmailType = (typeof EMAIL_TYPES)[number];
 
 export interface PhoneEntry {
+  id: string;
   number: string;
   type: PhoneType;
 }
 
 export interface EmailEntry {
+  id: string;
   address: string;
   type: EmailType;
 }
 
 export interface SocialEntry {
+  id: string;
   type: SocialType;
   url: string;
 }
@@ -67,13 +70,51 @@ export function sanitizeLine(v: string): string {
 }
 
 /**
- * Ensure a URL has a protocol prefix (defaults to https://)
+ * Ensure a URL has a protocol prefix (defaults to https://).
+ * Existing URI schemes (mailto:, https:, …) are left alone so
+ * `mailto:a@b.ch` never becomes `https://mailto:a@b.ch`.
+ * `example.com:8080` is a host:port, not a scheme, and still gets https.
  */
 export function ensureUrl(v: string): string {
   const s = (v || '').trim();
   if (!s) return '';
+  if (/^(javascript|data|vbscript):/i.test(s)) return '';
   if (/^https?:\/\//i.test(s)) return s;
+  const scheme = s.match(/^([a-z][a-z0-9+.-]*):/i);
+  if (scheme) {
+    const rest = s.slice(scheme[0].length);
+    if (rest === '' || !/^\d/.test(rest)) return s;
+  }
   return `https://${s}`;
+}
+
+/** RFC 2426 line folding: 75 octets, continuation lines start with a space. */
+export function foldLine(line: string): string {
+  const encoder = new TextEncoder();
+  if (encoder.encode(line).length <= 75) return line;
+
+  const chunks: string[] = [];
+  let remaining = line;
+  let limit = 75;
+  while (remaining.length > 0) {
+    let lo = 1;
+    let hi = remaining.length;
+    let fit = 1;
+    while (lo <= hi) {
+      const mid = Math.floor((lo + hi) / 2);
+      const trial = remaining.slice(0, mid);
+      if (encoder.encode(trial).length <= limit) {
+        fit = mid;
+        lo = mid + 1;
+      } else {
+        hi = mid - 1;
+      }
+    }
+    chunks.push(remaining.slice(0, fit));
+    remaining = remaining.slice(fit);
+    limit = 74;
+  }
+  return chunks.map((chunk, i) => (i === 0 ? chunk : ` ${chunk}`)).join('\r\n');
 }
 
 /**
@@ -91,15 +132,15 @@ export function buildVCard(data: VCardData): string {
 
   const lines: string[] = ['BEGIN:VCARD', 'VERSION:3.0'];
 
-  // Build full name for FN field (displayed name)
+  // FN is required (RFC 2426). Fall back to org, phone, email, then a placeholder.
   const fnParts = [prefix, firstName, lastName].filter(Boolean);
-  const fullName = fnParts.join(' ');
-  
-  if (fullName) {
-    lines.push(`FN:${fullName}`);
-    // N format: <lastName>;<firstName>;<middleName>;<prefix>;<suffix>
-    lines.push(`N:${lastName};${firstName};;${prefix};`);
-  }
+  const firstPhone = data.phones.map((p) => sanitizeLine(p.number)).find(Boolean) ?? '';
+  const firstEmail = data.emails.map((e) => sanitizeLine(e.address)).find(Boolean) ?? '';
+  const fullName = fnParts.join(' ') || company || firstPhone || firstEmail || 'Contact';
+
+  lines.push(`FN:${fullName}`);
+  // N format: <lastName>;<firstName>;<middleName>;<prefix>;<suffix>
+  lines.push(`N:${lastName};${firstName};;${prefix};`);
 
   if (jobTitle) lines.push(`TITLE:${jobTitle}`);
   if (company) lines.push(`ORG:${company}`);
@@ -137,6 +178,5 @@ export function buildVCard(data: VCardData): string {
 
   lines.push('END:VCARD');
 
-  // QR expects CRLF per spec, but most readers accept LF. Use CRLF for best compatibility.
-  return lines.join('\r\n');
+  return lines.map(foldLine).join('\r\n');
 }

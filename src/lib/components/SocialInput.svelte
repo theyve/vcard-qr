@@ -49,6 +49,7 @@
     value={social.url}
     oninput={handleUrlChange}
     {placeholder}
+    aria-label={$_('form.social_url')}
     class="flex-1"
   />
   <Button
@@ -57,6 +58,7 @@
     size="sm"
     onclick={onremove}
     class="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+    aria-label={$_('form.remove')}
   >
     ×
   </Button>

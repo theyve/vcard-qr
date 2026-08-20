@@ -40,6 +40,8 @@
     value={email.address}
     oninput={handleAddressChange}
     placeholder="email@example.com"
+    aria-label={$_('form.email_address')}
+    autocomplete="email"
     class="flex-1"
   />
   {#if canRemove}
@@ -49,6 +51,7 @@
       size="sm"
       onclick={onremove}
       class="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+      aria-label={$_('form.remove')}
     >
       ×
     </Button>

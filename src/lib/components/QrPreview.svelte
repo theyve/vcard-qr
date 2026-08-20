@@ -21,6 +21,7 @@
     onDownloadPng: () => void;
     onDownloadSvg: () => void;
     onDownloadVCard: () => void;
+    error?: string;
   }
 
   let {
@@ -38,11 +39,18 @@
     onDownloadPng,
     onDownloadSvg,
     onDownloadVCard,
+    error = '',
   }: Props = $props();
 
-  // Local hex input state (without # prefix for display)
-  let hexInput = $derived(qrColor.replace('#', ''));
-  let bgHexInput = $derived(qrBgColor.replace('#', ''));
+  // Local hex input state (without # prefix). Defaults match Generator; $effect keeps them in sync.
+  let hexInput = $state('000000');
+  let bgHexInput = $state('ffffff');
+  $effect(() => {
+    hexInput = qrColor.replace('#', '');
+  });
+  $effect(() => {
+    bgHexInput = qrBgColor.replace('#', '');
+  });
 
   function handleEcChange(e: Event) {
     const target = e.target as HTMLSelectElement;
@@ -126,6 +134,16 @@
         <p class="text-sm font-medium text-foreground mb-1">{$_('qr.empty_title')}</p>
         <p class="text-sm text-muted-foreground">{$_('qr.empty_subtitle')}</p>
       </div>
+    {:else if error}
+      <div class="flex flex-col items-center justify-center min-h-[320px] text-center px-6 py-8">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-50 flex items-center justify-center">
+          <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <p class="text-sm font-medium text-foreground mb-1">{$_('qr.error_title')}</p>
+        <p class="text-sm text-muted-foreground">{error}</p>
+      </div>
     {:else if loading && !svg}
       <!-- Loading state -->
       <div class="flex items-center justify-center min-h-[320px] text-center px-6 py-8">
@@ -180,6 +198,7 @@
           <label
             class="w-11 h-11 rounded-full border border-input cursor-pointer shrink-0 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             title={$_('qr.color_label')}
+            aria-label={$_('qr.color_label')}
             style="background-color: {qrColor}"
           >
             <input
@@ -210,6 +229,7 @@
           <label
             class="w-11 h-11 rounded-full border border-input cursor-pointer shrink-0 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             title={$_('qr.bg_label')}
+            aria-label={$_('qr.bg_label')}
             style="background-color: {qrBgColor}"
           >
             <input
@@ -278,7 +298,7 @@
 
     <!-- Download buttons -->
     <div class="space-y-2">
-      <Button variant="accent" onclick={onDownloadPng} disabled={!hasContent || loading} class="w-full font-semibold">
+      <Button variant="accent" onclick={onDownloadPng} disabled={!hasContent || loading || !!error} class="w-full font-semibold plausible-event-name=PNG+Download">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
         </svg>
@@ -286,14 +306,14 @@
         <span class="text-xs opacity-70 font-normal">{$_('qr.download_png_size')}</span>
       </Button>
       <div class="grid grid-cols-2 gap-2">
-        <Button variant="outline" onclick={onDownloadSvg} disabled={!hasContent || loading || !svg} class="w-full">
+        <Button variant="outline" onclick={onDownloadSvg} disabled={!hasContent || loading || !svg || !!error} class="w-full plausible-event-name=SVG+Download">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
           {$_('qr.download_svg')}
           <span class="text-xs opacity-70 font-normal">{$_('qr.download_svg_hint')}</span>
         </Button>
-        <Button variant="outline" onclick={onDownloadVCard} disabled={!hasContent} class="w-full">
+        <Button variant="outline" onclick={onDownloadVCard} disabled={!hasContent} class="w-full plausible-event-name=vCard+Download">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>

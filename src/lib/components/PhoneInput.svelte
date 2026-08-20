@@ -40,6 +40,8 @@
     value={phone.number}
     oninput={handleNumberChange}
     placeholder="+41 79 123 45 67"
+    aria-label={$_('form.phone_number')}
+    autocomplete="tel"
     class="flex-1"
   />
   {#if canRemove}
@@ -49,6 +51,7 @@
       size="sm"
       onclick={onremove}
       class="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+      aria-label={$_('form.remove')}
     >
       ×
     </Button>
