@@ -12,15 +12,11 @@
 /de/what-is-vcard           /de/was-ist-vcard/          301
 /de/what-is-vcard/          /de/was-ist-vcard/          301
 
-# Retired print-guide page → FAQ
-/de/qr-code-visitenkarte    /de/faq/                    301
-/de/qr-code-visitenkarte/   /de/faq/                    301
-/en/qr-code-visitenkarte    /en/faq/                    301
-/en/qr-code-visitenkarte/   /en/faq/                    301
-/de/business-card-qr-code   /de/faq/                    301
-/de/business-card-qr-code/  /de/faq/                    301
-/en/business-card-qr-code   /en/faq/                    301
-/en/business-card-qr-code/  /en/faq/                    301
+# Wrong-language business-card slugs → canonical locale URL
+/en/qr-code-visitenkarte    /en/business-card-qr-code/  301
+/en/qr-code-visitenkarte/   /en/business-card-qr-code/  301
+/de/business-card-qr-code   /de/qr-code-visitenkarte/   301
+/de/business-card-qr-code/  /de/qr-code-visitenkarte/   301
 
 # Unknown URLs: real 404, not a soft-200 generator page
 /*             /404.html      404

@@ -26,6 +26,18 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/de/was-ist-vcard/"/>
   </url>
   <url>
+    <loc>https://vcardqr.ch/de/qr-code-visitenkarte/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/qr-code-visitenkarte/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/business-card-qr-code/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/de/qr-code-visitenkarte/"/>
+  </url>
+  <url>
+    <loc>https://vcardqr.ch/en/business-card-qr-code/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/qr-code-visitenkarte/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/business-card-qr-code/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vcardqr.ch/de/qr-code-visitenkarte/"/>
+  </url>
+  <url>
     <loc>https://vcardqr.ch/de/faq/</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://vcardqr.ch/de/faq/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://vcardqr.ch/en/faq/"/>
