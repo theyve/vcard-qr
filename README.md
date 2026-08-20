@@ -7,8 +7,8 @@ Free vCard QR codes for printed business cards. The QR code holds a vCard, not a
 ## What it does
 
 1. You fill in contact fields in the browser
-2. The page builds a vCard 3.0 string locally (FN is always present)
-3. `qrcode` draws SVG/PNG from that string
+2. The page builds a vCard 3.0 string locally (FN is always present; CHARSET=UTF-8 on text fields for Apple Contacts)
+3. `qr-code-styling` draws SVG/PNG from that string (shapes, colours, optional logo)
 4. You download PNG, SVG, or `.vcf`
 
 There is no account and no hosted profile. Scans are not counted: the code is not a link.
@@ -50,7 +50,7 @@ npm run preview
 - SvelteKit 2 + Svelte 5, `@sveltejs/adapter-static`
 - Tailwind CSS v4
 - `svelte-i18n` (strings in `src/lib/i18n/de.json` and `en.json`)
-- `qrcode` for QR drawing
+- `qr-code-styling` for QR drawing (module/eye shapes, logo overlay)
 - PWA via `@vite-pwa/sveltekit`
 - Plausible on every HTML page
 
@@ -59,13 +59,15 @@ npm run preview
 ```
 BEGIN:VCARD
 VERSION:3.0
-FN:John Doe
-N:Doe;John;;;
-TITLE:Software Engineer
-ORG:Acme Inc
+FN;CHARSET=UTF-8:Dr. John Doe
+N;CHARSET=UTF-8:Doe;John;;Dr.;
+TITLE;CHARSET=UTF-8:Software Engineer
+ORG;CHARSET=UTF-8:Acme Inc
 TEL;TYPE=CELL:+1234567890
 EMAIL;TYPE=INTERNET,WORK:john@example.com
+ADR;CHARSET=UTF-8;TYPE=WORK:;;123 Main St;Zurich;;8000;Switzerland
 URL:https://example.com
+URL:https://linkedin.com/in/johndoe
 END:VCARD
 ```
 
