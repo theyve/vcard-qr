@@ -4,11 +4,16 @@
 
 # 301 redirect from Netlify subdomain to main domain
 [[redirects]]
-  from = "/*"
+  from = "https://vcard-qr.netlify.app/*"
   to = "https://vcardqr.ch/:splat"
   status = 301
   force = true
-  conditions = {Host = ["vcard-qr.netlify.app"]}
+
+[[redirects]]
+  from = "http://vcard-qr.netlify.app/*"
+  to = "https://vcardqr.ch/:splat"
+  status = 301
+  force = true
 
 # Service worker must not be cached by the CDN
 [[headers]]
