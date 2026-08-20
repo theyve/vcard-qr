@@ -1,5 +1,7 @@
 <script lang="ts">
+  /* eslint-disable svelte/no-navigation-without-resolve -- External source/license URLs must remain absolute. */
   import { _ } from 'svelte-i18n';
+  import { resolve } from '$app/paths';
   import type { PageId, SupportedLocale } from '$lib/site';
   import { GITHUB_URL, LICENSE_URL, pathFor } from '$lib/site';
 
@@ -16,6 +18,7 @@
 
   let vcardPath = $derived(pathFor('vcard', lang));
   let faqPath = $derived(pathFor('faq', lang));
+  let businessCardPath = $derived(pathFor('businessCard', lang));
   let otherLang = $derived<SupportedLocale>(lang === 'de' ? 'en' : 'de');
   let otherPath = $derived(page === 'not-found' ? pathFor('home', otherLang) : pathFor(page, otherLang));
 </script>
@@ -36,12 +39,12 @@
         </div>
 
         <div class="flex flex-wrap gap-4 text-sm">
-          <a href={vcardPath} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.how_page_link')}</a>
-          <a href={faqPath} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.faq_link')}</a>
+          <a href={resolve(businessCardPath as `/${string}/`)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.business_card_link')}</a>
+          <a href={resolve(vcardPath as `/${string}/`)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.how_page_link')}</a>
+          <a href={resolve(faqPath as `/${string}/`)} class="text-foreground font-medium underline underline-offset-2 hover:text-accent transition-colors">{$_('footer.faq_link')}</a>
         </div>
       </div>
     {/if}
-
 
     <div class="mt-8 pt-6 border-t flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-muted-foreground">
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -69,9 +72,9 @@
         {#if lang === 'de'}
           <span class="font-semibold text-foreground">{$_('footer.lang_de')}</span>
           <span class="text-border">|</span>
-          <a href={otherPath} class="hover:text-foreground transition-colors">{$_('footer.lang_en')}</a>
+          <a href={resolve(otherPath as `/${string}/`)} class="hover:text-foreground transition-colors">{$_('footer.lang_en')}</a>
         {:else}
-          <a href={otherPath} class="hover:text-foreground transition-colors">{$_('footer.lang_de')}</a>
+          <a href={resolve(otherPath as `/${string}/`)} class="hover:text-foreground transition-colors">{$_('footer.lang_de')}</a>
           <span class="text-border">|</span>
           <span class="font-semibold text-foreground">{$_('footer.lang_en')}</span>
         {/if}
