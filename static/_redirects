@@ -1,14 +1,16 @@
 # Netlify subdomain → canonical domain. Keep before all path rules.
+https://vcard-qr.netlify.app/   https://vcardqr.ch/de/      301!
+http://vcard-qr.netlify.app/    https://vcardqr.ch/de/      301!
 https://vcard-qr.netlify.app/*  https://vcardqr.ch/:splat  301!
 http://vcard-qr.netlify.app/*   https://vcardqr.ch/:splat  301!
 
 /sitemap.xml   /sitemap.xml   200!
 /robots.txt    /robots.txt    200!
 
-# HTTP locale redirect (German default). Force so index.html does not shadow this.
+# Root locale redirect (German default). Force so index.html does not shadow this.
+/              /de/           302!
 /              /de/           302! Language=de
 /              /en/           302! Language=en
-/              /de/           302!
 
 # Wrong-language slugs → canonical locale URL
 /en/was-ist-vcard           /en/what-is-vcard/          301
