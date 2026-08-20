@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import { contentEntries, isLocale, pageFromSlug, pathFor, wrongLanguageRedirect } from '$lib/site';
+import { contentEntries, isLocale, pageFromSlug, wrongLanguageRedirect } from '$lib/site';
 import type { EntryGenerator, PageLoad } from './$types';
 
 export const entries: EntryGenerator = () => contentEntries();

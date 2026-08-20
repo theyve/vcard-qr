@@ -1,5 +1,6 @@
 <script lang="ts">
   import Seo from '$lib/components/Seo.svelte';
+  import BusinessCard from '$lib/pages/BusinessCard.svelte';
   import Faq from '$lib/pages/Faq.svelte';
   import WhatIsVcard from '$lib/pages/WhatIsVcard.svelte';
   import {
@@ -26,6 +27,8 @@
 
 {#if page === 'vcard'}
   <WhatIsVcard {lang} />
+{:else if page === 'businessCard'}
+  <BusinessCard {lang} />
 {:else}
   <Faq {lang} />
 {/if}

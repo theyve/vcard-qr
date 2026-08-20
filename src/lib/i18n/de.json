@@ -8,7 +8,10 @@
     "about_p1": "Erstelle kostenlos einen vCard QR-Code für deine Visitenkarte. Kontaktdaten eingeben, QR-Code herunterladen und im Layout platzieren. Beim Scannen lässt sich der Kontakt direkt auf dem Smartphone speichern.",
     "about_p2_before": "Die ",
     "about_vcard_link": "vCard",
-    "about_p2_after": " steckt direkt im QR-Code. iPhone und Android erkennen sie mit der Kamera. Es gibt keine Weiterleitung, keine zusätzliche App und kein Ablaufdatum."
+    "about_p2_after": " steckt direkt im QR-Code. iPhone und Android erkennen sie mit der Kamera. Es gibt keine Weiterleitung, keine zusätzliche App und kein Ablaufdatum.",
+    "contact_heading": "QR-Code für Kontaktdaten",
+    "contact_text": "Name, Telefonnummer, E-Mail, Firma und weitere Kontaktangaben werden direkt als vCard im QR-Code gespeichert. Beim Scannen kann der Kontakt direkt ins Adressbuch übernommen werden. So entsteht ein Kontakt QR-Code, mit dem sich ein QR-Code Kontakt speichern lässt, ohne dass jemand Daten abtippen muss.",
+    "business_card_link": "QR-Code für Visitenkarten richtig einsetzen"
   },
   "privacy_banner": {
     "text": "Was du ins Formular einträgst, bleibt in deinem Browser. Der QR-Code enthält bloss die eingegebnen Kontaktangaben als vCard, keine Tracking-URL.",
@@ -102,16 +105,19 @@
     "license_link": "MIT-Lizenz",
     "faq_link": "Häufige Fragen",
     "how_page_link": "Was ist eine vCard?",
+    "business_card_link": "QR-Code für Visitenkarten",
     "lang_de": "Deutsch",
     "lang_en": "English"
   },
   "seo": {
-    "title_home": "vCard QR-Code Generator für Visitenkarten | vcardqr.ch",
+    "title_home": "vCard QR-Code Generator kostenlos für Visitenkarten",
     "desc_home": "Erstelle kostenlos einen vCard QR-Code für Visitenkarten. Die Kontaktdaten stecken direkt im Code. Download als SVG, PNG oder VCF. Ohne Anmeldung.",
     "title_vcard": "Was ist eine vCard? Einfach erklärt | vcardqr.ch",
     "desc_vcard": "Eine vCard ist eine digitale Visitenkarte im VCF-Format. Erfahre, welche Kontaktdaten sie enthält und wie Smartphones und Adressbücher sie verwenden.",
     "title_faq": "vCard QR-Code: Häufige Fragen | vcardqr.ch",
     "desc_faq": "Antworten zu vCard QR-Codes für Visitenkarten: passende Druckgrösse, Dateiformate, Datenschutz sowie Verwendung auf iPhone und Android.",
+    "title_business_card": "QR-Code für Visitenkarten erstellen | vcardqr.ch",
+    "desc_business_card": "Erstelle kostenlos einen QR-Code für deine Visitenkarte. Kontaktdaten direkt als vCard speichern und als SVG oder PNG herunterladen.",
     "title_404": "Seite nicht gefunden | vcardqr.ch",
     "desc_404": "Die gesuchte Seite wurde nicht gefunden. Zurück zum kostenlosen vCard QR-Code Generator."
   },
@@ -128,8 +134,32 @@
     "qr_text": "Die Kontaktdaten der vCard können direkt in einem QR-Code gespeichert werden. Beim Scannen erkennt das Smartphone die Daten und bietet an, einen neuen Kontakt anzulegen. Eine zusätzliche App oder der Besuch einer Webseite ist nicht nötig.",
     "back_link": "← Zum Generator"
   },
+  "business_card_page": {
+    "heading": "QR-Code für Visitenkarten erstellen",
+    "intro_p1": "Ein QR-Code für Visitenkarten macht aus einer gedruckten Karte einen direkten Weg ins Adressbuch. Mit diesem Generator speicherst du deine Kontaktdaten als vCard direkt im QR-Code. Wer den Code scannt, kann den Kontakt auf iPhone oder Android übernehmen, ohne Namen, Telefonnummern oder E-Mail-Adressen von Hand abzutippen.",
+    "intro_p2": "Der Code funktioniert ohne Weiterleitung, ohne Konto und ohne Ablaufdatum. Die eingegebenen Daten bleiben lokal im Browser und werden nicht an einen Server übertragen. Das ist besonders praktisch für gedruckte Visitenkarten, weil der Code auch dann scanbar bleibt, wenn keine Internetverbindung vorhanden ist. Wenn sich Telefonnummer, E-Mail-Adresse oder Firma ändern, erstellst du einfach einen neuen Code und ersetzt ihn in der nächsten Druckdatei.",
+    "vcard_heading": "vCard QR-Code statt Website-Link",
+    "vcard_text": "Ein URL-QR-Code öffnet eine Webseite, zum Beispiel ein Profil oder eine Landingpage. Ein vCard QR-Code für eine Visitenkarte enthält dagegen die Kontaktdaten selbst. Nach dem Scan erkennt das Smartphone die digitale Visitenkarte und bietet an, sie direkt als neuen Kontakt zu speichern. Für Networking, Messen und Kundentermine ist das oft schneller als ein Link, der erst im Browser geöffnet werden muss. Ein Website-Link kann sinnvoll sein, wenn du später Inhalte ändern möchtest. Für reine Kontaktdaten ist die vCard meist direkter, weil der Scan nicht von Hosting, Tracking-Parametern oder einer mobilen Webseite abhängt.",
+    "fields_heading": "Welche Kontaktdaten gehören in den QR-Code?",
+    "fields_intro": "Ein Visitenkarten QR-Code Generator sollte nur die Angaben enthalten, die nach dem Scan wirklich nützlich sind. Zu viele Daten machen das Muster feiner und können die Lesbarkeit im Druck erschweren. Wähle deshalb lieber klare, aktuelle Kontaktdaten statt jede mögliche Zusatzinformation. Das hält den Code kleiner und besser scanbar. Sinnvoll sind meist:",
+    "field_name": "Name",
+    "field_company": "Firma",
+    "field_role": "Funktion",
+    "field_phone": "Telefonnummer",
+    "field_email": "E-Mail",
+    "field_website": "Webseite",
+    "field_address": "Optional Adresse",
+    "size_heading": "Wie gross sollte der QR-Code auf einer Visitenkarte sein?",
+    "size_text": "Für einen QR-Code auf einer Visitenkarte empfehlen wir mindestens ungefähr 2,5 × 2,5 cm. Eine vCard enthält mehr Zeichen als eine kurze Webadresse, deshalb sollte der Code nicht zu klein platziert werden. Lass rund um den Code genügend freie Fläche, die sogenannte Quiet Zone, und teste ihn immer in der finalen Druckgrösse mit mehreren Smartphones. Wenn viele Felder ausgefüllt sind, wird der QR-Code dichter. In diesem Fall hilft es, optionale Angaben zu kürzen oder den Code im Layout etwas grösser anzulegen.",
+    "format_heading": "SVG oder PNG für den Druck?",
+    "format_text": "Für professionelle Druckdaten ist SVG meist die beste Wahl. Die Vektordatei lässt sich in Layoutprogrammen sauber skalieren, ohne unscharf zu werden. PNG eignet sich gut für digitale Anwendungen, etwa E-Mail-Signaturen, Präsentationen oder schnelle Entwürfe. Wenn du eine Visitenkarte drucken lässt, verwende nach Möglichkeit die SVG-Datei.",
+    "placement_heading": "QR-Code richtig auf der Visitenkarte platzieren",
+    "placement_text": "Achte auf hohen Kontrast: ein dunkler Code auf hellem Hintergrund ist am zuverlässigsten. Halte ausreichend Abstand zu Text, Logos und Schnittkanten, damit die Kamera den QR-Code sauber erkennt. Vermeide sehr helle Farben, transparente Hintergründe und stark gemusterte Flächen. Drucke vor der Produktion einen Test in Originalgrösse und scanne ihn unter normalen Lichtbedingungen. Prüfe dabei nicht nur, ob die Kamera den Code erkennt, sondern auch, ob alle Felder im Kontakt korrekt benannt sind. Kontrolliere Telefonnummern mit Ländervorwahl, die Schreibweise der Firma, die Webseite und mehrere E-Mail-Adressen, bevor die Visitenkarten in den Druck gehen.",
+    "cta": "vCard QR-Code erstellen",
+    "back_link": "← Zum Generator"
+  },
   "faq": {
-    "heading": "Häufige Fragen",
+    "heading": "Häufige Fragen zu vCard QR-Codes",
     "q1": "Was ist ein vCard QR-Code?",
     "a1": "Ein vCard QR-Code ist eine digitale Visitenkarte zum Scannen. Er enthält Kontaktdaten wie Name, Telefonnummer, E-Mail-Adresse und Firma. Das Smartphone liest diese Daten und bietet an, sie als neuen Kontakt zu speichern.\n\nDie vCard steckt direkt im QR-Code. Es wird keine Webseite geöffnet und keine Internetverbindung benötigt.",
     "q2": "Wie erstelle ich einen QR-Code für meine Visitenkarte?",

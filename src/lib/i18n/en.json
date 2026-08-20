@@ -8,7 +8,10 @@
     "about_p1": "Create a free vCard QR code for your business card. Enter the contact details, download the QR code, and place it in the layout. Scanning saves the contact straight on the phone.",
     "about_p2_before": "The ",
     "about_vcard_link": "vCard",
-    "about_p2_after": " sits in the QR code. iPhone and Android read it with the camera. There is no redirect, no extra app, and no expiry date."
+    "about_p2_after": " sits in the QR code. iPhone and Android read it with the camera. There is no redirect, no extra app, and no expiry date.",
+    "contact_heading": "QR Code for Contact Details",
+    "contact_text": "Store a name, phone number, email address, company and other contact details directly in the QR code as a vCard. When scanned, the contact can be saved to the phone's address book. That makes it a practical contact QR code, contact info QR code and save contact QR code for everyday sharing.",
+    "business_card_link": "Use a QR code on a business card"
   },
   "privacy_banner": {
     "text": "What you enter in the form stays in your browser. The QR code only holds the contact details you typed as a vCard, not a tracking URL.",
@@ -102,16 +105,19 @@
     "license_link": "MIT License",
     "faq_link": "Common questions",
     "how_page_link": "What is a vCard?",
+    "business_card_link": "Business card QR code",
     "lang_de": "Deutsch",
     "lang_en": "English"
   },
   "seo": {
-    "title_home": "vCard QR Code Generator for business cards | vcardqr.ch",
+    "title_home": "Free vCard QR Code Generator for Business Cards",
     "desc_home": "Create a free vCard QR code for business cards. The contact details sit in the code. Download as SVG, PNG, or VCF. No sign-up.",
     "title_vcard": "What is a vCard? Explained simply | vcardqr.ch",
     "desc_vcard": "A vCard is a digital business card in VCF format. Learn which contact details it holds and how phones and address books use it.",
     "title_faq": "vCard QR code: common questions | vcardqr.ch",
     "desc_faq": "Answers on vCard QR codes for business cards: print size, file formats, privacy, and use on iPhone and Android.",
+    "title_business_card": "Business Card QR Code Generator | vcardqr.ch",
+    "desc_business_card": "Create a free QR code for your business card. Store contact details directly as a vCard and download it as SVG or PNG.",
     "title_404": "Page not found | vcardqr.ch",
     "desc_404": "The page you are looking for was not found. Back to the free vCard QR code generator."
   },
@@ -128,8 +134,32 @@
     "qr_text": "The contact details in a vCard can sit directly in a QR code. When you scan it, the phone reads the data and offers to create a new contact. No extra app or website visit is needed.",
     "back_link": "← Back to the generator"
   },
+  "business_card_page": {
+    "heading": "Create a QR Code for Your Business Card",
+    "intro_p1": "A business card QR code turns a printed card into a direct path to the address book. With this generator, your contact details are stored as a vCard directly inside the QR code. When someone scans it on iPhone or Android, they can save the contact without typing your name, phone number or email address by hand.",
+    "intro_p2": "The code works without a redirect, without an account and without an expiry date. The details you enter stay local in your browser and are not sent to a server. That makes a QR code for business cards useful in print, because the scan can work even when no internet connection is available. If your phone number, email address or company changes later, create a new code and replace it in the next print file.",
+    "vcard_heading": "vCard QR Code Instead of a Website Link",
+    "vcard_text": "A URL QR code opens a web page, such as a profile or landing page. A vCard QR code for a business card contains the contact details themselves. After the scan, the phone recognises the digital business card and offers to save it as a new contact. For networking, trade shows and client meetings, this is often faster than sending people through a browser first. A website link can be useful when you need editable content, but for plain contact details the vCard route is more direct and does not depend on hosting, tracking parameters or a mobile web page.",
+    "fields_heading": "Which Contact Details Belong in the QR Code?",
+    "fields_intro": "A business card QR code generator should include only the details that are useful after a scan. Too much data makes the pattern finer and can reduce scan reliability in print. In most cases, include:",
+    "field_name": "Name",
+    "field_company": "Company",
+    "field_role": "Job title",
+    "field_phone": "Phone number",
+    "field_email": "Email address",
+    "field_website": "Website",
+    "field_address": "Optional address",
+    "size_heading": "How Large Should the QR Code Be on a Business Card?",
+    "size_text": "For a QR code on a business card, we recommend at least about 2.5 × 2.5 cm. A vCard holds more characters than a short web address, so the code should not be placed too small. Leave enough clear space around it, often called the quiet zone, and always test the final print size with more than one phone. If many fields are filled in, the QR pattern becomes denser. In that case, shorten optional details or make the code slightly larger in the layout.",
+    "format_heading": "SVG or PNG for Print?",
+    "format_text": "For professional print files, SVG is usually the best choice. The vector file can be scaled cleanly in layout software without becoming blurry. PNG is useful for digital use, such as email signatures, presentations or quick drafts. If you are sending a business card to print, use the SVG file when possible.",
+    "placement_heading": "Place the QR Code Correctly on the Business Card",
+    "placement_text": "Use strong contrast: a dark code on a light background is the most reliable. Keep enough distance from text, logos and trim edges so the camera can recognise the QR code clearly. Avoid very light colours, transparent backgrounds and busy patterns. Before production, print a test at actual size and scan it under normal lighting. Check not only that the camera recognises the code, but also that every contact field appears correctly. Confirm phone numbers with country codes, company spelling, the website and any extra email addresses before the cards go to print.",
+    "cta": "Create vCard QR Code",
+    "back_link": "← Back to the generator"
+  },
   "faq": {
-    "heading": "Common questions",
+    "heading": "vCard QR Code FAQ",
     "q1": "What is a vCard QR code?",
     "a1": "A vCard QR code is a digital business card you can scan. It holds contact details such as name, phone number, email address, and company. The phone reads that data and offers to save it as a new contact.\n\nThe vCard sits in the QR code. No website opens, and no internet connection is required.",
     "q2": "How do I create a QR code for my business card?",

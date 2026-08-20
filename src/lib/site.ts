@@ -2,7 +2,7 @@ import de from './i18n/de.json';
 import en from './i18n/en.json';
 
 export type SupportedLocale = 'de' | 'en';
-export type PageId = 'home' | 'vcard' | 'faq';
+export type PageId = 'home' | 'vcard' | 'faq' | 'businessCard';
 
 export const SUPPORTED_LOCALES: SupportedLocale[] = ['de', 'en'];
 export const BASE_URL = 'https://vcardqr.ch';
@@ -15,6 +15,7 @@ export const PAGE_SLUGS: Record<PageId, Record<SupportedLocale, string>> = {
   home: { de: '', en: '' },
   vcard: { de: 'was-ist-vcard', en: 'what-is-vcard' },
   faq: { de: 'faq', en: 'faq' },
+  businessCard: { de: 'qr-code-visitenkarte', en: 'business-card-qr-code' },
 };
 
 const SLUG_TO_PAGE: Record<string, PageId> = {};
@@ -61,12 +62,13 @@ export function localeFromAcceptLanguage(header: string | null): SupportedLocale
   return 'de';
 }
 
-export type SeoKey = 'home' | 'vcard' | 'faq' | 'notFound';
+export type SeoKey = 'home' | 'vcard' | 'faq' | 'businessCard' | 'notFound';
 
 const PAGE_SEO_KEY: Record<PageId, SeoKey> = {
   home: 'home',
   vcard: 'vcard',
   faq: 'faq',
+  businessCard: 'businessCard',
 };
 
 const MESSAGES = { de, en };
@@ -85,12 +87,14 @@ export function seoFor(lang: SupportedLocale, page: PageId | 'not-found'): {
     home: seo.title_home,
     vcard: seo.title_vcard,
     faq: seo.title_faq,
+    businessCard: seo.title_business_card,
     notFound: seo.title_404,
   };
   const descriptions: Record<SeoKey, string> = {
     home: seo.desc_home,
     vcard: seo.desc_vcard,
     faq: seo.desc_faq,
+    businessCard: seo.desc_business_card,
     notFound: seo.desc_404,
   };
   return { title: titles[key], description: descriptions[key], robots: 'index, follow' };
@@ -160,7 +164,7 @@ export function faqPageJsonLd(lang: SupportedLocale): Record<string, unknown> {
 
 export function contentEntries(): Array<{ lang: SupportedLocale; slug: string }> {
   return SUPPORTED_LOCALES.flatMap((lang) =>
-    (['vcard', 'faq'] as const).map((page) => ({
+    (['vcard', 'faq', 'businessCard'] as const).map((page) => ({
       lang,
       slug: canonicalSlug(page, lang),
     })),
