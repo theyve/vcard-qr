@@ -1,5 +1,7 @@
 /**
- * vCard 3.0 generation utilities.
+ * vCard 3.0 generation utilities (RFC 2426).
+ * CHARSET=UTF-8 on text fields — required for Apple Contacts QR import
+ * (vCard 4.0 umlauts are still misread there as MacRoman, e.g. Zürich → Z√ºrich).
  * All processing is local - no network calls.
  */
 
@@ -23,39 +25,38 @@ export interface EmailEntry {
   type: EmailType;
 }
 
-export interface SocialEntry {
+export interface UrlEntry {
   id: string;
-  type: SocialType;
   url: string;
 }
 
 export interface VCardData {
-  prefix: string;      // e.g., "Dr.", "Prof."
+  prefix: string; // honorific prefix, e.g. "Dr."
   firstName: string;
   lastName: string;
   jobTitle: string;
   company: string;
-  address: string;
+  /** ADR: Post Office Box (usually empty) */
+  poBox: string;
+  /** ADR: Extended address (apartment, suite, …) */
+  addressExtended: string;
+  /** ADR: Street address */
+  street: string;
+  /** ADR: Locality */
+  city: string;
+  /** ADR: Postal code */
+  postalCode: string;
+  /** ADR: Country name */
+  country: string;
   phones: PhoneEntry[];
   emails: EmailEntry[];
-  website: string;
-  socials: SocialEntry[];
+  websites: UrlEntry[];
 }
 
-/** Supported social profile types for X-SOCIALPROFILE field */
-export const SOCIAL_TYPES = [
-  'linkedin',
-  'twitter',
-  'facebook',
-  'instagram',
-  'github',
-  'youtube',
-  'tiktok',
-  'mastodon',
-  'other',
-] as const;
-
-export type SocialType = (typeof SOCIAL_TYPES)[number];
+/** Map UI type constants to vCard 3.0 TYPE parameter values (uppercase). */
+function typeParam(type: string): string {
+  return type.toUpperCase();
+}
 
 /**
  * Escape per vCard text rules: backslash, semicolon, comma, newline
@@ -88,7 +89,7 @@ export function ensureUrl(v: string): string {
   return `https://${s}`;
 }
 
-/** RFC 2426 line folding: 75 octets, continuation lines start with a space. */
+/** RFC 2426 / 6350 line folding: 75 octets, continuation lines start with a space. */
 export function foldLine(line: string): string {
   const encoder = new TextEncoder();
   if (encoder.encode(line).length <= 75) return line;
@@ -118,8 +119,12 @@ export function foldLine(line: string): string {
 }
 
 /**
- * Build a vCard 3.0 string from contact data.
- * vCard 3.0 is the most widely compatible format for QR scanners.
+ * Build a vCard 3.0 string from contact data (RFC 2426).
+ *
+ * Structured fields:
+ * - N: Family;Given;Additional;Prefix;Suffix
+ * - ADR: PO Box;Extended;Street;Locality;Region;PostalCode;Country
+ *   (Region is left empty; the form does not collect it)
  */
 export function buildVCard(data: VCardData): string {
   const prefix = sanitizeLine(data.prefix);
@@ -127,52 +132,54 @@ export function buildVCard(data: VCardData): string {
   const lastName = sanitizeLine(data.lastName);
   const jobTitle = sanitizeLine(data.jobTitle);
   const company = sanitizeLine(data.company);
-  const address = sanitizeLine(data.address);
-  const website = sanitizeLine(ensureUrl(data.website));
+  const poBox = sanitizeLine(data.poBox);
+  const addressExtended = sanitizeLine(data.addressExtended);
+  const street = sanitizeLine(data.street);
+  const city = sanitizeLine(data.city);
+  const postalCode = sanitizeLine(data.postalCode);
+  const country = sanitizeLine(data.country);
 
   const lines: string[] = ['BEGIN:VCARD', 'VERSION:3.0'];
 
-  // FN is required (RFC 2426). Fall back to org, phone, email, then a placeholder.
+  // FN is required. Fall back to org, phone, email, then a placeholder.
   const fnParts = [prefix, firstName, lastName].filter(Boolean);
   const firstPhone = data.phones.map((p) => sanitizeLine(p.number)).find(Boolean) ?? '';
   const firstEmail = data.emails.map((e) => sanitizeLine(e.address)).find(Boolean) ?? '';
   const fullName = fnParts.join(' ') || company || firstPhone || firstEmail || 'Contact';
 
-  lines.push(`FN:${fullName}`);
-  // N format: <lastName>;<firstName>;<middleName>;<prefix>;<suffix>
-  lines.push(`N:${lastName};${firstName};;${prefix};`);
+  lines.push(`FN;CHARSET=UTF-8:${fullName}`);
+  // N: Family Name;Given Name;Additional Names;Honorific Prefixes;Honorific Suffixes
+  lines.push(`N;CHARSET=UTF-8:${lastName};${firstName};;${prefix};`);
 
-  if (jobTitle) lines.push(`TITLE:${jobTitle}`);
-  if (company) lines.push(`ORG:${company}`);
+  if (jobTitle) lines.push(`TITLE;CHARSET=UTF-8:${jobTitle}`);
+  if (company) lines.push(`ORG;CHARSET=UTF-8:${company}`);
 
-  // Multiple phone numbers
   for (const phone of data.phones) {
     const num = sanitizeLine(phone.number);
     if (num) {
-      lines.push(`TEL;TYPE=${phone.type}:${num}`);
+      lines.push(`TEL;TYPE=${typeParam(phone.type)}:${num}`);
     }
   }
 
-  // Multiple email addresses
   for (const email of data.emails) {
     const addr = sanitizeLine(email.address);
     if (addr) {
-      lines.push(`EMAIL;TYPE=INTERNET,${email.type}:${addr}`);
+      lines.push(`EMAIL;TYPE=INTERNET,${typeParam(email.type)}:${addr}`);
     }
   }
 
-  if (address) {
-    // Put everything into the street field to avoid over-complication.
-    lines.push(`ADR;TYPE=WORK:;;${address};;;;`);
+  const hasAddress = [poBox, addressExtended, street, city, postalCode, country].some(Boolean);
+  if (hasAddress) {
+    // ADR: PO Box;Extended Address;Street;Locality;Region;Postal Code;Country
+    lines.push(
+      `ADR;CHARSET=UTF-8;TYPE=WORK:${poBox};${addressExtended};${street};${city};;${postalCode};${country}`,
+    );
   }
 
-  if (website) lines.push(`URL:${website}`);
-
-  // Social profiles
-  for (const social of data.socials) {
-    const url = sanitizeLine(ensureUrl(social.url));
+  for (const website of data.websites) {
+    const url = sanitizeLine(ensureUrl(website.url));
     if (url) {
-      lines.push(`X-SOCIALPROFILE;type=${social.type}:${url}`);
+      lines.push(`URL:${url}`);
     }
   }
 

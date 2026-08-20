@@ -13,11 +13,9 @@
     loading: boolean;
     showLengthWarning: boolean;
     errorCorrection: ErrorCorrectionLevel;
-    qrColor: string;
     qrBgColor: string;
+    hasLogo?: boolean;
     onErrorCorrectionChange: (level: ErrorCorrectionLevel) => void;
-    onColorChange: (color: string) => void;
-    onBgColorChange: (color: string) => void;
     onDownloadPng: () => void;
     onDownloadSvg: () => void;
     onDownloadVCard: () => void;
@@ -31,70 +29,18 @@
     loading,
     showLengthWarning,
     errorCorrection,
-    qrColor,
     qrBgColor,
+    hasLogo = false,
     onErrorCorrectionChange,
-    onColorChange,
-    onBgColorChange,
     onDownloadPng,
     onDownloadSvg,
     onDownloadVCard,
     error = '',
   }: Props = $props();
 
-  // Local hex input state (without # prefix). Defaults match Generator; $effect keeps them in sync.
-  let hexInput = $state('000000');
-  let bgHexInput = $state('ffffff');
-  $effect(() => {
-    hexInput = qrColor.replace('#', '');
-  });
-  $effect(() => {
-    bgHexInput = qrBgColor.replace('#', '');
-  });
-
   function handleEcChange(e: Event) {
     const target = e.target as HTMLSelectElement;
     onErrorCorrectionChange(target.value as ErrorCorrectionLevel);
-  }
-
-  function handleColorPickerChange(e: Event) {
-    const target = e.target as HTMLInputElement;
-    onColorChange(target.value);
-  }
-
-  function handleBgColorPickerChange(e: Event) {
-    const target = e.target as HTMLInputElement;
-    onBgColorChange(target.value);
-  }
-
-  function validateAndApplyHex(raw: string, apply: (color: string) => void) {
-    let value = raw.trim();
-    if (value && !value.startsWith('#')) {
-      value = '#' + value;
-    }
-    if (/^#[0-9A-Fa-f]{6}$/.test(value) || /^#[0-9A-Fa-f]{3}$/.test(value)) {
-      apply(value);
-    }
-  }
-
-  function handleHexInputChange() {
-    validateAndApplyHex(hexInput, onColorChange);
-  }
-
-  function handleBgHexInputChange() {
-    validateAndApplyHex(bgHexInput, onBgColorChange);
-  }
-
-  function handleHexInputKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-      handleHexInputChange();
-    }
-  }
-
-  function handleBgHexInputKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-      handleBgHexInputChange();
-    }
   }
 
   /**
@@ -111,7 +57,7 @@
       field,
       value,
       isStructural: /^(BEGIN|END|VERSION)$/i.test(field),
-      isProperty: /^(FN|N|TITLE|ORG|TEL|EMAIL|ADR|URL|NOTE|X-SOCIALPROFILE)/i.test(field),
+      isProperty: /^(FN|N|TITLE|ORG|TEL|EMAIL|ADR|URL|NOTE)/i.test(field),
     };
   }
 
@@ -158,7 +104,7 @@
     {:else}
       <!-- QR code display -->
       <div class="[&>svg]:w-full [&>svg]:h-auto [&>svg]:block" style="background-color: {qrBgColor}">
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -- SVG is from trusted qrcode library -->
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -- SVG is from trusted qr-code-styling library -->
         {@html svg}
       </div>
     {/if}
@@ -177,72 +123,6 @@
 
   <!-- Controls -->
   <div class="space-y-4">
-    <!-- Color pickers -->
-    <div class="grid grid-cols-2 gap-3">
-      <div class="grid gap-2">
-        <Label for="qr-color">{$_('qr.color_label')}</Label>
-        <div class="flex items-center gap-2">
-          <div class="relative flex-1">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 text-sm font-mono">#</span>
-            <input
-              id="qr-color"
-              type="text"
-              bind:value={hexInput}
-              onblur={handleHexInputChange}
-              onkeydown={handleHexInputKeydown}
-              placeholder="000000"
-              maxlength="7"
-              class="w-full h-11 pl-7 pr-3 rounded-xl border border-input bg-card text-sm font-mono uppercase transition-all duration-150 placeholder:text-muted-foreground/40 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
-            />
-          </div>
-          <label
-            class="w-11 h-11 rounded-full border border-input cursor-pointer shrink-0 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            title={$_('qr.color_label')}
-            aria-label={$_('qr.color_label')}
-            style="background-color: {qrColor}"
-          >
-            <input
-              type="color"
-              value={qrColor}
-              onchange={handleColorPickerChange}
-              class="sr-only"
-            />
-          </label>
-        </div>
-      </div>
-      <div class="grid gap-2">
-        <Label for="qr-bg-color">{$_('qr.bg_label')}</Label>
-        <div class="flex items-center gap-2">
-          <div class="relative flex-1">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 text-sm font-mono">#</span>
-            <input
-              id="qr-bg-color"
-              type="text"
-              bind:value={bgHexInput}
-              onblur={handleBgHexInputChange}
-              onkeydown={handleBgHexInputKeydown}
-              placeholder="ffffff"
-              maxlength="7"
-              class="w-full h-11 pl-7 pr-3 rounded-xl border border-input bg-card text-sm font-mono uppercase transition-all duration-150 placeholder:text-muted-foreground/40 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
-            />
-          </div>
-          <label
-            class="w-11 h-11 rounded-full border border-input cursor-pointer shrink-0 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            title={$_('qr.bg_label')}
-            aria-label={$_('qr.bg_label')}
-            style="background-color: {qrBgColor}"
-          >
-            <input
-              type="color"
-              value={qrBgColor}
-              onchange={handleBgColorPickerChange}
-              class="sr-only"
-            />
-          </label>
-        </div>
-      </div>
-    </div>
-
     <!-- Collapsible sections -->
     <div class="space-y-1">
       <details class="group">
@@ -259,12 +139,22 @@
         </summary>
         <div class="mt-2 grid gap-2">
           <Label for="ec">{$_('qr.ec_label')}</Label>
-          <Select id="ec" value={errorCorrection} onchange={handleEcChange} class="w-full" aria-label={$_('qr.ec_label')}>
+          <Select
+            id="ec"
+            value={errorCorrection}
+            onchange={handleEcChange}
+            class="w-full"
+            aria-label={$_('qr.ec_label')}
+            disabled={hasLogo}
+          >
             <option value="L">{$_('qr.ec_L')}</option>
             <option value="M">{$_('qr.ec_M')}</option>
             <option value="Q">{$_('qr.ec_Q')}</option>
             <option value="H">{$_('qr.ec_H')}</option>
           </Select>
+          {#if hasLogo}
+            <p class="text-xs text-muted-foreground">{$_('qr.ec_logo_hint')}</p>
+          {/if}
         </div>
       </details>
 

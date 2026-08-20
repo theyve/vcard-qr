@@ -1,13 +1,13 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import type { PhoneEntry, EmailEntry, SocialEntry, SocialType } from '$lib/vcard';
+  import type { PhoneEntry, EmailEntry, UrlEntry } from '$lib/vcard';
   import Card from './ui/Card.svelte';
   import Input from './ui/Input.svelte';
   import Label from './ui/Label.svelte';
   import Button from './ui/Button.svelte';
   import PhoneInput from './PhoneInput.svelte';
   import EmailInput from './EmailInput.svelte';
-  import SocialInput from './SocialInput.svelte';
+  import UrlInput from './UrlInput.svelte';
 
   interface Props {
     prefix: string;
@@ -15,11 +15,13 @@
     lastName: string;
     jobTitle: string;
     company: string;
-    address: string;
-    website: string;
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
     phones: PhoneEntry[];
     emails: EmailEntry[];
-    socials: SocialEntry[];
+    websites: UrlEntry[];
   }
 
   let {
@@ -28,16 +30,18 @@
     lastName = $bindable(),
     jobTitle = $bindable(),
     company = $bindable(),
-    address = $bindable(),
-    website = $bindable(),
+    street = $bindable(),
+    city = $bindable(),
+    postalCode = $bindable(),
+    country = $bindable(),
     phones = $bindable(),
     emails = $bindable(),
-    socials = $bindable(),
+    websites = $bindable(),
   }: Props = $props();
 
   let phoneSeq = $state(1);
   let emailSeq = $state(1);
-  let socialSeq = $state(1);
+  let websiteSeq = $state(1);
 
   function addPhone() {
     phones = [...phones, { id: `phone-${phoneSeq++}`, number: '', type: 'CELL' }];
@@ -63,28 +67,28 @@
     emails = emails.map((e, i) => (i === index ? email : e));
   }
 
-  function addSocial() {
-    socials = [...socials, { id: `social-${socialSeq++}`, type: 'linkedin' as SocialType, url: '' }];
+  function addWebsite() {
+    websites = [...websites, { id: `url-${websiteSeq++}`, url: '' }];
   }
 
-  function removeSocial(index: number) {
-    socials = socials.filter((_, i) => i !== index);
+  function removeWebsite(index: number) {
+    websites = websites.filter((_, i) => i !== index);
   }
 
-  function updateSocial(index: number, social: SocialEntry) {
-    socials = socials.map((s, i) => (i === index ? social : s));
+  function updateWebsite(index: number, website: UrlEntry) {
+    websites = websites.map((w, i) => (i === index ? website : w));
   }
 </script>
 
 <Card>
-  <header>
-    <h2 class="flex items-center gap-2">
-      <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <header class="flex items-baseline justify-between gap-x-3 gap-y-0.5">
+    <h2 class="flex items-baseline gap-2 min-w-0">
+      <svg class="w-5 h-5 shrink-0 translate-y-[0.125em] text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
       </svg>
       {$_('form.heading')}
     </h2>
-    <p>{$_('form.description')}</p>
+    <p class="!mt-0 shrink-0 text-sm font-normal text-right !text-muted-foreground/65">{$_('form.description')}</p>
   </header>
 
   <div class="space-y-5">
@@ -92,18 +96,27 @@
     <fieldset class="space-y-2">
       <legend class="text-sm font-medium text-foreground/90">{$_('form.name')}</legend>
       <div class="grid grid-cols-[72px_1fr_1fr] gap-2">
-        <div class="space-y-1">
-          <Label for="prefix">{$_('form.prefix_title')}</Label>
-          <Input id="prefix" bind:value={prefix} placeholder={$_('form.prefix_placeholder')} autocomplete="honorific-prefix" />
-        </div>
-        <div class="space-y-1">
-          <Label for="firstName">{$_('form.first_name_title')}</Label>
-          <Input id="firstName" bind:value={firstName} placeholder={$_('form.first_name_placeholder')} autocomplete="given-name" />
-        </div>
-        <div class="space-y-1">
-          <Label for="lastName">{$_('form.last_name_title')}</Label>
-          <Input id="lastName" bind:value={lastName} placeholder={$_('form.last_name_placeholder')} autocomplete="family-name" />
-        </div>
+        <Input
+          id="prefix"
+          bind:value={prefix}
+          placeholder={$_('form.prefix_placeholder')}
+          aria-label={$_('form.prefix_title')}
+          autocomplete="honorific-prefix"
+        />
+        <Input
+          id="firstName"
+          bind:value={firstName}
+          placeholder={$_('form.first_name_placeholder')}
+          aria-label={$_('form.first_name_title')}
+          autocomplete="given-name"
+        />
+        <Input
+          id="lastName"
+          bind:value={lastName}
+          placeholder={$_('form.last_name_placeholder')}
+          aria-label={$_('form.last_name_title')}
+          autocomplete="family-name"
+        />
       </div>
     </fieldset>
 
@@ -119,9 +132,27 @@
       </fieldset>
     </div>
 
-    <fieldset class="space-y-2">
-      <Label for="address">{$_('form.address')}</Label>
-      <Input id="address" bind:value={address} placeholder={$_('form.address_placeholder')} />
+    <!-- Structured address (ADR) -->
+    <fieldset class="space-y-3">
+      <legend class="text-sm font-medium text-foreground/90">{$_('form.address')}</legend>
+      <div class="space-y-1">
+        <Label for="street">{$_('form.street')}</Label>
+        <Input id="street" bind:value={street} placeholder={$_('form.street_placeholder')} autocomplete="street-address" />
+      </div>
+      <div class="grid grid-cols-[7rem_1fr] gap-2">
+        <div class="space-y-1">
+          <Label for="postalCode">{$_('form.postal_code')}</Label>
+          <Input id="postalCode" bind:value={postalCode} placeholder={$_('form.postal_code_placeholder')} autocomplete="postal-code" />
+        </div>
+        <div class="space-y-1">
+          <Label for="city">{$_('form.city')}</Label>
+          <Input id="city" bind:value={city} placeholder={$_('form.city_placeholder')} autocomplete="address-level2" />
+        </div>
+      </div>
+      <div class="space-y-1">
+        <Label for="country">{$_('form.country')}</Label>
+        <Input id="country" bind:value={country} placeholder={$_('form.country_placeholder')} autocomplete="country-name" />
+      </div>
     </fieldset>
 
     <!-- Phone numbers -->
@@ -166,32 +197,23 @@
       {/each}
     </fieldset>
 
-    <fieldset class="space-y-2">
-      <Label for="website">{$_('form.website')}</Label>
-      <Input id="website" bind:value={website} placeholder={$_('form.website_placeholder')} />
-    </fieldset>
-
-    <!-- Social profiles -->
+    <!-- Websites / URLs -->
     <fieldset class="space-y-3">
       <div class="flex items-center justify-between">
-        <Label>{$_('form.social_profiles')}</Label>
-        <Button type="button" variant="ghost" size="sm" onclick={addSocial} class="h-8 text-xs gap-1">
+        <Label>{$_('form.websites')}</Label>
+        <Button type="button" variant="ghost" size="sm" onclick={addWebsite} class="h-8 text-xs gap-1">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
           </svg>
-          {$_('form.add_social')}
+          {$_('form.add_website')}
         </Button>
       </div>
-      {#if socials.length === 0}
-        <p class="text-sm text-secondary-foreground py-2 px-3 bg-secondary rounded-xl text-center">
-          {$_('form.no_socials')}
-        </p>
-      {/if}
-      {#each socials as social, i (social.id)}
-        <SocialInput
-          {social}
-          onchange={(s) => updateSocial(i, s)}
-          onremove={() => removeSocial(i)}
+      {#each websites as website, i (website.id)}
+        <UrlInput
+          {website}
+          canRemove={websites.length > 1}
+          onchange={(w) => updateWebsite(i, w)}
+          onremove={() => removeWebsite(i)}
         />
       {/each}
     </fieldset>
