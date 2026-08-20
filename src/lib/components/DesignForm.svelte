@@ -169,7 +169,7 @@
     <!-- Roundness sliders -->
     <fieldset class="space-y-2">
       <Label for="dots-roundness">{$_('design.dots_label')}</Label>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 min-w-0">
         <span class="text-xs text-muted-foreground shrink-0 w-12">{$_('design.roundness_square')}</span>
         <input
           id="dots-roundness"
@@ -179,7 +179,7 @@
           step="1"
           value={dotsRoundness}
           oninput={(e) => (dotsRoundness = roundnessFromEvent(e))}
-          class="roundness-slider flex-1"
+          class="roundness-slider"
           aria-valuemin={0}
           aria-valuemax={ROUNDNESS_MAX}
           aria-valuenow={dotsRoundness}
@@ -190,10 +190,10 @@
     </fieldset>
 
     <div class="grid sm:grid-cols-2 gap-4">
-      <fieldset class="space-y-2">
+      <fieldset class="space-y-2 min-w-0">
         <Label for="corners-square-roundness">{$_('design.eye_outer_label')}</Label>
-        <div class="flex items-center gap-3">
-          <span class="text-xs text-muted-foreground shrink-0">{$_('design.roundness_square')}</span>
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-xs text-muted-foreground shrink-0 w-12">{$_('design.roundness_square')}</span>
           <input
             id="corners-square-roundness"
             type="range"
@@ -202,20 +202,20 @@
             step="1"
             value={cornersSquareRoundness}
             oninput={(e) => (cornersSquareRoundness = roundnessFromEvent(e))}
-            class="roundness-slider flex-1"
+            class="roundness-slider"
             aria-valuemin={0}
             aria-valuemax={ROUNDNESS_MAX}
             aria-valuenow={cornersSquareRoundness}
             aria-label={$_('design.eye_outer_label')}
           />
-          <span class="text-xs text-muted-foreground shrink-0">{$_('design.roundness_round')}</span>
+          <span class="text-xs text-muted-foreground shrink-0 w-12 text-right">{$_('design.roundness_round')}</span>
         </div>
       </fieldset>
 
-      <fieldset class="space-y-2">
+      <fieldset class="space-y-2 min-w-0">
         <Label for="corners-dot-roundness">{$_('design.eye_inner_label')}</Label>
-        <div class="flex items-center gap-3">
-          <span class="text-xs text-muted-foreground shrink-0">{$_('design.roundness_square')}</span>
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-xs text-muted-foreground shrink-0 w-12">{$_('design.roundness_square')}</span>
           <input
             id="corners-dot-roundness"
             type="range"
@@ -224,13 +224,13 @@
             step="1"
             value={cornersDotRoundness}
             oninput={(e) => (cornersDotRoundness = roundnessFromEvent(e))}
-            class="roundness-slider flex-1"
+            class="roundness-slider"
             aria-valuemin={0}
             aria-valuemax={ROUNDNESS_MAX}
             aria-valuenow={cornersDotRoundness}
             aria-label={$_('design.eye_inner_label')}
           />
-          <span class="text-xs text-muted-foreground shrink-0">{$_('design.roundness_round')}</span>
+          <span class="text-xs text-muted-foreground shrink-0 w-12 text-right">{$_('design.roundness_round')}</span>
         </div>
       </fieldset>
     </div>
@@ -281,6 +281,11 @@
   .roundness-slider {
     -webkit-appearance: none;
     appearance: none;
+    /* Firefox keeps a large intrinsic min-width on range inputs; without this
+       they overflow flex/grid cells and overlap neighbouring sliders. */
+    min-width: 0;
+    width: 100%;
+    flex: 1 1 0%;
     height: 0.375rem;
     border-radius: 9999px;
     background: hsl(var(--secondary));
@@ -315,6 +320,7 @@
   }
 
   .roundness-slider::-moz-range-track {
+    width: 100%;
     height: 0.375rem;
     border-radius: 9999px;
     background: hsl(var(--secondary));
